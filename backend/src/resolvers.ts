@@ -10,6 +10,7 @@ export const resolvers = {
       const a = ingredients.find((item) => item === ingredient);
       return a ? a : "No such item";
     },
+    yo: () => "YOOOO BRO",
   },
 
   Mutation: {

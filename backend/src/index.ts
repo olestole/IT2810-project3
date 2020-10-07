@@ -1,8 +1,6 @@
-// @ts-ignore
 import express from "express";
-import { ApolloServer } from "apollo-server-express";
-// @ts-ignore
 import mongoose from "mongoose";
+import { ApolloServer } from "apollo-server-express";
 import { resolvers } from "./resolvers";
 import { typeDefs } from "./typeDefs";
 

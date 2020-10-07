@@ -1,4 +1,3 @@
-// @ts-ignore
 import mongoose, { Schema, Document } from "mongoose";
 
 interface ICat extends Document {

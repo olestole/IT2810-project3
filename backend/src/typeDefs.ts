@@ -6,6 +6,7 @@ export const typeDefs = gql`
     cats: [Cat!]!
     age: Int!
     ingredients(ingredient: String): String!
+    yo: String!
   }
 
   type Cat {
