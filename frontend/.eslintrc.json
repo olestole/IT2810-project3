@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier/@typescript-eslint",
+    "plugin:prettier/recommended"
+  ],
+  "parserOptions": {
+    "sourceType": "module",
+    "ecmaVersion": 2020,
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
+    }
+  },
+  "plugins": ["react"],
+  "globals": {
+    "jest": true,
+    "page": true,
+    "browser": true,
+    "process": true,
+    "exports": true,
+    "module": true
+  },
+  "rules": {
+    "react/prop-types": 1,
+    "react/display-name": 2
+  },
+  "env": {
+    "node": true,
+    "jest": true,
+    "browser": true,
+    "es6": true
+  }
+}
