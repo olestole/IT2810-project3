@@ -1,0 +1,5 @@
+# TODO: Change this
+
+tasks:
+  - init: npm i && npm run build
+    command: npm run start
