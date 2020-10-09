@@ -13,7 +13,6 @@ const startServer = async () => {
   const server = new ApolloServer({ typeDefs, resolvers });
   server.applyMiddleware({ app });
 
-  // await mongoose.connect("mongodb://localhost:27017/wineAssortment", {
   await mongoose.connect(
     `mongodb://${process.env.DB_USER}:${process.env.DB_PASS}@${process.env.DB_HOST}`,
     {
