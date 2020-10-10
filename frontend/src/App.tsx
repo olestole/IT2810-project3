@@ -1,10 +1,13 @@
 import React from 'react';
 import { Detail, Overview } from './pages';
+import { Header } from './components/Header';
+
+import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <Detail />
+      <Header />
     </div>
   );
 }
