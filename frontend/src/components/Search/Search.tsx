@@ -58,7 +58,7 @@ const Search = () => {
         <SearchIcon />
       </div>
       <InputBase
-        placeholder="Søk…"
+        placeholder="Produkt…"
         classes={{
           root: classes.inputRoot,
           input: classes.inputInput,
