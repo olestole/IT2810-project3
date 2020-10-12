@@ -7,14 +7,22 @@ export const typeDefs = gql`
     age: Int!
     ingredients(ingredient: String): String!
     yo: String!
+    products: [Product!]!
+  }
+
+  type Product {
+    Varenavn: String!
+    Volum: String
+    Pris: String
   }
 
   type Cat {
     id: ID!
     name: String!
+    color: String
   }
 
   type Mutation {
-    createCat(name: String!): Cat!
+    createProduct(Varenavn: String!): Product!
   }
 `;
