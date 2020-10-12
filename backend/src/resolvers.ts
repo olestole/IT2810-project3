@@ -1,21 +1,22 @@
 import { Cat } from "./models/Cat";
 import { Product } from "./models/Product";
+import { WhiteWine } from "./models/WhiteWine";
+
 
 
 export const resolvers = {
   Query: {
-    hello: () => "HALLA BRO",
-    cats: async () => await Cat.find().exec(),
-    age: () => 123,
-    ingredients: (_: any, { ingredient }: any) => {
-      const ingredients = ["tomato", "bacon", "broccoli"];
-      const a = ingredients.find((item) => item === ingredient);
-      return a ? a : "No such item";
+    products: async () => {
+      let products = await Product.find({}).skip(2).limit(4).exec()
+      return products
     },
-    yo: () => "YOOOO BRO",
-    products: async () => await Product.find().exec()
+    whiteWines: async () => {
+      let whiteWines = await WhiteWine.find({Varetype: "Hvitvin"}).limit(10).exec()
+      return whiteWines
+    }
   },
-  
+
+  /*
   Mutation: {
     createProduct: async (_: any,  Varenavn: String ) => {
       const product = new Product({ Varenavn });
@@ -23,5 +24,5 @@ export const resolvers = {
       return product;
     },
   },
-  
+  */
 };

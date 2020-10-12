@@ -12,4 +12,4 @@ const ProductSchema = new Schema({
   Pris: String,
 });
 
-export const Product = mongoose.model<InterfaceProduct>("Product", ProductSchema);
+export const Product = mongoose.model<InterfaceProduct>("Product", ProductSchema, "assortment");

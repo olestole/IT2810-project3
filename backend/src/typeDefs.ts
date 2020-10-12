@@ -2,12 +2,8 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Query {
-    hello: String!
-    cats: [Cat!]!
-    age: Int!
-    ingredients(ingredient: String): String!
-    yo: String!
     products: [Product!]!
+    whiteWines: [Wine!]!
   }
 
   type Product {
@@ -16,10 +12,14 @@ export const typeDefs = gql`
     Pris: String
   }
 
-  type Cat {
-    id: ID!
-    name: String!
-    color: String
+  type Wine {
+    Varenavn: String!
+    Volum: String
+    Pris: String
+    Lukt: String
+    Smak: String
+    Land: String
+    Distrikt: String
   }
 
   type Mutation {
