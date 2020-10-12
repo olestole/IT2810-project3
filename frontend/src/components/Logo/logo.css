@@ -1,0 +1,17 @@
+.logoContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1em;
+  cursor: pointer;
+}
+
+.logo {
+  position: relative;
+  margin-left: 1em;
+  width: 100px;
+}
+
+.logo img {
+  width: 100%;
+}
