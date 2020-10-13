@@ -4,12 +4,17 @@ export const typeDefs = gql`
   type Query {
     products: [Product!]!
     whiteWines: [Wine!]!
+    singleProduct(productNumber: String!): [Product!]
   }
 
   type Product {
     Varenavn: String!
+    Varenummer: String
+    Varetype: String
     Volum: String
     Pris: String
+    Produsent: String
+    Land: String
   }
 
   type Wine {

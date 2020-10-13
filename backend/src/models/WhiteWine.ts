@@ -4,6 +4,10 @@ interface IWhiteWines extends Document {
   Varenavn: string,
   Volum: string,
   Pris: string,
+  Lukt: string,
+  Smak: string,
+  Land: string,
+  Distrikt: string,
 }
 
 const WhiteWineSchema = new Schema({

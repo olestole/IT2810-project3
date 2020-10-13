@@ -13,7 +13,6 @@ const startServer = async () => {
   const server = new ApolloServer({ 
     typeDefs, 
     resolvers, 
-    //mocks: true, // TODO: Remove in PROD
    });
   server.applyMiddleware({ app });
 
