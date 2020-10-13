@@ -11,6 +11,15 @@ const GET_WHITE_WINES = gql`
     }
   }
 `;
+
+const GET_SINGLE_PRODUCT = gql`
+  query Query($number: String!) {
+    singleProduct(productNumber: $number) {
+      Varenavn
+  }
+  }
+`;
+
 /*
 const LOGIN_USER = gql`
   mutation CreateCatMutation($createCatName: String!) {
@@ -20,24 +29,35 @@ const LOGIN_USER = gql`
   }
 `;
 */
+
 const Detail = () => {
-  // const [getCountries, { loading, data }] = useLazyQuery(GET_CATS);
+  //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
   const { data, loading, error } = useQuery(GET_WHITE_WINES);
+  //const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, { variables: { number: "232101"}});
 
   if (loading) return <p>Loading ...</p>;
+  
   if (data && data.whiteWines) {
     console.log(data.whiteWines);
   }
+  /*
+  if (data && data.singleProduct) {
+    console.log(data.singleProduct);
+  }
+  */
 
   return (
     <div>
       <h1>Detail</h1>
       {data.whiteWines.map((whiteWines: any) => (
-        <div>
+        <div id={whiteWines.Varenavn}>
           <h3>{whiteWines.Varenavn}</h3>
           <h5>Land: {whiteWines.Land}, Distrikt: {whiteWines.Distrikt}</h5>
         </div>
       ))}
+      {/*
+      <h2>{data.singleProduct[0].Varenavn}</h2>
+      */}
     </div>
   );
 };
