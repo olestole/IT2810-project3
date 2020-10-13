@@ -2,15 +2,16 @@ import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import React from 'react';
 import { makeQuery } from 'utils/client';
 
-const GET_CATS = gql`
+const GET_WHITE_WINES = gql`
   query Query {
-    cats {
-      name
-      id
+    whiteWines {
+      Varenavn
+      Land
+      Distrikt
     }
   }
 `;
-
+/*
 const LOGIN_USER = gql`
   mutation CreateCatMutation($createCatName: String!) {
     createCat(name: $createCatName) {
@@ -18,25 +19,24 @@ const LOGIN_USER = gql`
     }
   }
 `;
-
+*/
 const Detail = () => {
   // const [getCountries, { loading, data }] = useLazyQuery(GET_CATS);
-  const { data, loading, error } = useQuery(GET_CATS);
+  const { data, loading, error } = useQuery(GET_WHITE_WINES);
 
   if (loading) return <p>Loading ...</p>;
-  if (data && data.cats) {
-    console.log(data.cats);
+  if (data && data.whiteWines) {
+    console.log(data.whiteWines);
   }
 
   return (
     <div>
       <h1>Detail</h1>
-      {/* <button onClick={fetchInfo}>Hent info</button> */}
-      {/* <input placeholder="Kattenavn..." />
-      <button onClick={() => getCountries()}>Click me to print all countries!</button>
-      {data && data.cats && data.cats.map((c: any, i: any) => <div key={i}>{c.name}</div>)} */}
-      {data.cats.map((cat: any) => (
-        <h3 key={cat.id}>{cat.name}</h3>
+      {data.whiteWines.map((whiteWines: any) => (
+        <div>
+          <h3>{whiteWines.Varenavn}</h3>
+          <h5>Land: {whiteWines.Land}, Distrikt: {whiteWines.Distrikt}</h5>
+        </div>
       ))}
     </div>
   );
