@@ -9,12 +9,16 @@ import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <div className="container">
-        <ProductListView />
+    <ApolloProvider client={client}>
+      <div className="App">
+        <Header />
+        <div className="container">
+          <ProductListView />
+        </div>
+
+        <TemporaryPLW />
       </div>
-    </div>
+    </ApolloProvider>
   );
 }
 
