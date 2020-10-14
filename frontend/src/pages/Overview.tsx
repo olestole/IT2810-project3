@@ -2,6 +2,7 @@ import React from 'react';
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { makeQuery } from 'utils/client';
 import { Link } from 'react-router-dom';
+import { ProductListView } from 'components/Overview';
 
 const GET_WHITE_WINES = gql`
   query Query {
@@ -40,7 +41,10 @@ const Overview = () => {
   return (
     <div>
       <h1>Overview</h1>
-      {data.whiteWines.map((whiteWines: any) => (
+      <div className="container">
+        <ProductListView />
+      </div>
+      {/* {data.whiteWines.map((whiteWines: any) => (
         <Link to={'/123'}>
           <div id={whiteWines.Varenavn} onClick={() => console.log('HALLA')}>
             <h3>{whiteWines.Varenavn}</h3>
@@ -49,10 +53,7 @@ const Overview = () => {
             </h5>
           </div>
         </Link>
-      ))}
-      {/*
-      <h2>{data.singleProduct[0].Varenavn}</h2>
-      */}
+      ))} */}
     </div>
   );
 };

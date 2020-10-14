@@ -1,0 +1,16 @@
+{
+  "name": "prosjekt3",
+  "version": "1.0.0",
+  "description": "This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).",
+  "main": "index.js",
+  "scripts": {
+    "install": "cd ./frontend && npm i && cd ../backend && npm i"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@gitlab.stud.idi.ntnu.no:it2810-h20/team-49/prosjekt3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

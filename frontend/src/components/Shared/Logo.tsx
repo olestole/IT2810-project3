@@ -2,12 +2,13 @@ import React from 'react';
 import './logo.css';
 import { Typography } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
       position: 'relative',
-      color: 'white',
+      color: '#DCF2EB',
       margin: theme.spacing(2),
       fontFamily: 'sans-serif',
       [theme.breakpoints.up('sm')]: {
@@ -18,11 +19,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Logo = () => {
+  const history = useHistory();
   const classes = useStyles();
 
   const handleHomebuttonClick = () => {
-    alert('Homebutton pressed');
-    /* Set homepage*/
+    // If the user's already on the overview-page we don't want to add x amount of overview-history to the historystack.
+    if (history.location.pathname != '/') {
+      history.push('/');
+    }
   };
 
   return (
