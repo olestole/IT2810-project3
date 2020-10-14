@@ -10,7 +10,10 @@ require("dotenv").config();
 const startServer = async () => {
   const app = express();
 
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const server = new ApolloServer({ 
+    typeDefs, 
+    resolvers, 
+   });
   server.applyMiddleware({ app });
 
   await mongoose.connect(
