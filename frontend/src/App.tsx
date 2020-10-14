@@ -3,7 +3,7 @@ import React from 'react';
 import { client } from 'utils/client';
 import { Detail, TemporaryPLW } from './pages';
 import { Header } from './components/Header';
-
+import { ProductListView } from './components/ProductListView';
 
 import './App.css';
 
@@ -12,7 +12,10 @@ function App() {
     <ApolloProvider client={client}>
       <div className="App">
         <Header />
-        <Detail />
+        <div className="container">
+          <ProductListView />
+        </div>
+
         <TemporaryPLW />
       </div>
     </ApolloProvider>
