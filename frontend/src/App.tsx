@@ -1,5 +1,7 @@
+import { ApolloProvider } from '@apollo/client';
 import React from 'react';
-import { Detail, Overview } from './pages';
+import { client } from 'utils/client';
+import { Detail, TemporaryPLW } from './pages';
 import { Header } from './components/Header';
 import { ProductListView } from './components/ProductListView';
 

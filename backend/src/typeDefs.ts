@@ -2,19 +2,32 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Query {
-    hello: String!
-    cats: [Cat!]!
-    age: Int!
-    ingredients(ingredient: String): String!
-    yo: String!
+    products: [Product!]!
+    whiteWines: [Wine!]!
+    singleProduct(productNumber: String!): [Product!]
   }
 
-  type Cat {
-    id: ID!
-    name: String!
+  type Product {
+    Varenavn: String!
+    Varenummer: String
+    Varetype: String
+    Volum: String
+    Pris: String
+    Produsent: String
+    Land: String
+  }
+
+  type Wine {
+    Varenavn: String!
+    Volum: String
+    Pris: String
+    Lukt: String
+    Smak: String
+    Land: String
+    Distrikt: String
   }
 
   type Mutation {
-    createCat(name: String!): Cat!
+    createProduct(Varenavn: String!): Product!
   }
 `;

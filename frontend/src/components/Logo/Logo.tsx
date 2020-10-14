@@ -1,6 +1,5 @@
 import React from 'react';
 import './logo.css';
-import LogoImage from 'assets/appLogo.png';
 import { Typography } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
@@ -29,7 +28,7 @@ const Logo = () => {
   return (
     <div className="logoContainer" onClick={handleHomebuttonClick}>
       <div className="logo">
-        <img src={LogoImage}></img>
+        <img src="appLogo.svg"></img>
       </div>
       <Typography className={classes.title} align="right" variant="h3" noWrap>
         WineEncyclopedia
