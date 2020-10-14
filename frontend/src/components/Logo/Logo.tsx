@@ -8,7 +8,7 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
       position: 'relative',
-      color: 'white',
+      color: '#DCF2EB',
       margin: theme.spacing(2),
       fontFamily: 'sans-serif',
       [theme.breakpoints.up('sm')]: {

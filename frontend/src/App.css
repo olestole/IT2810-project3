@@ -3,3 +3,9 @@ html {
   margin: 0;
   padding: 0;
 }
+
+.container {
+  margin-top: 1em;
+  margin-right: 10%;
+  margin-left: 10%;
+}
