@@ -16,7 +16,7 @@ const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
     singleProduct(productNumber: $number) {
       Varenavn
-  }
+    }
   }
 `;
 
@@ -35,11 +35,7 @@ const Detail = () => {
   const { data, loading, error } = useQuery(GET_WHITE_WINES);
   //const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, { variables: { number: "232101"}});
 
-  if (loading) return <p>Loading ...</p>;
   
-  if (data && data.whiteWines) {
-    console.log(data.whiteWines);
-  }
   /*
   if (data && data.singleProduct) {
     console.log(data.singleProduct);

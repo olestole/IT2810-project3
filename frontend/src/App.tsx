@@ -15,8 +15,6 @@ function App() {
         <div className="container">
           <ProductListView />
         </div>
-
-        <TemporaryPLW />
       </div>
     </ApolloProvider>
   );
