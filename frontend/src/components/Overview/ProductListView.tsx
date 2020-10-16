@@ -182,11 +182,11 @@ const ProductListView = () => {
     setOrderBy(property);
   };
 
-  let searchData = () => {
+  let searchData = (searchText: string) => {
     fetchMore({
       query: SEARCH_PRODUCTS,
       variables: {
-        matchedString: "dom p"
+        matchedString: searchText
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
@@ -239,7 +239,7 @@ const ProductListView = () => {
 
   return (
     <div className={classes.root}>
-      <button onClick={searchData}>Fetch Search</button>
+      <button onClick={_ => searchData("dom p")}>Fetch Search</button>
       <Paper className={classes.paper}>
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" aria-label="enhanced table">
