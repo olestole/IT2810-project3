@@ -11,6 +11,7 @@ import {
   TableSortLabel,
   Paper,
 } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
 
 interface HeaderData {
   Varetype: string;
@@ -36,7 +37,7 @@ type Order = 'asc' | 'desc';
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+): (a: { [key in Key]: string }, b: { [key in Key]: string }) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -148,6 +149,7 @@ const GET_START_PRODUCTS = gql`
 
 const ProductListView = () => {
   const classes = useStyles();
+  const history = useHistory();
   const [isFetching, setIsFetching] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
@@ -156,6 +158,10 @@ const ProductListView = () => {
   useEffect(() => {
 		window.addEventListener('scroll', handleScroll);
   }, []);
+
+  const handleProductClick = (productId: string) => {
+    history.push(`/${productId}`);
+  };
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof HeaderData) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -220,7 +226,7 @@ const ProductListView = () => {
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
-                    <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => console.log(row.Varenavn)}>
+                    <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenavn)}>
                       <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
                         {row.Varenavn}
                       </TableCell>
