@@ -19,6 +19,8 @@ export const resolvers = {
       return whiteWines
     },
     singleProduct: async (_ :any, { productNumber }: any) => await Product.find({Varenummer: productNumber}),
+    // Regex options: https://docs.mongodb.com/manual/reference/operator/query/regex/
+    searchProducts: async (_ :any, { searchSequence }: any) => await Product.find({Varenavn: { "$regex": searchSequence, "$options": "i" }}),
   },
 
   /*
