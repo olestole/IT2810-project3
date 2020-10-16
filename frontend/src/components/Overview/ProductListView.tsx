@@ -1,4 +1,5 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
+import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
@@ -6,40 +7,20 @@ import {
   TableCell,
   TableContainer,
   TableHead,
-  TablePagination,
   TableRow,
   TableSortLabel,
   Paper,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
 
-interface Data {
-  calories: number;
-  carbs: number;
-  fat: number;
-  name: string;
-  protein: number;
+interface HeaderData {
+  Varetype: string;
+  Volum: string;
+  Pris: string;
+  Varenavn: string;
+  Varenummer: string;
+  Produsent: string;
 }
-
-function createData(name: string, calories: number, fat: number, carbs: number, protein: number): Data {
-  return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Donut', 452, 25.0, 51, 4.9),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-  createData('Honeycomb', 408, 3.2, 87, 6.5),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Jelly Bean', 375, 0.0, 94, 0.0),
-  createData('KitKat', 518, 26.0, 65, 7.0),
-  createData('Lollipop', 392, 0.2, 98, 0.0),
-  createData('Marshmallow', 318, 0, 81, 2.0),
-  createData('Nougat', 360, 19.0, 9, 37.0),
-  createData('Oreo', 437, 18.0, 63, 4.0),
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -56,7 +37,7 @@ type Order = 'asc' | 'desc';
 function getComparator<Key extends keyof any>(
   order: Order,
   orderBy: Key,
-): (a: { [key in Key]: number | string }, b: { [key in Key]: number | string }) => number {
+): (a: { [key in Key]: string }, b: { [key in Key]: string }) => number {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
     : (a, b) => -descendingComparator(a, b, orderBy);
@@ -73,22 +54,22 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 }
 
 interface HeadCell {
-  id: keyof Data;
+  id: keyof HeaderData;
   label: string;
   numeric: boolean;
 }
 
 const headCells: HeadCell[] = [
-  { id: 'name', numeric: false, label: 'Varenavn' },
-  { id: 'calories', numeric: true, label: 'Varetype' },
-  { id: 'fat', numeric: true, label: 'Volum' },
-  { id: 'carbs', numeric: true, label: 'Pris' },
-  { id: 'protein', numeric: true, label: 'Produsent' },
+  { id: 'Varenavn', numeric: false, label: 'Varenavn' },
+  { id: 'Varetype', numeric: true, label: 'Varetype' },
+  { id: 'Volum', numeric: true, label: 'Volum' },
+  { id: 'Pris', numeric: true, label: 'Pris' },
+  { id: 'Produsent', numeric: true, label: 'Produsent' },
 ];
 
 interface EnhancedTableProps {
   classes: ReturnType<typeof useStyles>;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof Data) => void;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof HeaderData) => void;
   order: Order;
   orderBy: string;
   rowCount: number;
@@ -96,7 +77,7 @@ interface EnhancedTableProps {
 
 function EnhancedTableHead(props: EnhancedTableProps) {
   const { classes, order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property: keyof Data) => (event: React.MouseEvent<unknown>) => {
+  const createSortHandler = (property: keyof HeaderData) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
 
@@ -154,34 +135,79 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+const GET_START_PRODUCTS = gql`
+  query Query($index: Int!) {
+    startProducts(startIndex: $index) {
+      Varenavn
+      Varetype
+      Produsent
+      Volum
+      Pris
+    }
+  }
+`;
+
 const ProductListView = () => {
   const classes = useStyles();
-  const [order, setOrder] = React.useState<Order>('asc');
-  const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
-  const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const history = useHistory();
+  const [isFetching, setIsFetching] = useState<Boolean>(false);
+  const [order, setOrder] = React.useState<Order>('asc');
+  const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
+  const { data, loading, error, fetchMore } =  useQuery(GET_START_PRODUCTS, { variables: { index: 0}});
+
+  useEffect(() => {
+		window.addEventListener('scroll', handleScroll);
+  }, []);
 
   const handleProductClick = (productId: string) => {
     history.push(`/${productId}`);
   };
 
-  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
+  const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof HeaderData) => {
     const isAsc = orderBy === property && order === 'asc';
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
 
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
+  let loadMore = () => {
+    /*
+    fetchMore basically allows you to do a new GraphQL query and merge the result into the original result.
+    */
+    fetchMore({
+      variables: {
+        index: data.startProducts.length
+      },
+      updateQuery: (prev: any, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts]
+        });
+      }
+    }
+    )
+  }
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const handleScroll = () => {
+		if (
+			Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
+			isFetching
+		)
+			return;
+		setIsFetching(true);
+		console.log(isFetching);
+	};
+  
+  useEffect(() => {
+		if (!isFetching) return;
+    loadMore();
+    setIsFetching(false);
+  }, [isFetching]);
+  
+  if (loading) return <p>Loading ...</p>;
+  
+  if (data && data.startProducts) {
+    console.log("D: ", data.startProducts);
+  }
 
   return (
     <div className={classes.root}>
@@ -193,43 +219,27 @@ const ProductListView = () => {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={rows.length}
+              rowCount={data.startProducts.length}
             />
             <TableBody>
-              {stableSort(rows, getComparator(order, orderBy))
-                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              {stableSort(data.startProducts, getComparator(order, orderBy))
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
-
                   return (
-                    <TableRow hover tabIndex={-1} key={row.name} onClick={() => handleProductClick(row.name)}>
+                    <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenavn)}>
                       <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
-                        {row.name}
+                        {row.Varenavn}
                       </TableCell>
-                      <TableCell align="right">{row.calories}</TableCell>
-                      <TableCell align="right">{row.fat}</TableCell>
-                      <TableCell align="right">{row.carbs}</TableCell>
-                      <TableCell align="right">{row.protein}</TableCell>
+                      <TableCell align="right">{row.Varetype}</TableCell>
+                      <TableCell align="right">{row.Volum}</TableCell>
+                      <TableCell align="right">{row.Pris}</TableCell>
+                      <TableCell align="right">{row.Produsent}</TableCell>
                     </TableRow>
                   );
                 })}
-              {emptyRows > 0 && (
-                <TableRow>
-                  <TableCell colSpan={6} />
-                </TableRow>
-              )}
             </TableBody>
           </Table>
         </TableContainer>
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={rows.length}
-          rowsPerPage={rowsPerPage}
-          page={page}
-          onChangePage={handleChangePage}
-          onChangeRowsPerPage={handleChangeRowsPerPage}
-        />
       </Paper>
     </div>
   );
