@@ -1,23 +1,19 @@
 import { ApolloProvider } from '@apollo/client';
 import React from 'react';
 import { client } from 'utils/client';
-import { Detail, TemporaryPLW } from './pages';
-import { Header } from './components/Header';
-import { ProductListView } from './components/ProductListView';
+import { Header } from './components/Shared';
 
 import './App.css';
+import Router from 'pages/Router';
+import { BrowserRouter } from 'react-router-dom';
 
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App">
+      <BrowserRouter>
         <Header />
-        <div className="container">
-          <ProductListView />
-        </div>
-
-        <TemporaryPLW />
-      </div>
+        <Router />
+      </BrowserRouter>
     </ApolloProvider>
   );
 }

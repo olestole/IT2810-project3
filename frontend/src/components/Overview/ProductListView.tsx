@@ -11,6 +11,7 @@ import {
   TableSortLabel,
   Paper,
 } from '@material-ui/core';
+import { Link, useHistory } from 'react-router-dom';
 
 interface Data {
   calories: number;
@@ -159,6 +160,11 @@ const ProductListView = () => {
   const [orderBy, setOrderBy] = React.useState<keyof Data>('calories');
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const history = useHistory();
+
+  const handleProductClick = (productId: string) => {
+    history.push(`/${productId}`);
+  };
 
   const handleRequestSort = (event: React.MouseEvent<unknown>, property: keyof Data) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -196,7 +202,7 @@ const ProductListView = () => {
                   const labelId = `enhanced-table-checkbox-${index}`;
 
                   return (
-                    <TableRow hover tabIndex={-1} key={row.name} onClick={() => console.log(row.name)}>
+                    <TableRow hover tabIndex={-1} key={row.name} onClick={() => handleProductClick(row.name)}>
                       <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
                         {row.name}
                       </TableCell>
