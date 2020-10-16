@@ -6,13 +6,17 @@ import { Header } from './components/Shared';
 import './App.css';
 import Router from 'pages/Router';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from 'store/reducer';
 
 function App() {
   return (
     <ApolloProvider client={client}>
       <BrowserRouter>
-        <Header />
-        <Router />
+        <Provider store={store}>
+          <Header />
+          <Router />
+        </Provider>
       </BrowserRouter>
     </ApolloProvider>
   );

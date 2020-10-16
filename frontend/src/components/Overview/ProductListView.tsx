@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
@@ -139,6 +139,7 @@ const GET_START_PRODUCTS = gql`
   query Query($index: Int!) {
     startProducts(startIndex: $index) {
       Varenavn
+      Varenummer
       Varetype
       Produsent
       Volum
@@ -153,10 +154,10 @@ const ProductListView = () => {
   const [isFetching, setIsFetching] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
-  const { data, loading, error, fetchMore } =  useQuery(GET_START_PRODUCTS, { variables: { index: 0}});
+  const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, { variables: { index: 0 } });
 
   useEffect(() => {
-		window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
   }, []);
 
   const handleProductClick = (productId: string) => {
@@ -175,38 +176,37 @@ const ProductListView = () => {
     */
     fetchMore({
       variables: {
-        index: data.startProducts.length
+        index: data.startProducts.length,
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts]
+          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
         });
-      }
-    }
-    )
-  }
+      },
+    });
+  };
 
   const handleScroll = () => {
-		if (
-			Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
-			isFetching
-		)
-			return;
-		setIsFetching(true);
-		console.log(isFetching);
-	};
-  
+    if (
+      Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
+      isFetching
+    )
+      return;
+    setIsFetching(true);
+    console.log(isFetching);
+  };
+
   useEffect(() => {
-		if (!isFetching) return;
+    if (!isFetching) return;
     loadMore();
     setIsFetching(false);
   }, [isFetching]);
-  
+
   if (loading) return <p>Loading ...</p>;
-  
+
   if (data && data.startProducts) {
-    console.log("D: ", data.startProducts);
+    console.log('D: ', data.startProducts);
   }
 
   return (
@@ -222,21 +222,20 @@ const ProductListView = () => {
               rowCount={data.startProducts.length}
             />
             <TableBody>
-              {stableSort(data.startProducts, getComparator(order, orderBy))
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                    <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenavn)}>
-                      <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
-                        {row.Varenavn}
-                      </TableCell>
-                      <TableCell align="right">{row.Varetype}</TableCell>
-                      <TableCell align="right">{row.Volum}</TableCell>
-                      <TableCell align="right">{row.Pris}</TableCell>
-                      <TableCell align="right">{row.Produsent}</TableCell>
-                    </TableRow>
-                  );
-                })}
+              {stableSort(data.startProducts, getComparator(order, orderBy)).map((row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
+                return (
+                  <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
+                    <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
+                      {row.Varenavn}
+                    </TableCell>
+                    <TableCell align="right">{row.Varetype}</TableCell>
+                    <TableCell align="right">{row.Volum}</TableCell>
+                    <TableCell align="right">{row.Pris}</TableCell>
+                    <TableCell align="right">{row.Produsent}</TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
