@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useQuery, InMemoryCache } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
@@ -147,6 +147,19 @@ const GET_START_PRODUCTS = gql`
   }
 `;
 
+const SEARCH_PRODUCTS = gql`
+  query Query($matchedString: String!) {
+    searchProducts(searchSequence: $matchedString) {
+      Varenavn
+      Varetype
+      Produsent
+      Volum
+      Pris
+    }
+  }
+`;
+
+
 const ProductListView = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -168,6 +181,21 @@ const ProductListView = () => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  
+  let searchData = (searchText: string) => {
+    fetchMore({
+      query: SEARCH_PRODUCTS,
+      variables: {
+        matchedString: searchText
+      },
+      updateQuery: (prev: any, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          startProducts: [...fetchMoreResult.searchProducts]
+        });
+      }
+    })
+  }
 
   let loadMore = () => {
     /*
@@ -183,8 +211,7 @@ const ProductListView = () => {
           startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts]
         });
       }
-    }
-    )
+    })
   }
 
   const handleScroll = () => {
@@ -211,6 +238,7 @@ const ProductListView = () => {
 
   return (
     <div className={classes.root}>
+      <button onClick={_ => searchData("dom p")}>Fetch Search</button>
       <Paper className={classes.paper}>
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" aria-label="enhanced table">
