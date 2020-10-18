@@ -16,6 +16,9 @@ export const typeDefs = gql`
     Pris: String
     Produsent: String
     Land: String
+    Farge: String
+    Lukt: String
+    Smak: String
   }
 
   type Wine {

@@ -1,6 +1,6 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import React from 'react';
-import { makeQuery } from 'utils/client';
+import { gql, useQuery } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { DetailView } from 'components/Detail';
 
 const GET_WHITE_WINES = gql`
   query Query {
@@ -15,24 +15,37 @@ const GET_WHITE_WINES = gql`
 const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
     singleProduct(productNumber: $number) {
+      Varenummer
       Varenavn
+      Volum
+      Pris
+      Varetype
+      Farge
+      Lukt
+      Smak
+      Land
     }
   }
 `;
 
 const Detail = () => {
-  //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
-  // const { data, loading, error } = useQuery(GET_WHITE_WINES);
+  const [id, setId] = useState('string');
 
-  // if (loading) return <p>Loading ...</p>;
+  useEffect(() => {
+    setId(window.location.pathname.slice(1));
+  }, [window.location.pathname]);
 
-  // if (data && data.whiteWines) {
-  //   console.log(data.whiteWines);
-  // }
+  console.log(id);
+
+  const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, { variables: { number: id } });
+  console.log(data);
+  if (loading) return <p>Loading ...</p>;
+
+  /*if (error) return console.log(error);*/
 
   return (
     <div>
-      <h1>Detail</h1>
+      <DetailView product={data.singleProduct[0]} />
     </div>
   );
 };
