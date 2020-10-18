@@ -19,6 +19,7 @@ export const resolvers = {
       return whiteWines
     },
     singleProduct: async (_ :any, { productNumber }: any) => await Product.find({Varenummer: productNumber}),
+    searchProducts: async (_ :any, { searchSequence }: any) => await Product.find({Varenavn: { "$regex": searchSequence, "$options": "i" }}),
   },
 
   /*
