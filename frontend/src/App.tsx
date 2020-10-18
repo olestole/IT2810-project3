@@ -4,6 +4,7 @@ import { client } from 'utils/client';
 import { Header } from './components/Shared';
 import { Provider } from 'react-redux';
 import { store } from 'store/reducer';
+import Sidebar  from './components/Shared/Sidebar';
 
 
 import './App.css';
@@ -16,6 +17,7 @@ function App() {
       <BrowserRouter>
         <Provider store={store}>
           <Header />
+          <Sidebar />
           <Router />
         </Provider>
       </BrowserRouter>
