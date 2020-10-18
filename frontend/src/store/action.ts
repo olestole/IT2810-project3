@@ -9,3 +9,10 @@ export const decrement = () => {
     type: 'DECREMENT',
   } as const;
 };
+
+export const setSearchText = (text: string) => {
+  return {
+    type: 'SET_SEARCH_TEXT',
+    payload: text
+  } as const;
+};

@@ -1,11 +1,12 @@
 import { createStore, combineReducers, Store } from 'redux';
-import { decrement, increment } from './action';
+import { decrement, increment, setSearchText } from './action';
 import { AppState } from './types';
 
-type Actions = ReturnType<typeof increment> | ReturnType<typeof decrement>;
+type Actions = ReturnType<typeof increment> | ReturnType<typeof decrement> | ReturnType<typeof setSearchText>;
 
 const initialAppState: AppState = {
   count: 0,
+  searchText: "",
 };
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
@@ -15,11 +16,15 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
         ...state,
         count: state.count + 1,
       };
-
     case 'DECREMENT':
       return {
         ...state,
         count: state.count - 1,
+      };
+    case 'SET_SEARCH_TEXT':
+      return {
+        ...state,
+        searchText: action.payload
       };
     default:
       neverReached(action);

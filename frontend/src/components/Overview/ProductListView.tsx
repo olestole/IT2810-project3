@@ -12,6 +12,9 @@ import {
   Paper,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
+import { AppState } from 'store/types';
+import { useSelector } from 'react-redux';
+
 
 interface HeaderData {
   Varetype: string;
@@ -140,6 +143,7 @@ const GET_START_PRODUCTS = gql`
     startProducts(startIndex: $index) {
       Varenavn
       Varetype
+      Varenummer
       Produsent
       Volum
       Pris
@@ -152,6 +156,7 @@ const SEARCH_PRODUCTS = gql`
     searchProducts(searchSequence: $matchedString) {
       Varenavn
       Varetype
+      Varenummer
       Produsent
       Volum
       Pris
@@ -167,6 +172,7 @@ const ProductListView = () => {
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
   const { data, loading, error, fetchMore } =  useQuery(GET_START_PRODUCTS, { variables: { index: 0}});
+  const searchText: string = useSelector((state: AppState) => state.searchText);
 
   useEffect(() => {
 		window.addEventListener('scroll', handleScroll);
@@ -229,6 +235,15 @@ const ProductListView = () => {
     loadMore();
     setIsFetching(false);
   }, [isFetching]);
+
+  useEffect(() => {
+    if (searchText == "") {
+      return ;
+    }
+    else {
+      searchData(searchText)
+    }
+  }, [searchText]);
   
   if (loading) return <p>Loading ...</p>;
   
@@ -254,7 +269,7 @@ const ProductListView = () => {
                 .map((row, index) => {
                   const labelId = `enhanced-table-checkbox-${index}`;
                   return (
-                    <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenavn)}>
+                    <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
                       <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
                         {row.Varenavn}
                       </TableCell>
