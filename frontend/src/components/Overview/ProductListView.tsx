@@ -169,6 +169,7 @@ const ProductListView = () => {
   const classes = useStyles();
   const history = useHistory();
   const [isFetching, setIsFetching] = useState<Boolean>(false);
+  const [searchMode, setSearchMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
   const { data, loading, error, fetchMore } =  useQuery(GET_START_PRODUCTS, { variables: { index: 0}});
@@ -200,7 +201,8 @@ const ProductListView = () => {
           startProducts: [...fetchMoreResult.searchProducts]
         });
       }
-    })
+    });
+    setSearchMode(true);
   }
 
   let loadMore = () => {
@@ -231,7 +233,7 @@ const ProductListView = () => {
 	};
   
   useEffect(() => {
-		if (!isFetching) return;
+		if (!isFetching || searchMode) return;
     loadMore();
     setIsFetching(false);
   }, [isFetching]);
@@ -253,7 +255,6 @@ const ProductListView = () => {
 
   return (
     <div className={classes.root}>
-      <button onClick={_ => searchData("dom p")}>Fetch Search</button>
       <Paper className={classes.paper}>
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" aria-label="enhanced table">
