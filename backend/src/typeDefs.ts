@@ -6,6 +6,7 @@ export const typeDefs = gql`
     whiteWines: [Wine!]!
     singleProduct(productNumber: String!): [Product!]
     startProducts(startIndex: Int!): [Product!]!
+    searchProducts(searchSequence: String!): [Product!]! 
   }
 
   type Product {
