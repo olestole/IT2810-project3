@@ -80,7 +80,7 @@ let Sidebar = () => {
           <ListItemIcon className={classes.menuItemIcon}>
             <Label />
           </ListItemIcon>
-          <ListItemText primary="Merke" />
+          <ListItemText primary="Volum" />
         </ListItem>
 
         <ListItem button className={classes.menuItem}>
