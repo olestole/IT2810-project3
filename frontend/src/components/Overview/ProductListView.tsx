@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
@@ -12,6 +12,9 @@ import {
   Paper,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
+import { AppState } from 'store/types';
+import { useSelector } from 'react-redux';
+
 
 interface HeaderData {
   Varetype: string;
@@ -141,6 +144,7 @@ const GET_START_PRODUCTS = gql`
       Varenavn
       Varenummer
       Varetype
+      Varenummer
       Produsent
       Volum
       Pris
@@ -148,13 +152,29 @@ const GET_START_PRODUCTS = gql`
   }
 `;
 
+const SEARCH_PRODUCTS = gql`
+  query Query($matchedString: String!) {
+    searchProducts(searchSequence: $matchedString) {
+      Varenavn
+      Varetype
+      Varenummer
+      Produsent
+      Volum
+      Pris
+    }
+  }
+`;
+
+
 const ProductListView = () => {
   const classes = useStyles();
   const history = useHistory();
   const [isFetching, setIsFetching] = useState<Boolean>(false);
+  const [searchMode, setSearchMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
-  const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, { variables: { index: 0 } });
+  const { data, loading, error, fetchMore } =  useQuery(GET_START_PRODUCTS, { variables: { index: 0}});
+  const searchText: string = useSelector((state: AppState) => state.searchText);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -169,6 +189,22 @@ const ProductListView = () => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+  
+  let searchData = (searchText: string) => {
+    fetchMore({
+      query: SEARCH_PRODUCTS,
+      variables: {
+        matchedString: searchText
+      },
+      updateQuery: (prev: any, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          startProducts: [...fetchMoreResult.searchProducts]
+        });
+      }
+    });
+    setSearchMode(true);
+  }
 
   let loadMore = () => {
     /*
@@ -183,9 +219,9 @@ const ProductListView = () => {
         return Object.assign({}, prev, {
           startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
         });
-      },
-    });
-  };
+      }
+    })
+  }
 
   const handleScroll = () => {
     if (
@@ -198,11 +234,20 @@ const ProductListView = () => {
   };
 
   useEffect(() => {
-    if (!isFetching) return;
+		if (!isFetching || searchMode) return;
     loadMore();
     setIsFetching(false);
   }, [isFetching]);
 
+  useEffect(() => {
+    if (searchText == "") {
+      return ;
+    }
+    else {
+      searchData(searchText)
+    }
+  }, [searchText]);
+  
   if (loading) return <p>Loading ...</p>;
 
   if (data && data.startProducts) {
@@ -222,20 +267,21 @@ const ProductListView = () => {
               rowCount={data.startProducts.length}
             />
             <TableBody>
-              {stableSort(data.startProducts, getComparator(order, orderBy)).map((row, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
-                    <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
-                      {row.Varenavn}
-                    </TableCell>
-                    <TableCell align="right">{row.Varetype}</TableCell>
-                    <TableCell align="right">{row.Volum}</TableCell>
-                    <TableCell align="right">{row.Pris}</TableCell>
-                    <TableCell align="right">{row.Produsent}</TableCell>
-                  </TableRow>
-                );
-              })}
+              {stableSort(data.startProducts, getComparator(order, orderBy))
+                .map((row, index) => {
+                  const labelId = `enhanced-table-checkbox-${index}`;
+                  return (
+                    <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
+                      <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
+                        {row.Varenavn}
+                      </TableCell>
+                      <TableCell align="right">{row.Varetype}</TableCell>
+                      <TableCell align="right">{row.Volum}</TableCell>
+                      <TableCell align="right">{row.Pris}</TableCell>
+                      <TableCell align="right">{row.Produsent}</TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>

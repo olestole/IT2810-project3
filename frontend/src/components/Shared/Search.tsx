@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
+import { setSearchText } from 'store/action';
+
+
+
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,11 +49,15 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Search = () => {
   const classes = useStyles();
+  let textInput = useRef<any>(null); // Think type is HTMLDivElement but does not work
+  const dispatch = useDispatch();
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
-      alert('Enter pressed');
+      dispatch(setSearchText(textInput.current.value));
+      textInput.current.value = "";
       /*Search function */
+      
     }
   };
 
@@ -65,6 +74,7 @@ const Search = () => {
         }}
         inputProps={{ 'aria-label': 'search' }}
         onKeyDown={(e) => handleKeyDown(e)}
+        inputRef={textInput}
       />
     </div>
   );

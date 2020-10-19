@@ -47,7 +47,7 @@ const Detail = () => {
   if (loading) return <p>Loading ...</p>;
 
   if (data && data.singleProduct) {
-    console.log(data.singleProduct[0].Varenavn);
+    console.log(data.singleProduct);
   }
 
   return (
@@ -56,10 +56,11 @@ const Detail = () => {
       <h1>Count: {count}</h1>
       <button onClick={dispatchIncrement}>INCREMENT</button>
       <button onClick={dispatchDecrement}>DECREMENT</button>
-      <h3>{data.singleProduct[0].Varenavn}</h3>
-      <h3>{data.singleProduct[0].Varetype}</h3>
+      <h3>{data.singleProduct.Varenavn}</h3>
+      <h3>{data.singleProduct.Varetype}</h3>
     </div>
   );
 };
 
 export default Detail;
+
