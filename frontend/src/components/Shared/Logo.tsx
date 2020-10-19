@@ -34,9 +34,11 @@ const Logo = () => {
       <div className="logo">
         <img src="appLogo.svg"></img>
       </div>
-      <Typography className={classes.title} align="right" variant="h3" noWrap>
-        WineEncyclopedia
-      </Typography>
+      <div className="title">
+        <Typography className={classes.title} align="right" variant="h3" noWrap>
+          WineEncyclopedia
+        </Typography>
+      </div>
     </div>
   );
 };

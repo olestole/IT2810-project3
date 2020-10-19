@@ -13,10 +13,13 @@ const useStyles = makeStyles((theme: Theme) =>
       color: '#DCF2EB',
       size: 'small',
     },
-    title: {
+    titleVaretype: {
       fontSize: 14,
       fontWeight: 'bold',
+    },
+    titleVarenavn: {
       color: '#344d51',
+      fontWeight: 'bold',
     },
   }),
 );
@@ -42,29 +45,34 @@ const DetailView = (props: any) => {
 
       <div className="info">
         <div className="headline">
-          <Typography className={classes.title} color="textSecondary" gutterBottom>
+          <Typography className={classes.titleVaretype} color="textSecondary" gutterBottom>
             {props.product.Varetype}
           </Typography>
-          <Typography variant="h5" component="h2">
+          <Typography className={classes.titleVarenavn} variant="h5" component="h2">
             {props.product.Varenavn}
           </Typography>
           <Typography color="textSecondary">{props.product.Land}</Typography>
         </div>
 
-        <div className="static">
-          <p>Volum: </p>
-          <p>Pris: </p>
-          <p>Farge:</p>
-          <p>Lukt:</p>
-          <p>Smak: </p>
-        </div>
-
-        <div className="dynamic">
-          <p>{props.product.Volum} L</p>
-          <p>{props.product.Pris},- NOK</p>
-          <p>{props.product.Farge}</p>
-          <p>{props.product.Lukt}</p>
-          <p>{props.product.Smak}</p>
+        <div className="text">
+          <p>
+            Volum: <span>{props.product.Volum} L</span>
+          </p>
+          <p>
+            Pris: <span>{props.product.Pris},- NOK</span>
+          </p>
+          <p>
+            Farge: <span>{props.product.Farge}</span>
+          </p>
+          <p>
+            Lukt: <span>{props.product.Lukt}</span>
+          </p>
+          <p>
+            Smak: <span>{props.product.Smak}</span>
+          </p>
+          <p>
+            Produsent: <span>{props.product.Produsent}</span>
+          </p>
         </div>
 
         <div className="back">

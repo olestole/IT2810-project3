@@ -24,6 +24,7 @@ const GET_SINGLE_PRODUCT = gql`
       Lukt
       Smak
       Land
+      Produsent
     }
   }
 `;
@@ -33,7 +34,7 @@ const Detail = () => {
 
   useEffect(() => {
     setId(window.location.pathname.slice(1));
-  }, [window.location.pathname]);
+  }, []);
 
   console.log(id);
 
