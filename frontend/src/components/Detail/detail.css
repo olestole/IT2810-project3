@@ -1,4 +1,4 @@
-.container {
+.detailcontainer {
   margin-left: 10%;
   margin-right: 10%;
   display: grid;
@@ -8,7 +8,7 @@
 }
 
 @media only screen and (max-width: 700px) {
-  .container {
+  .detailcontainer {
     display: flex;
     flex-wrap: wrap;
     margin: 1em;

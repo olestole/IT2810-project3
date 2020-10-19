@@ -38,9 +38,9 @@ const DetailView = (props: any) => {
   };
 
   return (
-    <div className="container">
+    <div className="detailcontainer">
       <div className="image">
-        <img src={url}></img>
+        <img src={url} />
       </div>
 
       <div className="info">

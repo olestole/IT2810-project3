@@ -4,9 +4,9 @@ export const typeDefs = gql`
   type Query {
     products: [Product!]!
     whiteWines: [Wine!]!
-    singleProduct(productNumber: String!): [Product!]
+    singleProduct(productNumber: String!): Product
     startProducts(startIndex: Int!): [Product!]!
-    searchProducts(searchSequence: String!): [Product!]! 
+    searchProducts(searchSequence: String!): [Product!]!
   }
 
   type Product {

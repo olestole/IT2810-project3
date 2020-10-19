@@ -1,21 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { DetailView } from 'components/Detail';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
+import { gql, useQuery } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { decrement, increment } from 'store/action';
 import { AppState } from 'store/types';
-import { makeQuery } from 'utils/client';
 
-const GET_WHITE_WINES = gql`
-  query Query {
-    whiteWines {
-      Varenavn
-      Land
-      Distrikt
-    }
-  }
-`;
+// const GET_WHITE_WINES = gql`
+//   query Query {
+//     whiteWines {
+//       Varenavn
+//       Land
+//       Distrikt
+//     }
+//   }
+// `;
 
 const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
@@ -60,6 +59,8 @@ const Detail = () => {
   if (data && data.singleProduct) {
     console.log(data.singleProduct);
   }
+
+  console.log(data.singleProduct);
 
   return (
     <div>
