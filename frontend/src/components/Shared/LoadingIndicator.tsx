@@ -18,8 +18,7 @@ export default function LoadingIndicator() {
 
   return (
     <div className={classes.root}>
-      <CircularProgress />
-      <CircularProgress color="secondary" />
+      <CircularProgress size="6rem" />
     </div>
   );
 }

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { decrement, increment } from 'store/action';
 import { AppState } from 'store/types';
+import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
 // const GET_WHITE_WINES = gql`
 //   query Query {
@@ -60,7 +61,12 @@ const Detail = () => {
   // REDUX ABOVE
 
   //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
-  if (loading) return <p>Loading ...</p>;
+  if (loading)
+    return (
+      <div className="loadingIndicator">
+        <LoadingIndicator />
+      </div>
+    );
 
   if (data && data.singleProduct) {
     console.log(data.singleProduct);

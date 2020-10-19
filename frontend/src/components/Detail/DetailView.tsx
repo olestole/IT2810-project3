@@ -27,6 +27,8 @@ const useStyles = makeStyles((theme: Theme) =>
 const baseURL = 'https://bilder.vinmonopolet.no/cache/800x800-0/';
 
 const DetailView = (props: any) => {
+  const [loadingImage, setLoadingImage] = useState(true);
+
   const history = useHistory();
   const classes = useStyles();
   const url = baseURL + props.product.Varenummer + '-1.jpg';
@@ -40,7 +42,8 @@ const DetailView = (props: any) => {
   return (
     <div className="detailcontainer">
       <div className="image">
-        <img src={url} />
+        {loadingImage && <img src={'bottlePlaceholder.png'} />}
+        <img src={url} onLoad={() => setLoadingImage(false)} />
       </div>
 
       <div className="info">

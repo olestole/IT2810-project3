@@ -9,3 +9,17 @@ html {
   margin-right: 10%;
   margin-left: 10%;
 }
+
+.loadingIndicator {
+  display: flex;
+  height: 80vh;
+  align-items: center;
+  justify-content: center;
+}
+
+.loginPage {
+  display: flex;
+  height: 80vh;
+  align-items: center;
+  justify-content: center;
+}
