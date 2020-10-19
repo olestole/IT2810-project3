@@ -8,6 +8,9 @@ interface InterfaceProduct extends Document {
   Pris: string;
   Produsent: string;
   Land: string;
+  Farge: string;
+  Lukt: string;
+  Smak: string;
 }
 
 const ProductSchema = new Schema({
@@ -18,6 +21,9 @@ const ProductSchema = new Schema({
   Pris: String,
   Produsent: String,
   Land: String,
+  Farge: String,
+  Lukt: String,
+  Smak: String,
 });
 
 export const Product = mongoose.model<InterfaceProduct>(

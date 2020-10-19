@@ -18,6 +18,7 @@ const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
     singleProduct(productNumber: $number) {
       Varenavn
+      Varenummer
     }
   }
 `;
@@ -40,7 +41,6 @@ const Overview = () => {
 
   return (
     <div>
-      <h1>Overview</h1>
       <div className="container">
         <ProductListView />
       </div>

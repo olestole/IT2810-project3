@@ -1,31 +1,47 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import React from 'react';
+import { DetailView } from 'components/Detail';
+import { gql, useQuery } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { decrement, increment } from 'store/action';
 import { AppState } from 'store/types';
-import { makeQuery } from 'utils/client';
 
-const GET_WHITE_WINES = gql`
-  query Query {
-    whiteWines {
-      Varenavn
-      Land
-      Distrikt
-    }
-  }
-`;
+// const GET_WHITE_WINES = gql`
+//   query Query {
+//     whiteWines {
+//       Varenavn
+//       Land
+//       Distrikt
+//     }
+//   }
+// `;
 
 const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
     singleProduct(productNumber: $number) {
-      Varenavn
       Varenummer
+      Varenavn
+      Volum
+      Pris
+      Varetype
+      Farge
+      Lukt
+      Smak
+      Land
+      Produsent
     }
   }
 `;
 
+const activeFilters = {
+  redWine: true,
+  minPrice: 400,
+  maxPrice: 700,
+};
+
 const Detail = () => {
+  /*if (error) return console.log(error);*/
+
   const location = useLocation();
   const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, { variables: { number: location.pathname.substr(1) } });
 
@@ -50,8 +66,11 @@ const Detail = () => {
     console.log(data.singleProduct);
   }
 
+  console.log(data.singleProduct);
+
   return (
     <div>
+      <DetailView product={data.singleProduct} />
       <h1>Detail</h1>
       <h1>Count: {count}</h1>
       <button onClick={dispatchIncrement}>INCREMENT</button>
@@ -63,4 +82,3 @@ const Detail = () => {
 };
 
 export default Detail;
-
