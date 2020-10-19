@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import { gql, useQuery, InMemoryCache } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { gql, useQuery } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
@@ -142,6 +142,7 @@ const GET_START_PRODUCTS = gql`
   query Query($index: Int!) {
     startProducts(startIndex: $index) {
       Varenavn
+      Varenummer
       Varetype
       Varenummer
       Produsent
@@ -176,7 +177,7 @@ const ProductListView = () => {
   const searchText: string = useSelector((state: AppState) => state.searchText);
 
   useEffect(() => {
-		window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
   }, []);
 
   const handleProductClick = (productId: string) => {
@@ -211,27 +212,27 @@ const ProductListView = () => {
     */
     fetchMore({
       variables: {
-        index: data.startProducts.length
+        index: data.startProducts.length,
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts]
+          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
         });
       }
     })
   }
 
   const handleScroll = () => {
-		if (
-			Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
-			isFetching
-		)
-			return;
-		setIsFetching(true);
-		console.log(isFetching);
-	};
-  
+    if (
+      Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
+      isFetching
+    )
+      return;
+    setIsFetching(true);
+    console.log(isFetching);
+  };
+
   useEffect(() => {
 		if (!isFetching || searchMode) return;
     loadMore();
@@ -248,9 +249,9 @@ const ProductListView = () => {
   }, [searchText]);
   
   if (loading) return <p>Loading ...</p>;
-  
+
   if (data && data.startProducts) {
-    console.log("D: ", data.startProducts);
+    console.log('D: ', data.startProducts);
   }
 
   return (
