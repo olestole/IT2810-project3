@@ -7,6 +7,8 @@ import { decrement, increment } from 'store/action';
 import { AppState } from 'store/types';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
+import { useAuth0 } from '@auth0/auth0-react';
+
 // const GET_WHITE_WINES = gql`
 //   query Query {
 //     whiteWines {
@@ -43,6 +45,8 @@ const activeFilters = {
 const Detail = () => {
   /*if (error) return console.log(error);*/
 
+  const { isAuthenticated, user } = useAuth0();
+
   const location = useLocation();
   const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, { variables: { number: location.pathname.substr(1) } });
 
@@ -68,19 +72,19 @@ const Detail = () => {
       </div>
     );
 
-  if (data && data.singleProduct) {
-    console.log(data.singleProduct);
+  if (isAuthenticated) {
+    console.log(user);
   }
 
-  console.log(data.singleProduct);
-
-  return (
+  return isAuthenticated && data ? (
     <div>
       <h1>Count: {count}</h1>
       <button onClick={dispatchIncrement}>INCREMENT</button>
       <button onClick={dispatchDecrement}>DECREMENT</button>
       <DetailView product={data.singleProduct} />
     </div>
+  ) : (
+    <h1>nei</h1>
   );
 };
 

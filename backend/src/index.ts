@@ -25,7 +25,7 @@ const startServer = async () => {
           // Split out the 'Bearer' from the authorization header
           const token = authHeader.split(" ")[1];
           // The verifyToken will throw an error if it fails
-          const payload = await verifyToken(token);
+          const payload: any = await verifyToken(token);
           isAuthenticated = payload && payload.sub ? true : false;
         }
       } catch (error) {
