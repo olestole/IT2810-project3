@@ -21,8 +21,10 @@
   "dependencies": {
     "apollo-server-express": "^2.18.2",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
     "graphql": "^15.3.0",
+    "graphql-auth": "^1.0.0",
+    "jsonwebtoken": "^8.5.1",
+    "jwks-rsa": "^1.10.1",
     "mongoose": "^5.10.8"
   }
 }

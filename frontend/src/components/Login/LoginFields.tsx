@@ -5,6 +5,8 @@ import LockOpenOutlinedIcon from '@material-ui/icons/LockOpenOutlined';
 import { Button, FormControl, Input, InputAdornment, InputLabel } from '@material-ui/core';
 import RememberLogin from './RememberLogin';
 
+import { useAuth0 } from '@auth0/auth0-react';
+
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     inputFields: {
@@ -25,6 +27,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function LoginFields() {
   const classes = useStyles();
+  const { logout, loginWithRedirect } = useAuth0();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
@@ -69,7 +72,14 @@ export default function LoginFields() {
         <RememberLogin />
       </FormControl>
       <div className={classes.buttonGroup}>
-        <Button variant="contained">Logg inn</Button>
+        <Button variant="contained" onClick={() => loginWithRedirect()}>
+          Logg inn
+        </Button>
+      </div>
+      <div className={classes.buttonGroup}>
+        <Button variant="contained" onClick={() => logout({ returnTo: window.location.origin })}>
+          Logg ut
+        </Button>
       </div>
     </div>
   );
