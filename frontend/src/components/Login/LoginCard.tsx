@@ -1,40 +1,58 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
 
 import LoginFields from './LoginFields';
+import RegistrationFields from './RegistrationFields';
 
 const useStyles = makeStyles({
   root: {
-    minWidth: '40%',
-    minHeight: '80%',
+    width: '40%',
+    height: '80%',
   },
-  bullet: {
-    display: 'inline-block',
-    margin: '0 2px',
-    transform: 'scale(0.8)',
+  content: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    margin: 30,
+    height: '80%',
   },
-  title: {
-    fontSize: 14,
+  registerText: {
+    borderBottom: '1px solid black',
   },
-  pos: {
-    marginBottom: 12,
+  registerContainer: {
+    justifySelf: 'flex-end',
   },
 });
 
 export default function LoginCard() {
   const classes = useStyles();
-  const bull = <span className={classes.bullet}>•</span>;
+  const [renderRegistration, setRenderRegistration] = useState(false);
 
   return (
     <Card className={classes.root}>
-      <CardContent>
-        <Typography variant="h5" component="h2">
-          Login
-        </Typography>
-        <LoginFields />
+      <CardContent className={classes.content}>
+        {renderRegistration ? <RegistrationFields /> : <LoginFields />}
+        {renderRegistration ? (
+          <div className={classes.registerContainer}>
+            <Typography>
+              <span className={classes.registerText} onClick={() => setRenderRegistration(false)}>
+                Tilbake
+              </span>
+            </Typography>
+          </div>
+        ) : (
+          <div className={classes.registerContainer}>
+            <Typography>
+              Ikke medlem?{' '}
+              <span className={classes.registerText} onClick={() => setRenderRegistration(true)}>
+                Meld deg opp her
+              </span>
+            </Typography>
+          </div>
+        )}
       </CardContent>
     </Card>
   );

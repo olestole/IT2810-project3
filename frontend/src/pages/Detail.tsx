@@ -76,13 +76,10 @@ const Detail = () => {
 
   return (
     <div>
-      <DetailView product={data.singleProduct} />
-      <h1>Detail</h1>
       <h1>Count: {count}</h1>
       <button onClick={dispatchIncrement}>INCREMENT</button>
       <button onClick={dispatchDecrement}>DECREMENT</button>
-      <h3>{data.singleProduct.Varenavn}</h3>
-      <h3>{data.singleProduct.Varetype}</h3>
+      <DetailView product={data.singleProduct} />
     </div>
   );
 };
