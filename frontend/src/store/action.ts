@@ -16,3 +16,16 @@ export const setSearchText = (text: string) => {
     payload: text
   } as const;
 };
+
+
+interface fieldAndBool {
+  field: string;
+  value: boolean;
+}
+
+export const filter = (filterAndBool: fieldAndBool) => {
+  return {
+    type: 'FILTER',
+    payload: filterAndBool
+  } as const;
+};

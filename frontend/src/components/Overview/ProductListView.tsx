@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import { gql, useQuery, InMemoryCache } from '@apollo/client';
+import { useQuery, InMemoryCache } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
@@ -12,8 +12,9 @@ import {
   Paper,
 } from '@material-ui/core';
 import { Link, useHistory } from 'react-router-dom';
-import { AppState } from 'store/types';
+import { AppState, FilterOptions, Kategorier } from 'store/types';
 import { useSelector } from 'react-redux';
+import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS } from 'components/Overview/seachQueries'
 
 
 interface HeaderData {
@@ -138,42 +139,37 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const GET_START_PRODUCTS = gql`
-  query Query($index: Int!) {
-    startProducts(startIndex: $index) {
-      Varenavn
-      Varetype
-      Varenummer
-      Produsent
-      Volum
-      Pris
-    }
+const getProductType = (product: string) => {
+  switch(product) {
+    case 'rodvin': { 
+      return 'Rødvin' 
+   } 
+   case 'hvitvin': { 
+      return 'Hvitvin'
+   } 
+   case 'portvin': { 
+    return 'Portvin'
+  } 
+  case 'musserende_vin': { 
+    return 'Musserende Vin'
+  } 
+  default: { 
+    return "";
+   } 
   }
-`;
-
-const SEARCH_PRODUCTS = gql`
-  query Query($matchedString: String!) {
-    searchProducts(searchSequence: $matchedString) {
-      Varenavn
-      Varetype
-      Varenummer
-      Produsent
-      Volum
-      Pris
-    }
-  }
-`;
-
+}
 
 const ProductListView = () => {
   const classes = useStyles();
   const history = useHistory();
   const [isFetching, setIsFetching] = useState<Boolean>(false);
-  const [searchMode, setSearchMode] = useState<Boolean>(false);
+  const [staticMode, setStaticMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
   const { data, loading, error, fetchMore } =  useQuery(GET_START_PRODUCTS, { variables: { index: 0}});
   const searchText: string = useSelector((state: AppState) => state.searchText);
+  let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
+
 
   useEffect(() => {
 		window.addEventListener('scroll', handleScroll);
@@ -188,6 +184,14 @@ const ProductListView = () => {
     setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(property);
   };
+
+  const filterGlobalToArray = () => {
+    let filteredArray: string[] = []
+    Object.keys(filterOptions.kategorier).map((key, index) => {
+      if(filterOptions.kategorier[key]) {filteredArray.push(getProductType(key))};
+    });
+    return filteredArray;
+  }
   
   let searchData = (searchText: string) => {
     fetchMore({
@@ -202,7 +206,7 @@ const ProductListView = () => {
         });
       }
     });
-    setSearchMode(true);
+    setStaticMode(true);
   }
 
   let loadMore = () => {
@@ -220,6 +224,22 @@ const ProductListView = () => {
         });
       }
     })
+    setStaticMode(true);
+  }
+
+  let filterData = (filterArray: string[]) => {
+    fetchMore({
+      query: FILTER_PRODUCTS,
+      variables: {
+        typer: filterArray
+      },
+      updateQuery: (prev: any, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          startProducts: [...fetchMoreResult.filterProducts]
+        });
+      }
+    });
   }
 
   const handleScroll = () => {
@@ -233,7 +253,7 @@ const ProductListView = () => {
 	};
   
   useEffect(() => {
-		if (!isFetching || searchMode) return;
+		if (!isFetching || staticMode) return;
     loadMore();
     setIsFetching(false);
   }, [isFetching]);
@@ -246,6 +266,17 @@ const ProductListView = () => {
       searchData(searchText)
     }
   }, [searchText]);
+
+  useEffect(() => {
+    if (Object.values(filterOptions.kategorier).every(item => item === false) === true) {
+      return ;
+    }
+    else {
+      let filterList = filterGlobalToArray();
+      console.log(filterList)
+      filterData(filterList)
+    }
+  }, [filterOptions])
   
   if (loading) return <p>Loading ...</p>;
   

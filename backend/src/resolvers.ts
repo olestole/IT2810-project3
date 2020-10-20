@@ -20,6 +20,7 @@ export const resolvers = {
     },
     singleProduct: async (_ :any, { productNumber }: any) => await Product.find({Varenummer: productNumber}),
     searchProducts: async (_ :any, { searchSequence }: any) => await Product.find({Varenavn: { "$regex": searchSequence, "$options": "i" }}).limit(200),
+    filterProducts: async (_ :any, { varetyper }: any) => await Product.find({Varetype: {"$in": varetyper }}).limit(200),
   },
 
   /*

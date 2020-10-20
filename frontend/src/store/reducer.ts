@@ -1,12 +1,23 @@
 import { createStore, combineReducers, Store } from 'redux';
-import { decrement, increment, setSearchText } from './action';
-import { AppState } from './types';
+import { decrement, increment, setSearchText, filter } from './action';
+import { AppState, FilterOptions } from './types';
 
-type Actions = ReturnType<typeof increment> | ReturnType<typeof decrement> | ReturnType<typeof setSearchText>;
+type Actions = ReturnType<typeof increment> | ReturnType<typeof decrement> | ReturnType<typeof setSearchText> | ReturnType<typeof filter>;
 
 const initialAppState: AppState = {
   count: 0,
   searchText: "",
+  filterOptions: {
+    kategorier: {
+      rodvin: false,
+      hvitvin: false,
+      portvin: false,
+      musserende_vin: false,
+    },
+    volum: "", 
+    minPrice: "0", 
+    maxPrice: "200000",
+  },
 };
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
@@ -25,6 +36,17 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
       return {
         ...state,
         searchText: action.payload
+      };
+    case 'FILTER':
+      return {
+        ...state,
+        filterOptions: {
+            ...state.filterOptions,
+            kategorier: {
+              ...state.filterOptions.kategorier,
+              [action.payload.field]: action.payload.value  
+          }
+        }
       };
     default:
       neverReached(action);
