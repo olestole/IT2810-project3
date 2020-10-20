@@ -151,7 +151,7 @@ const getProductType = (product: string) => {
     return 'Portvin'
   } 
   case 'musserende_vin': { 
-    return 'Musserende Vin'
+    return 'Musserende vin'
   } 
   default: { 
     return "";

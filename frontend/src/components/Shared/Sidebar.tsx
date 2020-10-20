@@ -44,8 +44,6 @@ let Sidebar = () => {
   const [openCategory, setOpenCategory] = React.useState<boolean>(false)
   const [openVolume, setOpenVolume] = React.useState<boolean>(false)
   const [openPrice, setOpenPrice] = React.useState<boolean>(false)
-  const [rodvin, setRodvin] = React.useState<boolean>(false)
-  const [hvitvin, setHvitvin] = React.useState<boolean>(false)
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
   const dispatch = useDispatch();
 
@@ -60,12 +58,6 @@ let Sidebar = () => {
   const changeVolumeRange = (event: any, newValue: number | number[]) => {
     setVolumeRange(newValue as number[]);
   };
-
-  
-  useEffect(() => {
-    console.log(filterOptions)
-  }, [rodvin, hvitvin]);
-  
 
   return (
     <div className="sidebar">
@@ -82,30 +74,28 @@ let Sidebar = () => {
           <Divider />
           <FormGroup className={classes.formGroup}>
             <FormControlLabel 
-            value={rodvin}
             control={<Checkbox color="primary" />}
             label="Rødvin"
             labelPlacement="start"
-            onChange={() => {setRodvin(!rodvin); dispatch(filter({field: "rodvin", value: !rodvin}))}}
+            onChange={() => {dispatch(filter({field: "rodvin", value: !filterOptions.kategorier.rodvin}))}}
             />
             <FormControlLabel 
-            value={hvitvin}
             control={<Checkbox color="primary" />}
             label="Hvitvin"
             labelPlacement="start"
-            onChange={() => {setHvitvin(!hvitvin); dispatch(filter({field: "hvitvin", value: !hvitvin}))}}
+            onChange={() => {dispatch(filter({field: "hvitvin", value: !filterOptions.kategorier.hvitvin}))}}
             />
             <FormControlLabel 
-            value={hvitvin}
             control={<Checkbox color="primary" />}
             label="Musserende vin"
             labelPlacement="start"
+            onChange={() => {dispatch(filter({field: "musserende_vin", value: !filterOptions.kategorier.musserende_vin}))}}
             />
             <FormControlLabel 
-            value={hvitvin}
             control={<Checkbox color="primary" />}
             label="Portvin"
             labelPlacement="start"
+            onChange={() => {dispatch(filter({field: "portvin", value: !filterOptions.kategorier.portvin}))}}
             />
           </FormGroup>
         </Collapse>
