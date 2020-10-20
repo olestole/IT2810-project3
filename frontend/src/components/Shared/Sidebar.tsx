@@ -47,7 +47,18 @@ let Sidebar = () => {
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
   const dispatch = useDispatch();
 
-  function handleClick(func: any, openValue: boolean) {
+  const createCheckOption = (label: string, type: string) => {
+    return(
+      <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={label}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: type, value: !filterOptions.kategorier.type}))}}
+              />
+    )
+  };
+
+  let handleClick = (func: any, openValue: boolean) => {
     func(!openValue)
   }
 
@@ -73,30 +84,10 @@ let Sidebar = () => {
         <Collapse in={openCategory} timeout="auto" unmountOnExit>
           <Divider />
           <FormGroup className={classes.formGroup}>
-            <FormControlLabel 
-            control={<Checkbox color="primary" />}
-            label="Rødvin"
-            labelPlacement="start"
-            onChange={() => {dispatch(filter({field: "rodvin", value: !filterOptions.kategorier.rodvin}))}}
-            />
-            <FormControlLabel 
-            control={<Checkbox color="primary" />}
-            label="Hvitvin"
-            labelPlacement="start"
-            onChange={() => {dispatch(filter({field: "hvitvin", value: !filterOptions.kategorier.hvitvin}))}}
-            />
-            <FormControlLabel 
-            control={<Checkbox color="primary" />}
-            label="Musserende vin"
-            labelPlacement="start"
-            onChange={() => {dispatch(filter({field: "musserende_vin", value: !filterOptions.kategorier.musserende_vin}))}}
-            />
-            <FormControlLabel 
-            control={<Checkbox color="primary" />}
-            label="Portvin"
-            labelPlacement="start"
-            onChange={() => {dispatch(filter({field: "portvin", value: !filterOptions.kategorier.portvin}))}}
-            />
+            {createCheckOption("Rødvin", "rodvin")}
+            {createCheckOption("Hvitvin", "hvitvin")}
+            {createCheckOption("Musserende vin", "musserende_vin")}
+            {createCheckOption("Portvin", "portvin")}
           </FormGroup>
         </Collapse>
 
@@ -156,3 +147,62 @@ let Sidebar = () => {
 }
 
 export default Sidebar
+
+/*
+Akevitt
+Portvin
+Vodka
+Druebrennevin
+Whisky
+Lik√∏r
+Genever
+Gin
+Bitter
+Fruktbrennevin
+Vermut
+Aromatisert vin
+Brennevin, annet
+Sherry
+Rødvin
+Hvitvin
+Perlende vin, rosé
+Rosévin
+Champagne, brut
+Musserende vin, rosé
+Champagne, rosé
+Musserende vin
+Perlende vin, rød
+Porter & stout
+Perlende vin, hvit
+Spesial
+Saison farmhouse ale
+Barley wine
+Hveteøl
+Pale ale
+Mørk lager
+Rom
+Sterkvin, annen
+Fruktvin
+Sider
+Lys lager
+Brown ale
+Alkoholfri musserende drikk
+Champagne extra brut
+India pale ale
+Lys ale
+Klosterstil
+Sake
+Surøl
+Champagne, sec
+Madeira
+Alkoholfri most
+Red/amber
+Alkoholfri leskedrikk
+Mjød
+Brennevin, nøytralt < 37,5 %
+Champagne, annen
+Scotch ale
+Alkoholfri vin
+Alkoholfritt øl
+Alkoholfritt, øvrig
+*/

@@ -224,7 +224,6 @@ const ProductListView = () => {
         });
       }
     })
-    setStaticMode(true);
   }
 
   let filterData = (filterArray: string[]) => {
@@ -240,6 +239,7 @@ const ProductListView = () => {
         });
       }
     });
+    setStaticMode(true);
   }
 
   const handleScroll = () => {
@@ -247,9 +247,8 @@ const ProductListView = () => {
 			Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
 			isFetching
 		)
-			return;
-		setIsFetching(true);
-		console.log(isFetching);
+      return;
+    setIsFetching(true);
 	};
   
   useEffect(() => {
