@@ -13,6 +13,20 @@ export const decrement = () => {
 export const setSearchText = (text: string) => {
   return {
     type: 'SET_SEARCH_TEXT',
-    payload: text
+    payload: text,
+  } as const;
+};
+
+export const setCurrentProduct = (product: Product) => {
+  return {
+    type: 'SET_CURRENT_PRODUCT',
+    payload: product,
+  } as const;
+};
+
+export const setModalOpen = (value: boolean) => {
+  return {
+    type: 'SET_MODAL_OPEN',
+    payload: value,
   } as const;
 };

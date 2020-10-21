@@ -1,9 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles, createStyles, Theme, withTheme } from '@material-ui/core/styles';
+import React, { useState } from 'react';
+import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
 import './detail.css';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setModalOpen } from 'store/action';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -28,7 +30,7 @@ const baseURL = 'https://bilder.vinmonopolet.no/cache/800x800-0/';
 
 const DetailView = (props: any) => {
   const [loadingImage, setLoadingImage] = useState(true);
-
+  const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const url = baseURL + props.product.Varenummer + '-1.jpg';
@@ -86,6 +88,14 @@ const DetailView = (props: any) => {
             startIcon={<ArrowBackIcon />}
           >
             Tilbake
+          </Button>
+          <Button
+            variant="contained"
+            onClick={() => dispatch(setModalOpen(true))}
+            className={classes.button}
+            // startIcon={<ArrowBackIcon />}
+          >
+            Anmeld produkt
           </Button>
         </div>
       </div>
