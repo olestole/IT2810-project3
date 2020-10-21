@@ -33,6 +33,10 @@ export const resolvers = {
       await Product.find({
         Varenavn: { $regex: searchSequence, $options: "i" },
       }).limit(200),
+    typeProduct: async (_: any, { type }: any) =>
+      await Product.find().byType(type),
+    nameProduct: async (_: any, { name }: any) =>
+      await Product.find().byName(name),
   },
 
   /*

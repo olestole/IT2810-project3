@@ -7,6 +7,8 @@ export const typeDefs = gql`
     singleProduct(productNumber: String!): Product
     startProducts(startIndex: Int!): [Product!]!
     searchProducts(searchSequence: String!): [Product!]!
+    typeProduct(type: String!): [Product]
+    nameProduct(name: String!): [Product]
   }
 
   type Product {
