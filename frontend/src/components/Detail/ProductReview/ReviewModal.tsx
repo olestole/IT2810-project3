@@ -25,7 +25,7 @@ const customStyles = {
     top: '50%',
     transform: 'translate(-50%,-50%)',
     minWidth: '20rem',
-    width: '50%',
+    width: '30%',
     maxWidth: '60rem',
     overflow: 'hidden',
   },

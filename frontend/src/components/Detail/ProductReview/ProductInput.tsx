@@ -5,6 +5,7 @@ import TextField from '@material-ui/core/TextField';
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
+      flexGrow: 1,
       '& .MuiTextField-root': {
         width: '100%',
       },
@@ -17,13 +18,8 @@ interface IProductInput {
   setDescription: (value: string) => void;
 }
 
-export const ProductInput: React.FC<IProductInput> = ({ description, setDescription }) => {
+export const ReviewDescription: React.FC<IProductInput> = ({ description, setDescription }) => {
   const classes = useStyles();
-  const [value, setValue] = React.useState('Controlled');
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setValue(event.target.value);
-  };
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
@@ -36,6 +32,29 @@ export const ProductInput: React.FC<IProductInput> = ({ description, setDescript
           variant="outlined"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+    </form>
+  );
+};
+
+interface IReviewTitle {
+  reviewTitle: string;
+  setReviewTitle: (value: string) => void;
+}
+
+export const ReviewTitle: React.FC<IReviewTitle> = ({ reviewTitle, setReviewTitle }) => {
+  const classes = useStyles();
+
+  return (
+    <form className={classes.root} noValidate autoComplete="off">
+      <div>
+        <TextField
+          id="outlined-multiline-static"
+          label="Tittel på anmeldelse"
+          variant="outlined"
+          value={reviewTitle}
+          onChange={(e) => setReviewTitle(e.target.value)}
         />
       </div>
     </form>

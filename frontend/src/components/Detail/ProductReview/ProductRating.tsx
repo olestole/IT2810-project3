@@ -1,5 +1,5 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
 import Rating, { IconContainerProps } from '@material-ui/lab/Rating';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';
@@ -32,6 +32,19 @@ const customIcons: { [index: string]: { icon: React.ReactElement; label: string 
   },
 };
 
+const useStyles = makeStyles(() =>
+  createStyles({
+    rating: {
+      flexGrow: 1,
+      '& > * > * > *': {
+        width: 50,
+        height: 50,
+        margin: 5,
+      },
+    },
+  }),
+);
+
 function IconContainer(props: IconContainerProps) {
   const { value, ...other } = props;
   return <span {...other}>{customIcons[value].icon}</span>;
@@ -43,17 +56,20 @@ interface IRating {
 }
 
 export const ProductRating: React.FC<IRating> = ({ rating, setRating }) => {
+  const classes = useStyles();
+
   return (
     <div>
-      <Box component="fieldset" mb={3} borderColor="transparent">
-        <Typography component="legend">Custom icon set</Typography>
+      <Box component="fieldset" borderColor="transparent">
         <Rating
+          className={classes.rating}
           name="customized-icons"
           defaultValue={2}
           value={rating}
           onChange={(e, value) => setRating(value!)}
           getLabelText={(value: number) => customIcons[value].label}
           IconContainerComponent={IconContainer}
+          size="large"
         />
       </Box>
     </div>
