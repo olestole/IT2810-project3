@@ -16,6 +16,13 @@ import { AppState, FilterOptions, Kategorier } from 'store/types';
 import { useSelector } from 'react-redux';
 import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS } from 'components/Overview/seachQueries'
 
+let brennevin = ["Akevitt", "Vodka", "Druebrennevin", "Whisky", "Genever", "Gin", "Bitter", "Fruktbrennevin", "Brennevin, annet", "Rom", "Sake", "Brennevin, nøytralt < 37,5 %", "Likør"]
+let annet = ["Spesial", "Mjød", "Sider"]
+let alkoholfritt = ["Alkoholfri musserende drikk", "Alkoholfri most", "Alkoholfri leskedrikk", "Alkoholfri vin", "Alkoholfritt øl", "Alkoholfritt, øvrig"]
+let ol = ["Klosterstil", "Red/amber", "Scotch ale", "Porter & stout", "Saison farmhouse ale", "Hveteøl", "Pale ale", "Mørk lager", "Lys lager" , "Brown ale", "India pale ale", "Lys ale", "Surøl"]
+let annen_vin = [ "Aromatisert vin", "Perlende vin, rosé", "Rosévin", "Perlende vin, rød", "Perlende vin, hvit", "Barley wine", "Fruktvin", "Madeira"]
+let sterk_vin = ["Sherry", "Portvin", "Vermut", "Sterkvin, annen"]
+let musserende_vin = ["Champagne, brut", "Musserende vin, rosé", "Champagne, rosé", "Musserende vin", "Champagne extra brut", "Champagne, sec", "Champagne, annen"]
 
 interface HeaderData {
   Varetype: string;
@@ -142,19 +149,34 @@ const useStyles = makeStyles((theme: Theme) =>
 const getProductType = (product: string) => {
   switch(product) {
     case 'rodvin': { 
-      return 'Rødvin' 
+      return ['Rødvin'] 
    } 
    case 'hvitvin': { 
-      return 'Hvitvin'
+      return ['Hvitvin']
    } 
-   case 'portvin': { 
-    return 'Portvin'
-  } 
   case 'musserende_vin': { 
-    return 'Musserende vin'
+    return musserende_vin
+  } 
+  case 'sterk_vin': { 
+    return sterk_vin
+  } 
+  case 'annen_vin': { 
+    return annen_vin
+  } 
+  case 'ol': { 
+    return ol
+  } 
+  case 'brennevin': {
+    return brennevin;
+  }
+  case 'alkoholfritt': { 
+    return alkoholfritt
+  } 
+  case 'annet': { 
+    return annet
   } 
   default: { 
-    return "";
+    return [""];
    } 
   }
 }
@@ -187,8 +209,12 @@ const ProductListView = () => {
 
   const filterGlobalToArray = () => {
     let filteredArray: string[] = []
+    console.log("FilterArray: ", filteredArray)
+    console.log(filterOptions.kategorier)
     Object.keys(filterOptions.kategorier).map((key, index) => {
-      if(filterOptions.kategorier[key]) {filteredArray.push(getProductType(key))};
+      if(filterOptions.kategorier[key]) {
+        filteredArray = filteredArray.concat(getProductType(key))
+      };
     });
     return filteredArray;
   }
@@ -272,7 +298,7 @@ const ProductListView = () => {
     }
     else {
       let filterList = filterGlobalToArray();
-      console.log(filterList)
+      console.log(filterOptions)
       filterData(filterList)
     }
   }, [filterOptions])

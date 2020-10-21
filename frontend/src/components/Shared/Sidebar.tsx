@@ -47,6 +47,9 @@ let Sidebar = () => {
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
   const dispatch = useDispatch();
 
+  /*
+  Not working with changing value, only changes the first time
+
   const createCheckOption = (label: string, type: string) => {
     return(
       <FormControlLabel 
@@ -57,6 +60,7 @@ let Sidebar = () => {
               />
     )
   };
+  */
 
   let handleClick = (func: any, openValue: boolean) => {
     func(!openValue)
@@ -84,10 +88,60 @@ let Sidebar = () => {
         <Collapse in={openCategory} timeout="auto" unmountOnExit>
           <Divider />
           <FormGroup className={classes.formGroup}>
-            {createCheckOption("Rødvin", "rodvin")}
-            {createCheckOption("Hvitvin", "hvitvin")}
-            {createCheckOption("Musserende vin", "musserende_vin")}
-            {createCheckOption("Portvin", "portvin")}
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Rødvin"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "rodvin", value: !filterOptions.kategorier.rodvin}))}}
+              />
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Hvitvin"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "hvitvin", value: !filterOptions.kategorier.hvitvin}))}}
+            />
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Musserende Vin"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "musserende_vin", value: !filterOptions.kategorier.musserende_vin}))}}
+            />
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Sterk Vin"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "sterk_vin", value: !filterOptions.kategorier.sterk_vin}))}}
+            />
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Annen Vin"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "annen_vin", value: !filterOptions.kategorier.annen_vin}))}}
+            />
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Øl"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "ol", value: !filterOptions.kategorier.ol}))}}
+            />
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Brennevin"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "brennevin", value: !filterOptions.kategorier.brennevin}))}}
+            />
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Alkoholfritt"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "alkoholfritt", value: !filterOptions.kategorier.alkoholfritt}))}}
+            />
+            <FormControlLabel 
+              control={<Checkbox color="primary" />}
+              label={"Annet"}
+              labelPlacement="start"
+              onChange={() => {dispatch(filter({field: "annet", value: !filterOptions.kategorier.annet}))}}
+            />
           </FormGroup>
         </Collapse>
 
@@ -148,61 +202,3 @@ let Sidebar = () => {
 
 export default Sidebar
 
-/*
-Akevitt
-Portvin
-Vodka
-Druebrennevin
-Whisky
-Lik√∏r
-Genever
-Gin
-Bitter
-Fruktbrennevin
-Vermut
-Aromatisert vin
-Brennevin, annet
-Sherry
-Rødvin
-Hvitvin
-Perlende vin, rosé
-Rosévin
-Champagne, brut
-Musserende vin, rosé
-Champagne, rosé
-Musserende vin
-Perlende vin, rød
-Porter & stout
-Perlende vin, hvit
-Spesial
-Saison farmhouse ale
-Barley wine
-Hveteøl
-Pale ale
-Mørk lager
-Rom
-Sterkvin, annen
-Fruktvin
-Sider
-Lys lager
-Brown ale
-Alkoholfri musserende drikk
-Champagne extra brut
-India pale ale
-Lys ale
-Klosterstil
-Sake
-Surøl
-Champagne, sec
-Madeira
-Alkoholfri most
-Red/amber
-Alkoholfri leskedrikk
-Mjød
-Brennevin, nøytralt < 37,5 %
-Champagne, annen
-Scotch ale
-Alkoholfri vin
-Alkoholfritt øl
-Alkoholfritt, øvrig
-*/

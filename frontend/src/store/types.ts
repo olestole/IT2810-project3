@@ -15,6 +15,11 @@ export type Kategorier = {
   [key: string]: boolean;
   rodvin: boolean;
   hvitvin: boolean;
-  portvin: boolean;
+  ol: boolean;
   musserende_vin: boolean;
+  sterk_vin: boolean;
+  annen_vin: boolean;
+  brennevin: boolean;
+  alkoholfritt: boolean;
+  annet: boolean;
 }
