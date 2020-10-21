@@ -34,24 +34,19 @@ const Detail = () => {
   const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, { variables: { number: location.pathname.substr(1) } });
 
   //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
-  if (loading)
-    return (
-      <div className="loadingIndicator">
-        <LoadingIndicator />
-      </div>
-    );
+  if (loading) return <LoadingIndicator />;
   if (error) return <h1>ERROR</h1>;
   if (data && data.singleProduct) {
     dispatch(setCurrentProduct(data.singleProduct as Product));
   }
 
-  return isAuthenticated && data ? (
+  return data ? (
     <div>
       <DetailView product={data.singleProduct} />
       <ProductReview />
     </div>
   ) : (
-    <h1>Ikke autentisert</h1>
+    <h1>Noe feil har skjedd</h1>
   );
 };
 

@@ -28,14 +28,22 @@ export const resolvers = {
         .exec();
       return whiteWines;
     },
-    singleProduct: withAuth(async (_: any, { productNumber }: any) => {
+    singleProduct: async (_: any, { productNumber }: any) => {
       // if (!isAuthenticated) {
       //   throw new AuthenticationError("Not logged in!");
       // }
       return (await Product.find({ Varenummer: productNumber })).length > 0
         ? (await Product.find({ Varenummer: productNumber }))[0]
         : null;
-    }),
+    },
+    // singleProduct: withAuth(async (_: any, { productNumber }: any) => {
+    //   // if (!isAuthenticated) {
+    //   //   throw new AuthenticationError("Not logged in!");
+    //   // }
+    //   return (await Product.find({ Varenummer: productNumber })).length > 0
+    //     ? (await Product.find({ Varenummer: productNumber }))[0]
+    //     : null;
+    // }),
     // singleProduct: async (
     //   _: any,
     //   { productNumber }: any,

@@ -3,6 +3,8 @@ import './logo.css';
 import { Typography } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCurrentProduct } from 'store/action';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,8 +23,11 @@ const useStyles = makeStyles((theme: Theme) =>
 const Logo = () => {
   const history = useHistory();
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const handleHomebuttonClick = () => {
+  const handleBackClick = () => {
+    dispatch(setCurrentProduct(null));
+
     // If the user's already on the overview-page we don't want to add x amount of overview-history to the historystack.
     if (history.location.pathname != '/') {
       history.push('/');
@@ -30,7 +35,7 @@ const Logo = () => {
   };
 
   return (
-    <div className="logoContainer" onClick={handleHomebuttonClick}>
+    <div className="logoContainer" onClick={handleBackClick}>
       <div className="logo">
         <img src="appLogo.svg"></img>
       </div>

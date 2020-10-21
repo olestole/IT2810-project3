@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
-import './detail.css';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setModalOpen } from 'store/action';
+import { setCurrentProduct, setModalOpen } from 'store/action';
+import { useAuth0 } from '@auth0/auth0-react';
+import './detail.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,11 +34,12 @@ const DetailView = (props: any) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
+  const { isAuthenticated } = useAuth0();
+
   const url = baseURL + props.product.Varenummer + '-1.jpg';
 
-  console.log(props.product);
-
   const handleBackClick = () => {
+    dispatch(setCurrentProduct(null));
     history.push('/');
   };
 
@@ -89,14 +91,25 @@ const DetailView = (props: any) => {
           >
             Tilbake
           </Button>
-          <Button
-            variant="contained"
-            onClick={() => dispatch(setModalOpen(true))}
-            className={classes.button}
-            // startIcon={<ArrowBackIcon />}
-          >
-            Anmeld produkt
-          </Button>
+          {isAuthenticated ? (
+            <Button
+              variant="contained"
+              onClick={() => dispatch(setModalOpen(true))}
+              className={classes.button}
+              // startIcon={<ArrowBackIcon />}
+            >
+              Anmeld produkt
+            </Button>
+          ) : (
+            <Button
+              variant="contained"
+              onClick={() => history.push('/login')}
+              className={classes.button}
+              // startIcon={<ArrowBackIcon />}
+            >
+              Logg inn for å anmelde produkt
+            </Button>
+          )}
         </div>
       </div>
     </div>

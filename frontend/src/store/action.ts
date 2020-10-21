@@ -17,7 +17,7 @@ export const setSearchText = (text: string) => {
   } as const;
 };
 
-export const setCurrentProduct = (product: Product) => {
+export const setCurrentProduct = (product: Product | null) => {
   return {
     type: 'SET_CURRENT_PRODUCT',
     payload: product,
