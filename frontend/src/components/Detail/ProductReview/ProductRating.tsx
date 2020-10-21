@@ -42,6 +42,9 @@ const useStyles = makeStyles(() =>
         margin: 5,
       },
     },
+    ratingContainer: {
+      margin: 'auto',
+    },
   }),
 );
 
@@ -59,7 +62,7 @@ export const ProductRating: React.FC<IRating> = ({ rating, setRating }) => {
   const classes = useStyles();
 
   return (
-    <div>
+    <div className={classes.ratingContainer}>
       <Box component="fieldset" borderColor="transparent">
         <Rating
           className={classes.rating}
