@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { gql, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
@@ -11,9 +11,10 @@ import {
   TableSortLabel,
   Paper,
 } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AppState } from 'store/types';
 import { useSelector } from 'react-redux';
+import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
 
 interface HeaderData {
   Varetype: string;
@@ -137,33 +138,6 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-const GET_START_PRODUCTS = gql`
-  query Query($index: Int!) {
-    startProducts(startIndex: $index) {
-      Varenavn
-      Varenummer
-      Varetype
-      Varenummer
-      Produsent
-      Volum
-      Pris
-    }
-  }
-`;
-
-const SEARCH_PRODUCTS = gql`
-  query Query($matchedString: String!) {
-    searchProducts(searchSequence: $matchedString) {
-      Varenavn
-      Varetype
-      Varenummer
-      Produsent
-      Volum
-      Pris
-    }
-  }
-`;
-
 const ProductListView = () => {
   const classes = useStyles();
   const history = useHistory();
@@ -246,6 +220,7 @@ const ProductListView = () => {
   }, [searchText]);
 
   if (loading) return <p>Loading ...</p>;
+  if (error) return <h1>ERROR</h1>;
 
   if (data && data.startProducts) {
     console.log('D: ', data.startProducts);

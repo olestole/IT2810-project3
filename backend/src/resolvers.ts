@@ -1,6 +1,9 @@
+import { AuthenticationError } from "apollo-server-express";
 import { Cat } from "./models/Cat";
 import { Product } from "./models/Product";
 import { WhiteWine } from "./models/WhiteWine";
+
+import withAuth from "graphql-auth";
 
 export const resolvers = {
   Query: {
@@ -25,10 +28,26 @@ export const resolvers = {
         .exec();
       return whiteWines;
     },
-    singleProduct: async (_: any, { productNumber }: any) =>
-      (await Product.find({ Varenummer: productNumber })).length > 0
+    singleProduct: withAuth(async (_: any, { productNumber }: any) => {
+      // if (!isAuthenticated) {
+      //   throw new AuthenticationError("Not logged in!");
+      // }
+      return (await Product.find({ Varenummer: productNumber })).length > 0
         ? (await Product.find({ Varenummer: productNumber }))[0]
-        : null,
+        : null;
+    }),
+    // singleProduct: async (
+    //   _: any,
+    //   { productNumber }: any,
+    //   { isAuthenticated }: any
+    // ) => {
+    //   if (!isAuthenticated) {
+    //     throw new AuthenticationError("Not logged in!");
+    //   }
+    //   return (await Product.find({ Varenummer: productNumber })).length > 0
+    //     ? (await Product.find({ Varenummer: productNumber }))[0]
+    //     : null;
+    // },
     searchProducts: async (_: any, { searchSequence }: any) =>
       await Product.find({
         Varenavn: { $regex: searchSequence, $options: "i" },
