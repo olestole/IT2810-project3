@@ -220,6 +220,7 @@ const ProductListView = () => {
   }, [searchText]);
 
   if (loading) return <p>Loading ...</p>;
+  if (error) return <h1>ERROR</h1>;
 
   if (data && data.startProducts) {
     console.log('D: ', data.startProducts);

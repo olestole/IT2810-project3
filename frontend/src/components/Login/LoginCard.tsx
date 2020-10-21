@@ -7,6 +7,8 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 import LoginFields from './LoginFields';
 import RegistrationFields from './RegistrationFields';
+import { Button } from '@material-ui/core';
+import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
 const useStyles = makeStyles({
   root: {
@@ -26,21 +28,22 @@ const useStyles = makeStyles({
   registerContainer: {
     justifySelf: 'flex-end',
   },
+  buttonGroup: {
+    display: 'flex',
+    justifyContent: 'center',
+    '& > *': {
+      marginTop: '50px',
+      width: '100%',
+    },
+  },
 });
 
 export default function LoginCard() {
   const classes = useStyles();
-  const { user, isAuthenticated, isLoading, getAccessTokenSilently, getIdTokenClaims } = useAuth0();
+  const { user, logout, loginWithRedirect, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const [renderRegistration, setRenderRegistration] = useState(false);
 
-  console.log(isAuthenticated && user);
-  const getToken = async () => {
-    if (isAuthenticated) {
-      console.log(await getAccessTokenSilently());
-    }
-  };
-
-  getToken();
+  if (isLoading) return <LoadingIndicator />;
 
   return (
     <Card className={classes.root}>
@@ -48,30 +51,56 @@ export default function LoginCard() {
         {isAuthenticated && (
           <div>
             <img src={user.picture} alt={user.name} />
-            <h2>{user.name}</h2>
+            <h2>{user.nickname}</h2>
             <p>{user.email}</p>
           </div>
         )}
-        {renderRegistration ? <RegistrationFields /> : <LoginFields />}
-        {renderRegistration ? (
-          <div className={classes.registerContainer}>
-            <Typography>
-              <span className={classes.registerText} onClick={() => setRenderRegistration(false)}>
-                Tilbake
-              </span>
-            </Typography>
+        {/* {renderRegistration ? <RegistrationFields /> : <LoginFields />} */}
+        {isAuthenticated ? (
+          <div className={classes.buttonGroup}>
+            <Button variant="contained" onClick={() => logout({ returnTo: window.location.origin })}>
+              Logg ut
+            </Button>
           </div>
         ) : (
-          <div className={classes.registerContainer}>
-            <Typography>
-              Ikke medlem?{' '}
-              <span className={classes.registerText} onClick={() => setRenderRegistration(true)}>
-                Meld deg opp her
-              </span>
-            </Typography>
+          <div className={classes.buttonGroup}>
+            <Button variant="contained" onClick={() => loginWithRedirect()}>
+              Logg inn
+            </Button>
           </div>
+        )}
+        {renderRegistration ? (
+          <BackButton classes={classes} setRenderRegistration={setRenderRegistration} />
+        ) : (
+          <SignUp classes={classes} setRenderRegistration={setRenderRegistration} />
         )}
       </CardContent>
     </Card>
   );
 }
+
+interface ILoginFields {
+  classes: any;
+  setRenderRegistration: (value: boolean) => void;
+}
+
+const BackButton: React.FC<ILoginFields> = ({ classes, setRenderRegistration }) => (
+  <div className={classes.registerContainer}>
+    <Typography>
+      <span className={classes.registerText} onClick={() => setRenderRegistration(false)}>
+        Tilbake
+      </span>
+    </Typography>
+  </div>
+);
+
+const SignUp: React.FC<ILoginFields> = ({ classes, setRenderRegistration }) => (
+  <div className={classes.registerContainer}>
+    <Typography>
+      Ikke medlem?{' '}
+      <span className={classes.registerText} onClick={() => setRenderRegistration(true)}>
+        Meld deg opp her
+      </span>
+    </Typography>
+  </div>
+);

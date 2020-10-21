@@ -9,16 +9,6 @@ import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
 import { useAuth0 } from '@auth0/auth0-react';
 
-// const GET_WHITE_WINES = gql`
-//   query Query {
-//     whiteWines {
-//       Varenavn
-//       Land
-//       Distrikt
-//     }
-//   }
-// `;
-
 const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
     singleProduct(productNumber: $number) {
@@ -36,15 +26,7 @@ const GET_SINGLE_PRODUCT = gql`
   }
 `;
 
-const activeFilters = {
-  redWine: true,
-  minPrice: 400,
-  maxPrice: 700,
-};
-
 const Detail = () => {
-  /*if (error) return console.log(error);*/
-
   const { isAuthenticated, user } = useAuth0();
 
   const location = useLocation();
@@ -72,6 +54,7 @@ const Detail = () => {
       </div>
     );
 
+  if (error) return <h1>ERROR</h1>;
   if (isAuthenticated) {
     console.log(user);
   }
