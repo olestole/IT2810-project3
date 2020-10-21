@@ -5,16 +5,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { decrement, increment } from 'store/action';
 import { AppState } from 'store/types';
+import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
-// const GET_WHITE_WINES = gql`
-//   query Query {
-//     whiteWines {
-//       Varenavn
-//       Land
-//       Distrikt
-//     }
-//   }
-// `;
+import { useAuth0 } from '@auth0/auth0-react';
 
 const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
@@ -34,7 +27,7 @@ const GET_SINGLE_PRODUCT = gql`
 `;
 
 const Detail = () => {
-  /*if (error) return console.log(error);*/
+  const { isAuthenticated, user } = useAuth0();
 
   const location = useLocation();
   const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, { variables: { number: location.pathname.substr(1) } });
@@ -54,24 +47,27 @@ const Detail = () => {
   // REDUX ABOVE
 
   //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
-  if (loading) return <p>Loading ...</p>;
+  if (loading)
+    return (
+      <div className="loadingIndicator">
+        <LoadingIndicator />
+      </div>
+    );
 
-  if (data && data.singleProduct) {
-    console.log(data.singleProduct);
+  if (error) return <h1>ERROR</h1>;
+  if (isAuthenticated) {
+    console.log(user);
   }
 
-  console.log(data.singleProduct);
-
-  return (
+  return isAuthenticated && data ? (
     <div>
-      <DetailView product={data.singleProduct} />
-      <h1>Detail</h1>
       <h1>Count: {count}</h1>
       <button onClick={dispatchIncrement}>INCREMENT</button>
       <button onClick={dispatchDecrement}>DECREMENT</button>
-      <h3>{data.singleProduct.Varenavn}</h3>
-      <h3>{data.singleProduct.Varetype}</h3>
+      <DetailView product={data.singleProduct} />
     </div>
+  ) : (
+    <h1>nei</h1>
   );
 };
 

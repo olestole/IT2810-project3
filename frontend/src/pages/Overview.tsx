@@ -1,7 +1,5 @@
 import React from 'react';
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
-import { makeQuery } from 'utils/client';
-import { Link } from 'react-router-dom';
+import { gql, useQuery } from '@apollo/client';
 import { ProductListView } from 'components/Overview';
 
 const GET_WHITE_WINES = gql`
