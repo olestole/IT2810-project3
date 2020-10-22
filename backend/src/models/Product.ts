@@ -50,7 +50,7 @@ ProductSchema.query = productQueryHelpers;
 export const Product = mongoose.model<
   InterfaceProduct,
   mongoose.Model<InterfaceProduct, typeof productQueryHelpers>
->("Product", ProductSchema, "updated_assortment");
+>("Product", ProductSchema, "assortment");
 
 // let animal2QueryHelpers = {
 //   byName<Q extends mongoose.DocumentQuery<any, Animal2>>(this: Q, name: string) {
