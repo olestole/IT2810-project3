@@ -5,10 +5,12 @@ export type AppState = {
 };
 
 export type FilterOptions = {
+  filterMode: boolean;
   kategorier: Kategorier;
-  volum: string;
-  minPrice: string;
-  maxPrice: string;
+  minVolum: number;
+  maxVolum: number;
+  minPrice: number;
+  maxPrice: number;
 }
 
 export type Kategorier = {

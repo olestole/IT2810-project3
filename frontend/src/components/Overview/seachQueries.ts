@@ -27,8 +27,8 @@ export const SEARCH_PRODUCTS = gql`
 `;
 
 export const FILTER_PRODUCTS = gql`
-  query Query($typer: [String]!) {
-    filterProducts(varetyper: $typer) {
+  query Query($typer: [String]!, $prisgt: Float!, $prisls: Float!, $volumgt: Float!, $volumls: Float!) {
+    filterProducts(varetyper: $typer, prisgt: $prisgt, prisls: $prisls, volumgt: $volumgt, volumls: $volumls) {
       Varenavn
       Varetype
       Varenummer

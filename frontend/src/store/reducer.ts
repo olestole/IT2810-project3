@@ -1,13 +1,14 @@
 import { createStore, combineReducers, Store } from 'redux';
-import { decrement, increment, setSearchText, filter } from './action';
+import { decrement, increment, setSearchText, filter, filterVolumAndPrice, setFilterMode } from './action';
 import { AppState, FilterOptions } from './types';
 
-type Actions = ReturnType<typeof increment> | ReturnType<typeof decrement> | ReturnType<typeof setSearchText> | ReturnType<typeof filter>;
+type Actions = ReturnType<typeof increment> | ReturnType<typeof decrement> | ReturnType<typeof setFilterMode> | ReturnType<typeof setSearchText> | ReturnType<typeof filter> | ReturnType<typeof filterVolumAndPrice>;
 
 const initialAppState: AppState = {
   count: 0,
   searchText: "",
   filterOptions: {
+    filterMode: false,
     kategorier: {
       rodvin: false,
       hvitvin: false,
@@ -19,9 +20,10 @@ const initialAppState: AppState = {
       alkoholfritt: false,
       annet: false,
     },
-    volum: "", 
-    minPrice: "0", 
-    maxPrice: "200000",
+    minVolum: 0, 
+    maxVolum: 10,
+    minPrice: 0, 
+    maxPrice: 2000000,
   },
 };
 
@@ -36,6 +38,14 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
       return {
         ...state,
         count: state.count - 1,
+      };
+    case 'FILTER_MODE':
+      return {
+        ...state,
+        filterOptions: {
+          ...state.filterOptions,
+          filterMode: action.payload,
+        }
       };
     case 'SET_SEARCH_TEXT':
       return {
@@ -53,6 +63,14 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
           }
         }
       };
+    case 'FILTER_RANGE':
+      return {
+        ...state,
+        filterOptions: {
+            ...state.filterOptions,
+            [action.payload.field]: action.payload.value  
+        }
+      }
     default:
       neverReached(action);
   }

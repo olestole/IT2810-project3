@@ -7,7 +7,7 @@ import IconExpandMore from '@material-ui/icons/ExpandMore';
 import LocalDrink from '@material-ui/icons/LocalDrink';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filter } from 'store/action';
+import { filter, filterVolumAndPrice, setFilterMode } from 'store/action';
 import { AppState, FilterOptions } from 'store/types';
 import './sidebar.css';
 
@@ -31,7 +31,7 @@ const useStyles = makeStyles(theme =>
       width: drawerWidth,
       display: 'flex',
       justifyContent: 'center',
-      alignItems: 'center',
+      alignItems: 'auto',
       position: 'relative',
     }
   }),
@@ -68,9 +68,22 @@ let Sidebar = () => {
 
   const changePriceRange = (event: any, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);
+    dispatch(dispatch(setFilterMode(true)))
+    dispatch(filterVolumAndPrice({field: "minPrice", value: (newValue as number[])[0]}))
+    dispatch(filterVolumAndPrice({field: "maxPrice", value: (newValue as number[])[1]}))
+  };
+
+  const handleLocalPriceChange = (event: any, newValue: number | number[]) => {
+    setPriceRange(newValue as number[]);
   };
 
   const changeVolumeRange = (event: any, newValue: number | number[]) => {
+    dispatch(dispatch(setFilterMode(true)))
+    dispatch(filterVolumAndPrice({field: "minVolum", value: (newValue as number[])[0]}))
+    dispatch(filterVolumAndPrice({field: "maxVolum", value: (newValue as number[])[1]}))
+  };
+
+  const handleLocalVolumeChange = (event: any, newValue: number | number[]) => {
     setVolumeRange(newValue as number[]);
   };
 
@@ -92,55 +105,55 @@ let Sidebar = () => {
               control={<Checkbox color="primary" />}
               label={"Rødvin"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "rodvin", value: !filterOptions.kategorier.rodvin}))}}
+              onChange={() => {dispatch(filter({field: "rodvin", value: !filterOptions.kategorier.rodvin})); dispatch(setFilterMode(true))}}
               />
             <FormControlLabel 
               control={<Checkbox color="primary" />}
               label={"Hvitvin"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "hvitvin", value: !filterOptions.kategorier.hvitvin}))}}
+              onChange={() => {dispatch(filter({field: "hvitvin", value: !filterOptions.kategorier.hvitvin})); dispatch(setFilterMode(true))}}
             />
             <FormControlLabel 
               control={<Checkbox color="primary" />}
               label={"Musserende Vin"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "musserende_vin", value: !filterOptions.kategorier.musserende_vin}))}}
+              onChange={() => {dispatch(filter({field: "musserende_vin", value: !filterOptions.kategorier.musserende_vin})); dispatch(setFilterMode(true))}}
             />
             <FormControlLabel 
               control={<Checkbox color="primary" />}
               label={"Sterk Vin"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "sterk_vin", value: !filterOptions.kategorier.sterk_vin}))}}
+              onChange={() => {dispatch(filter({field: "sterk_vin", value: !filterOptions.kategorier.sterk_vin})); dispatch(setFilterMode(true))}}
             />
             <FormControlLabel 
               control={<Checkbox color="primary" />}
               label={"Annen Vin"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "annen_vin", value: !filterOptions.kategorier.annen_vin}))}}
+              onChange={() => {dispatch(filter({field: "annen_vin", value: !filterOptions.kategorier.annen_vin})); dispatch(setFilterMode(true))}}
             />
             <FormControlLabel 
               control={<Checkbox color="primary" />}
               label={"Øl"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "ol", value: !filterOptions.kategorier.ol}))}}
+              onChange={() => {dispatch(filter({field: "ol", value: !filterOptions.kategorier.ol})); dispatch(setFilterMode(true))}}
             />
             <FormControlLabel 
               control={<Checkbox color="primary" />}
               label={"Brennevin"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "brennevin", value: !filterOptions.kategorier.brennevin}))}}
+              onChange={() => {dispatch(filter({field: "brennevin", value: !filterOptions.kategorier.brennevin})); dispatch(setFilterMode(true))}}
             />
             <FormControlLabel 
               control={<Checkbox color="primary" />}
               label={"Alkoholfritt"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "alkoholfritt", value: !filterOptions.kategorier.alkoholfritt}))}}
+              onChange={() => {dispatch(filter({field: "alkoholfritt", value: !filterOptions.kategorier.alkoholfritt})); dispatch(setFilterMode(true))}}
             />
             <FormControlLabel 
               control={<Checkbox color="primary" />}
               label={"Annet"}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "annet", value: !filterOptions.kategorier.annet}))}}
+              onChange={() => {dispatch(filter({field: "annet", value: !filterOptions.kategorier.annet})); dispatch(setFilterMode(true))}}
             />
           </FormGroup>
         </Collapse>
@@ -164,7 +177,8 @@ let Sidebar = () => {
               max={6}
               step={0.1}
               value={volumRange}
-              onChange={changeVolumeRange}
+              onChange={handleLocalVolumeChange}
+              onChangeCommitted={changeVolumeRange}
               valueLabelDisplay="auto"
             />
           </FormGroup>
@@ -189,7 +203,8 @@ let Sidebar = () => {
               max={50000}
               step={50}
               value={priceRange}
-              onChange={changePriceRange}
+              onChange={handleLocalPriceChange}
+              onChangeCommitted={changePriceRange}
               valueLabelDisplay="auto"
             />
           </FormGroup>

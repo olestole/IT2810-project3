@@ -22,7 +22,7 @@ let alkoholfritt = ["Alkoholfri musserende drikk", "Alkoholfri most", "Alkoholfr
 let ol = ["Klosterstil", "Red/amber", "Scotch ale", "Porter & stout", "Saison farmhouse ale", "Hveteøl", "Pale ale", "Mørk lager", "Lys lager" , "Brown ale", "India pale ale", "Lys ale", "Surøl"]
 let annen_vin = [ "Aromatisert vin", "Perlende vin, rosé", "Rosévin", "Perlende vin, rød", "Perlende vin, hvit", "Barley wine", "Fruktvin", "Madeira"]
 let sterk_vin = ["Sherry", "Portvin", "Vermut", "Sterkvin, annen"]
-let musserende_vin = ["Champagne, brut", "Musserende vin, rosé", "Champagne, rosé", "Musserende vin", "Champagne extra brut", "Champagne, sec", "Champagne, annen"]
+let musserende_vin = ["Champagne, brut", "Musserende vin, rosé", "Champagne, rosé", "Champagne extra brut", "Champagne, sec", "Champagne, annen"]
 
 interface HeaderData {
   Varetype: string;
@@ -176,7 +176,7 @@ const getProductType = (product: string) => {
     return annet
   } 
   default: { 
-    return [""];
+    return ["Rødvin", "Hvitvin"].concat(musserende_vin, sterk_vin, annen_vin, ol, brennevin, alkoholfritt, annet);
    } 
   }
 }
@@ -210,12 +210,13 @@ const ProductListView = () => {
   const filterGlobalToArray = () => {
     let filteredArray: string[] = []
     console.log("FilterArray: ", filteredArray)
-    console.log(filterOptions.kategorier)
     Object.keys(filterOptions.kategorier).map((key, index) => {
       if(filterOptions.kategorier[key]) {
         filteredArray = filteredArray.concat(getProductType(key))
-      };
+      }
     });
+    filteredArray = filteredArray.length == 0 ? getProductType(""): filteredArray;
+    console.log("CORRECT: ", filteredArray)
     return filteredArray;
   }
   
@@ -256,7 +257,11 @@ const ProductListView = () => {
     fetchMore({
       query: FILTER_PRODUCTS,
       variables: {
-        typer: filterArray
+        typer: filterArray,
+        prisgt: filterOptions.minPrice, 
+        prisls: filterOptions.maxPrice, 
+        volumgt: filterOptions.minVolum, 
+        volumls: filterOptions.maxVolum,
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
@@ -293,7 +298,8 @@ const ProductListView = () => {
   }, [searchText]);
 
   useEffect(() => {
-    if (Object.values(filterOptions.kategorier).every(item => item === false) === true) {
+    console.log("CHANGING")
+    if (filterOptions.filterMode === false) {
       return ;
     }
     else {
