@@ -6,7 +6,6 @@ import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied'
 import SentimentSatisfiedIcon from '@material-ui/icons/SentimentSatisfied';
 import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltOutlined';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 
 const customIcons: { [index: string]: { icon: React.ReactElement; label: string } } = {
@@ -35,6 +34,8 @@ const customIcons: { [index: string]: { icon: React.ReactElement; label: string 
 const useStyles = makeStyles(() =>
   createStyles({
     rating: {
+      border: (showError) => showError && '1px solid red',
+      borderRadius: 5,
       flexGrow: 1,
       '& > * > * > *': {
         width: 50,
@@ -56,10 +57,12 @@ function IconContainer(props: IconContainerProps) {
 interface IRating {
   rating: number;
   setRating: (value: number) => void;
+  inputError: boolean;
 }
 
-export const ProductRating: React.FC<IRating> = ({ rating, setRating }) => {
-  const classes = useStyles();
+export const ProductRating: React.FC<IRating> = ({ rating, setRating, inputError }) => {
+  const showError = () => inputError && rating == 0;
+  const classes = useStyles(showError());
 
   return (
     <div className={classes.ratingContainer}>

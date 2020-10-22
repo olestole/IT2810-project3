@@ -16,9 +16,10 @@ const useStyles = makeStyles((theme: Theme) =>
 interface IProductInput {
   description: string;
   setDescription: (value: string) => void;
+  inputError: boolean;
 }
 
-export const ReviewDescription: React.FC<IProductInput> = ({ description, setDescription }) => {
+export const ReviewDescription: React.FC<IProductInput> = ({ description, setDescription, inputError }) => {
   const classes = useStyles();
 
   return (
@@ -32,6 +33,7 @@ export const ReviewDescription: React.FC<IProductInput> = ({ description, setDes
           variant="outlined"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
+          error={inputError && !description}
         />
       </div>
     </form>
@@ -41,9 +43,10 @@ export const ReviewDescription: React.FC<IProductInput> = ({ description, setDes
 interface IReviewTitle {
   reviewTitle: string;
   setReviewTitle: (value: string) => void;
+  inputError: boolean;
 }
 
-export const ReviewTitle: React.FC<IReviewTitle> = ({ reviewTitle, setReviewTitle }) => {
+export const ReviewTitle: React.FC<IReviewTitle> = ({ reviewTitle, setReviewTitle, inputError }) => {
   const classes = useStyles();
 
   return (
@@ -55,6 +58,7 @@ export const ReviewTitle: React.FC<IReviewTitle> = ({ reviewTitle, setReviewTitl
           variant="outlined"
           value={reviewTitle}
           onChange={(e) => setReviewTitle(e.target.value)}
+          error={inputError && !reviewTitle}
         />
       </div>
     </form>

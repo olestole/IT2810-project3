@@ -34,7 +34,26 @@ export const typeDefs = gql`
     Distrikt: String
   }
 
+  type ReviewResponse {
+    status: Int!
+    description: String!
+    user: String
+  }
+
+  input Review {
+    user: User!
+    title: String!
+    description: String!
+    rating: Int!
+  }
+
+  input User {
+    email: String!
+  }
+
   type Mutation {
-    createProduct(Varenavn: String!): Product!
+    # createProduct(Varenavn: String!): Product!
+    helloWorld(hello: String!): String!
+    addReview(review: Review!): ReviewResponse!
   }
 `;

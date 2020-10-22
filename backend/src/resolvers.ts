@@ -4,6 +4,8 @@ import { Product } from "./models/Product";
 import { WhiteWine } from "./models/WhiteWine";
 
 import withAuth from "graphql-auth";
+// import { Review } from "./models/User";
+import { IReview, Review } from "./models/Review";
 
 export const resolvers = {
   Query: {
@@ -64,6 +66,33 @@ export const resolvers = {
       await Product.find().byType(type),
     nameProduct: async (_: any, { name }: any) =>
       await Product.find().byName(name),
+  },
+
+  Mutation: {
+    addReview: async (_: any, { review }: any) => {
+      console.log(review.user.email);
+      console.log(review.title);
+      console.log(review.description);
+      console.log(review.rating);
+      return {
+        status: 200,
+        description: review.title,
+        user: review.user.email,
+      };
+    },
+    helloWorld: (_: any, { hello }: any) => {
+      return hello;
+
+      return new Number(123);
+
+      const review = new Review({
+        user: "Ole August",
+        title: "Fett",
+        description: "Nice beer",
+        rating: 3,
+      });
+      return review;
+    },
   },
 
   /*
