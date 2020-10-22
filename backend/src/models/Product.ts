@@ -4,8 +4,8 @@ interface InterfaceProduct extends Document {
   Varenavn: string;
   Varenummer: string;
   Varetype: string;
-  Volum: string;
-  Pris: string;
+  Volum: number;
+  Pris: number;
   Produsent: string;
   Land: string;
 }
@@ -14,8 +14,8 @@ const ProductSchema = new Schema({
   Varenavn: String,
   Varenummer: String,
   Varetype: String,
-  Volum: String,
-  Pris: String,
+  Volum: Number,
+  Pris: Number,
   Produsent: String,
   Land: String,
 });
@@ -23,5 +23,5 @@ const ProductSchema = new Schema({
 export const Product = mongoose.model<InterfaceProduct>(
   "Product",
   ProductSchema,
-  "assortment"
+  "updated_assortment"
 );

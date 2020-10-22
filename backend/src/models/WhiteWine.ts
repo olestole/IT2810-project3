@@ -20,4 +20,4 @@ const WhiteWineSchema = new Schema({
   Distrikt: String,
 });
 
-export const WhiteWine = mongoose.model<IWhiteWines>("WhiteWine", WhiteWineSchema, "assortment");
+export const WhiteWine = mongoose.model<IWhiteWines>("WhiteWine", WhiteWineSchema, "updated_assortment");
