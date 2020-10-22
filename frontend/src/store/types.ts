@@ -2,6 +2,8 @@ export type AppState = {
   count: number;
   searchText: string;
   filterOptions: FilterOptions;
+  modalOpen: boolean;
+  currentProduct?: Product | null;
 };
 
 export type FilterOptions = {
@@ -11,7 +13,7 @@ export type FilterOptions = {
   maxVolum: number;
   minPrice: number;
   maxPrice: number;
-}
+};
 
 export type Kategorier = {
   [key: string]: boolean;
@@ -24,4 +26,4 @@ export type Kategorier = {
   brennevin: boolean;
   alkoholfritt: boolean;
   annet: boolean;
-}
+};

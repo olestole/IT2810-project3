@@ -1,66 +1,56 @@
-import { gql, useLazyQuery, useQuery } from '@apollo/client';
 import React from 'react';
+import { DetailView } from 'components/Detail';
+import { gql, useQuery } from '@apollo/client';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
-import { decrement, increment } from 'store/action';
+import { setCurrentProduct } from 'store/action';
 import { AppState } from 'store/types';
-import { makeQuery } from 'utils/client';
+import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
-const GET_WHITE_WINES = gql`
-  query Query {
-    whiteWines {
-      Varenavn
-      Land
-      Distrikt
-    }
-  }
-`;
+import { useAuth0 } from '@auth0/auth0-react';
+import ProductReview from 'components/Detail/ProductReview/ProductReview';
 
 const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
     singleProduct(productNumber: $number) {
-      Varenavn
       Varenummer
+      Varenavn
+      Volum
+      Pris
+      Varetype
+      Farge
+      Lukt
+      Smak
+      Land
+      Produsent
     }
   }
 `;
 
 const Detail = () => {
+  const { isAuthenticated, user } = useAuth0();
   const location = useLocation();
+  const dispatch = useDispatch();
   const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, { variables: { number: location.pathname.substr(1) } });
 
-  // REDUX BELOW
-  const dispatch = useDispatch();
-  const count: number = useSelector((state: AppState) => state.count);
-
-  const dispatchIncrement = (e: any) => {
-    e.preventDefault();
-    dispatch(increment());
-  };
-  const dispatchDecrement = (e: any) => {
-    e.preventDefault();
-    dispatch(decrement());
-  };
-  // REDUX ABOVE
-
   //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
-  if (loading) return <p>Loading ...</p>;
-
+  if (loading) return <LoadingIndicator />;
+  if (error) {
+    console.log(error);
+    return <h1>ERROR</h1>;
+  }
   if (data && data.singleProduct) {
-    console.log(data.singleProduct);
+    dispatch(setCurrentProduct(data.singleProduct as Product));
   }
 
-  return (
+  return data ? (
     <div>
-      <h1>Detail</h1>
-      <h1>Count: {count}</h1>
-      <button onClick={dispatchIncrement}>INCREMENT</button>
-      <button onClick={dispatchDecrement}>DECREMENT</button>
-      <h3>{data.singleProduct.Varenavn}</h3>
-      <h3>{data.singleProduct.Varetype}</h3>
+      <DetailView product={data.singleProduct} />
+      <ProductReview />
     </div>
+  ) : (
+    <h1>Noe feil har skjedd</h1>
   );
 };
 
 export default Detail;
-

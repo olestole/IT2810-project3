@@ -4,10 +4,18 @@ export const typeDefs = gql`
   type Query {
     products: [Product!]!
     whiteWines: [Wine!]!
-    singleProduct(productNumber: String!): [Product!]
+    singleProduct(productNumber: String!): Product
     startProducts(startIndex: Int!): [Product!]!
-    searchProducts(searchSequence: String!): [Product!]! 
-    filterProducts(varetyper: [String]!, prisgt: Float!, prisls: Float!, volumgt: Float!, volumls: Float!): [Product!]! 
+    searchProducts(searchSequence: String!): [Product!]!
+    filterProducts(
+      varetyper: [String]!
+      prisgt: Float!
+      prisls: Float!
+      volumgt: Float!
+      volumls: Float!
+    ): [Product!]!
+    typeProduct(type: String!): [Product]
+    nameProduct(name: String!): [Product]
   }
 
   type Product {
@@ -18,6 +26,9 @@ export const typeDefs = gql`
     Pris: String
     Produsent: String
     Land: String
+    Farge: String
+    Lukt: String
+    Smak: String
   }
 
   type Wine {

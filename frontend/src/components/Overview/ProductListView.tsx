@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import { useQuery, InMemoryCache } from '@apollo/client';
+import React, { useEffect, useState } from 'react';
+import { useQuery } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
@@ -11,18 +11,70 @@ import {
   TableSortLabel,
   Paper,
 } from '@material-ui/core';
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { AppState, FilterOptions, Kategorier } from 'store/types';
 import { useSelector } from 'react-redux';
-import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS } from 'components/Overview/seachQueries'
+import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS } from 'components/Overview/seachQueries';
+import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
-let brennevin = ["Akevitt", "Vodka", "Druebrennevin", "Whisky", "Genever", "Gin", "Bitter", "Fruktbrennevin", "Brennevin, annet", "Rom", "Sake", "Brennevin, nøytralt < 37,5 %", "Likør"]
-let annet = ["Spesial", "Mjød", "Sider"]
-let alkoholfritt = ["Alkoholfri musserende drikk", "Alkoholfri most", "Alkoholfri leskedrikk", "Alkoholfri vin", "Alkoholfritt øl", "Alkoholfritt, øvrig"]
-let ol = ["Klosterstil", "Red/amber", "Scotch ale", "Porter & stout", "Saison farmhouse ale", "Hveteøl", "Pale ale", "Mørk lager", "Lys lager" , "Brown ale", "India pale ale", "Lys ale", "Surøl"]
-let annen_vin = [ "Aromatisert vin", "Perlende vin, rosé", "Rosévin", "Perlende vin, rød", "Perlende vin, hvit", "Barley wine", "Fruktvin", "Madeira"]
-let sterk_vin = ["Sherry", "Portvin", "Vermut", "Sterkvin, annen"]
-let musserende_vin = ["Champagne, brut", "Musserende vin, rosé", "Champagne, rosé", "Champagne extra brut", "Champagne, sec", "Champagne, annen"]
+let brennevin = [
+  'Akevitt',
+  'Vodka',
+  'Druebrennevin',
+  'Whisky',
+  'Genever',
+  'Gin',
+  'Bitter',
+  'Fruktbrennevin',
+  'Brennevin, annet',
+  'Rom',
+  'Sake',
+  'Brennevin, nøytralt < 37,5 %',
+  'Likør',
+];
+let annet = ['Spesial', 'Mjød', 'Sider'];
+let alkoholfritt = [
+  'Alkoholfri musserende drikk',
+  'Alkoholfri most',
+  'Alkoholfri leskedrikk',
+  'Alkoholfri vin',
+  'Alkoholfritt øl',
+  'Alkoholfritt, øvrig',
+];
+let ol = [
+  'Klosterstil',
+  'Red/amber',
+  'Scotch ale',
+  'Porter & stout',
+  'Saison farmhouse ale',
+  'Hveteøl',
+  'Pale ale',
+  'Mørk lager',
+  'Lys lager',
+  'Brown ale',
+  'India pale ale',
+  'Lys ale',
+  'Surøl',
+];
+let annen_vin = [
+  'Aromatisert vin',
+  'Perlende vin, rosé',
+  'Rosévin',
+  'Perlende vin, rød',
+  'Perlende vin, hvit',
+  'Barley wine',
+  'Fruktvin',
+  'Madeira',
+];
+let sterk_vin = ['Sherry', 'Portvin', 'Vermut', 'Sterkvin, annen'];
+let musserende_vin = [
+  'Champagne, brut',
+  'Musserende vin, rosé',
+  'Champagne, rosé',
+  'Champagne extra brut',
+  'Champagne, sec',
+  'Champagne, annen',
+];
 
 interface HeaderData {
   Varetype: string;
@@ -147,39 +199,39 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const getProductType = (product: string) => {
-  switch(product) {
-    case 'rodvin': { 
-      return ['Rødvin'] 
-   } 
-   case 'hvitvin': { 
-      return ['Hvitvin']
-   } 
-  case 'musserende_vin': { 
-    return musserende_vin
-  } 
-  case 'sterk_vin': { 
-    return sterk_vin
-  } 
-  case 'annen_vin': { 
-    return annen_vin
-  } 
-  case 'ol': { 
-    return ol
-  } 
-  case 'brennevin': {
-    return brennevin;
+  switch (product) {
+    case 'rodvin': {
+      return ['Rødvin'];
+    }
+    case 'hvitvin': {
+      return ['Hvitvin'];
+    }
+    case 'musserende_vin': {
+      return musserende_vin;
+    }
+    case 'sterk_vin': {
+      return sterk_vin;
+    }
+    case 'annen_vin': {
+      return annen_vin;
+    }
+    case 'ol': {
+      return ol;
+    }
+    case 'brennevin': {
+      return brennevin;
+    }
+    case 'alkoholfritt': {
+      return alkoholfritt;
+    }
+    case 'annet': {
+      return annet;
+    }
+    default: {
+      return ['Rødvin', 'Hvitvin'].concat(musserende_vin, sterk_vin, annen_vin, ol, brennevin, alkoholfritt, annet);
+    }
   }
-  case 'alkoholfritt': { 
-    return alkoholfritt
-  } 
-  case 'annet': { 
-    return annet
-  } 
-  default: { 
-    return ["Rødvin", "Hvitvin"].concat(musserende_vin, sterk_vin, annen_vin, ol, brennevin, alkoholfritt, annet);
-   } 
-  }
-}
+};
 
 const ProductListView = () => {
   const classes = useStyles();
@@ -188,13 +240,12 @@ const ProductListView = () => {
   const [staticMode, setStaticMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
-  const { data, loading, error, fetchMore } =  useQuery(GET_START_PRODUCTS, { variables: { index: 0}});
+  const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, { variables: { index: 0 } });
   const searchText: string = useSelector((state: AppState) => state.searchText);
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
 
-
   useEffect(() => {
-		window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll);
   }, []);
 
   const handleProductClick = (productId: string) => {
@@ -208,33 +259,33 @@ const ProductListView = () => {
   };
 
   const filterGlobalToArray = () => {
-    let filteredArray: string[] = []
-    console.log("FilterArray: ", filteredArray)
+    let filteredArray: string[] = [];
+    console.log('FilterArray: ', filteredArray);
     Object.keys(filterOptions.kategorier).map((key, index) => {
-      if(filterOptions.kategorier[key]) {
-        filteredArray = filteredArray.concat(getProductType(key))
+      if (filterOptions.kategorier[key]) {
+        filteredArray = filteredArray.concat(getProductType(key));
       }
     });
-    filteredArray = filteredArray.length == 0 ? getProductType(""): filteredArray;
-    console.log("CORRECT: ", filteredArray)
+    filteredArray = filteredArray.length == 0 ? getProductType('') : filteredArray;
+    console.log('CORRECT: ', filteredArray);
     return filteredArray;
-  }
-  
+  };
+
   let searchData = (searchText: string) => {
     fetchMore({
       query: SEARCH_PRODUCTS,
       variables: {
-        matchedString: searchText
+        matchedString: searchText,
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          startProducts: [...fetchMoreResult.searchProducts]
+          startProducts: [...fetchMoreResult.searchProducts],
         });
-      }
+      },
     });
     setStaticMode(true);
-  }
+  };
 
   let loadMore = () => {
     /*
@@ -242,77 +293,75 @@ const ProductListView = () => {
     */
     fetchMore({
       variables: {
-        index: data.startProducts.length
+        index: data.startProducts.length,
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts]
+          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
         });
-      }
-    })
-  }
+      },
+    });
+  };
 
   let filterData = (filterArray: string[]) => {
     fetchMore({
       query: FILTER_PRODUCTS,
       variables: {
         typer: filterArray,
-        prisgt: filterOptions.minPrice, 
-        prisls: filterOptions.maxPrice, 
-        volumgt: filterOptions.minVolum, 
+        prisgt: filterOptions.minPrice,
+        prisls: filterOptions.maxPrice,
+        volumgt: filterOptions.minVolum,
         volumls: filterOptions.maxVolum,
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
-          startProducts: [...fetchMoreResult.filterProducts]
+          startProducts: [...fetchMoreResult.filterProducts],
         });
-      }
+      },
     });
     setStaticMode(true);
-  }
+  };
 
   const handleScroll = () => {
-		if (
-			Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
-			isFetching
-		)
+    if (
+      Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
+      isFetching
+    )
       return;
     setIsFetching(true);
-	};
-  
+  };
+
   useEffect(() => {
-		if (!isFetching || staticMode) return;
+    if (!isFetching || staticMode) return;
     loadMore();
     setIsFetching(false);
   }, [isFetching]);
 
   useEffect(() => {
-    if (searchText == "") {
-      return ;
-    }
-    else {
-      searchData(searchText)
+    if (searchText == '') {
+      return;
+    } else {
+      searchData(searchText);
     }
   }, [searchText]);
 
   useEffect(() => {
-    console.log("CHANGING")
     if (filterOptions.filterMode === false) {
-      return ;
-    }
-    else {
+      return;
+    } else {
       let filterList = filterGlobalToArray();
-      console.log(filterOptions)
-      filterData(filterList)
+      console.log(filterOptions);
+      filterData(filterList);
     }
-  }, [filterOptions])
-  
-  if (loading) return <p>Loading ...</p>;
-  
+  }, [filterOptions]);
+
+  if (loading) return <LoadingIndicator />;
+  if (error) return <h1>ERROR</h1>;
+
   if (data && data.startProducts) {
-    console.log("D: ", data.startProducts);
+    console.log('D: ', data.startProducts);
   }
 
   return (
@@ -328,21 +377,20 @@ const ProductListView = () => {
               rowCount={data.startProducts.length}
             />
             <TableBody>
-              {stableSort(data.startProducts, getComparator(order, orderBy))
-                .map((row, index) => {
-                  const labelId = `enhanced-table-checkbox-${index}`;
-                  return (
-                    <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
-                      <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
-                        {row.Varenavn}
-                      </TableCell>
-                      <TableCell align="right">{row.Varetype}</TableCell>
-                      <TableCell align="right">{row.Volum}</TableCell>
-                      <TableCell align="right">{row.Pris}</TableCell>
-                      <TableCell align="right">{row.Produsent}</TableCell>
-                    </TableRow>
-                  );
-                })}
+              {stableSort(data.startProducts, getComparator(order, orderBy)).map((row, index) => {
+                const labelId = `enhanced-table-checkbox-${index}`;
+                return (
+                  <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
+                    <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
+                      {row.Varenavn}
+                    </TableCell>
+                    <TableCell align="right">{row.Varetype}</TableCell>
+                    <TableCell align="right">{row.Volum}</TableCell>
+                    <TableCell align="right">{row.Pris}</TableCell>
+                    <TableCell align="right">{row.Produsent}</TableCell>
+                  </TableRow>
+                );
+              })}
             </TableBody>
           </Table>
         </TableContainer>
