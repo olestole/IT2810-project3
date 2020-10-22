@@ -15,6 +15,7 @@ import { useHistory } from 'react-router-dom';
 import { AppState } from 'store/types';
 import { useSelector } from 'react-redux';
 import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
+import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
 interface HeaderData {
   Varetype: string;
@@ -219,7 +220,7 @@ const ProductListView = () => {
     }
   }, [searchText]);
 
-  if (loading) return <p>Loading ...</p>;
+  if (loading) return <LoadingIndicator />;
   if (error) return <h1>ERROR</h1>;
 
   if (data && data.startProducts) {

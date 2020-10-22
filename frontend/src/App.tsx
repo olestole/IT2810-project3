@@ -7,6 +7,7 @@ import Router from 'pages/Router';
 import { BrowserRouter } from 'react-router-dom';
 import ApolloWrapper from 'utils/ApolloWrapper';
 import './App.css';
+import { CustomToastContainer } from 'components/Shared/FeedbackToast';
 
 function App() {
   console.log(process.env.AUTH0_DOMAIN);
@@ -22,6 +23,7 @@ function App() {
       <ApolloWrapper>
         <BrowserRouter>
           <Provider store={store}>
+            <CustomToastContainer />
             <Header />
             <Router />
           </Provider>

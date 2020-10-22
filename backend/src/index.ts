@@ -5,6 +5,8 @@ import { resolvers } from "./resolvers";
 import { typeDefs } from "./typeDefs";
 import { verifyToken } from "./utils/verifyToken";
 
+import { User } from "./models/User";
+
 // Preload environment variables from .env
 require("dotenv").config();
 
@@ -31,6 +33,10 @@ const startServer = async () => {
       } catch (error) {
         console.log(error);
       }
+      // user = new User({
+      //   name: "Test123",
+      // });
+      // await user.save();
       return { ...rest, req, auth: { user, isAuthenticated } };
     },
   });

@@ -1,12 +1,18 @@
 import { createStore, combineReducers, Store } from 'redux';
-import { decrement, increment, setSearchText } from './action';
+import { decrement, increment, setSearchText, setCurrentProduct, setModalOpen } from './action';
 import { AppState } from './types';
 
-type Actions = ReturnType<typeof increment> | ReturnType<typeof decrement> | ReturnType<typeof setSearchText>;
+type Actions =
+  | ReturnType<typeof increment>
+  | ReturnType<typeof decrement>
+  | ReturnType<typeof setSearchText>
+  | ReturnType<typeof setCurrentProduct>
+  | ReturnType<typeof setModalOpen>;
 
 const initialAppState: AppState = {
   count: 0,
-  searchText: "",
+  searchText: '',
+  modalOpen: false,
 };
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
@@ -24,7 +30,17 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
     case 'SET_SEARCH_TEXT':
       return {
         ...state,
-        searchText: action.payload
+        searchText: action.payload,
+      };
+    case 'SET_CURRENT_PRODUCT':
+      return {
+        ...state,
+        currentProduct: action.payload,
+      };
+    case 'SET_MODAL_OPEN':
+      return {
+        ...state,
+        modalOpen: action.payload,
       };
     default:
       neverReached(action);
