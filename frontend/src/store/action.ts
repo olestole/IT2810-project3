@@ -10,6 +10,13 @@ export const decrement = () => {
   } as const;
 };
 
+export const setFilterMode = (boolValue: boolean) => {
+  return {
+    type: 'FILTER_MODE',
+    payload: boolValue
+  } as const;
+};
+
 export const setSearchText = (text: string) => {
   return {
     type: 'SET_SEARCH_TEXT',
@@ -28,5 +35,30 @@ export const setModalOpen = (value: boolean) => {
   return {
     type: 'SET_MODAL_OPEN',
     payload: value,
+  } as const;
+};
+
+
+interface fieldAndBool {
+  field: string;
+  value: boolean;
+}
+
+export const filter = (filterAndBool: fieldAndBool) => {
+  return {
+    type: 'FILTER',
+    payload: filterAndBool
+  } as const;
+};
+
+interface fieldAndNumber {
+  field: string;
+  value: number;
+}
+
+export const filterVolumAndPrice = (fieldAndNumber: fieldAndNumber) => {
+  return {
+    type: 'FILTER_RANGE',
+    payload: fieldAndNumber
   } as const;
 };

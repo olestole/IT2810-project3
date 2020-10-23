@@ -7,6 +7,13 @@ export const typeDefs = gql`
     singleProduct(productNumber: String!): Product
     startProducts(startIndex: Int!): [Product!]!
     searchProducts(searchSequence: String!): [Product!]!
+    filterProducts(
+      varetyper: [String]!
+      prisgt: Float!
+      prisls: Float!
+      volumgt: Float!
+      volumls: Float!
+    ): [Product!]!
     typeProduct(type: String!): [Product]
     nameProduct(name: String!): [Product]
   }

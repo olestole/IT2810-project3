@@ -35,7 +35,10 @@ const Detail = () => {
 
   //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
   if (loading) return <LoadingIndicator />;
-  if (error) return <h1>ERROR</h1>;
+  if (error) {
+    console.log(error);
+    return <h1>ERROR</h1>;
+  }
   if (data && data.singleProduct) {
     dispatch(setCurrentProduct(data.singleProduct as Product));
   }

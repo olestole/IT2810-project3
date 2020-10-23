@@ -2,6 +2,7 @@ import React from 'react';
 import { gql, useQuery } from '@apollo/client';
 import { ProductListView } from 'components/Overview';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
+import Sidebar from 'components/Shared/Sidebar';
 
 const GET_WHITE_WINES = gql`
   query Query {
@@ -30,6 +31,7 @@ const Overview = () => {
 
   return (
     <div className="container">
+      <Sidebar />
       <ProductListView />
     </div>
   );

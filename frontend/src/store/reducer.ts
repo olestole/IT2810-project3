@@ -1,19 +1,50 @@
 import { createStore, combineReducers, Store } from 'redux';
-import { decrement, increment, setSearchText, setCurrentProduct, setModalOpen } from './action';
-import { AppState } from './types';
+import {
+  decrement,
+  increment,
+  setSearchText,
+  filter,
+  filterVolumAndPrice,
+  setFilterMode,
+  setCurrentProduct,
+  setModalOpen,
+} from './action';
+import { AppState, FilterOptions } from './types';
+
+const initialAppState: AppState = {
+  count: 0,
+  searchText: '',
+  modalOpen: false,
+  filterOptions: {
+    filterMode: false,
+    kategorier: {
+      rodvin: false,
+      hvitvin: false,
+      musserende_vin: false,
+      sterk_vin: false,
+      annen_vin: false,
+      ol: false,
+      brennevin: false,
+      alkoholfritt: false,
+      annet: false,
+    },
+    minVolum: 0,
+    maxVolum: 10,
+    minPrice: 0,
+    maxPrice: 2000000,
+  },
+};
 
 type Actions =
   | ReturnType<typeof increment>
   | ReturnType<typeof decrement>
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof setCurrentProduct>
-  | ReturnType<typeof setModalOpen>;
-
-const initialAppState: AppState = {
-  count: 0,
-  searchText: '',
-  modalOpen: false,
-};
+  | ReturnType<typeof setModalOpen>
+  | ReturnType<typeof setFilterMode>
+  | ReturnType<typeof setSearchText>
+  | ReturnType<typeof filter>
+  | ReturnType<typeof filterVolumAndPrice>;
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
   switch (action.type) {
@@ -26,6 +57,14 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
       return {
         ...state,
         count: state.count - 1,
+      };
+    case 'FILTER_MODE':
+      return {
+        ...state,
+        filterOptions: {
+          ...state.filterOptions,
+          filterMode: action.payload,
+        },
       };
     case 'SET_SEARCH_TEXT':
       return {
@@ -41,6 +80,25 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
       return {
         ...state,
         modalOpen: action.payload,
+      };
+    case 'FILTER':
+      return {
+        ...state,
+        filterOptions: {
+          ...state.filterOptions,
+          kategorier: {
+            ...state.filterOptions.kategorier,
+            [action.payload.field]: action.payload.value,
+          },
+        },
+      };
+    case 'FILTER_RANGE':
+      return {
+        ...state,
+        filterOptions: {
+          ...state.filterOptions,
+          [action.payload.field]: action.payload.value,
+        },
       };
     default:
       neverReached(action);

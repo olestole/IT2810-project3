@@ -12,10 +12,69 @@ import {
   Paper,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { AppState } from 'store/types';
+import { AppState, FilterOptions, Kategorier } from 'store/types';
 import { useSelector } from 'react-redux';
-import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
+import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS } from 'components/Overview/seachQueries';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
+
+let brennevin = [
+  'Akevitt',
+  'Vodka',
+  'Druebrennevin',
+  'Whisky',
+  'Genever',
+  'Gin',
+  'Bitter',
+  'Fruktbrennevin',
+  'Brennevin, annet',
+  'Rom',
+  'Sake',
+  'Brennevin, nøytralt < 37,5 %',
+  'Likør',
+];
+let annet = ['Spesial', 'Mjød', 'Sider'];
+let alkoholfritt = [
+  'Alkoholfri musserende drikk',
+  'Alkoholfri most',
+  'Alkoholfri leskedrikk',
+  'Alkoholfri vin',
+  'Alkoholfritt øl',
+  'Alkoholfritt, øvrig',
+];
+let ol = [
+  'Klosterstil',
+  'Red/amber',
+  'Scotch ale',
+  'Porter & stout',
+  'Saison farmhouse ale',
+  'Hveteøl',
+  'Pale ale',
+  'Mørk lager',
+  'Lys lager',
+  'Brown ale',
+  'India pale ale',
+  'Lys ale',
+  'Surøl',
+];
+let annen_vin = [
+  'Aromatisert vin',
+  'Perlende vin, rosé',
+  'Rosévin',
+  'Perlende vin, rød',
+  'Perlende vin, hvit',
+  'Barley wine',
+  'Fruktvin',
+  'Madeira',
+];
+let sterk_vin = ['Sherry', 'Portvin', 'Vermut', 'Sterkvin, annen'];
+let musserende_vin = [
+  'Champagne, brut',
+  'Musserende vin, rosé',
+  'Champagne, rosé',
+  'Champagne extra brut',
+  'Champagne, sec',
+  'Champagne, annen',
+];
 
 interface HeaderData {
   Varetype: string;
@@ -139,15 +198,51 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
+const getProductType = (product: string) => {
+  switch (product) {
+    case 'rodvin': {
+      return ['Rødvin'];
+    }
+    case 'hvitvin': {
+      return ['Hvitvin'];
+    }
+    case 'musserende_vin': {
+      return musserende_vin;
+    }
+    case 'sterk_vin': {
+      return sterk_vin;
+    }
+    case 'annen_vin': {
+      return annen_vin;
+    }
+    case 'ol': {
+      return ol;
+    }
+    case 'brennevin': {
+      return brennevin;
+    }
+    case 'alkoholfritt': {
+      return alkoholfritt;
+    }
+    case 'annet': {
+      return annet;
+    }
+    default: {
+      return ['Rødvin', 'Hvitvin'].concat(musserende_vin, sterk_vin, annen_vin, ol, brennevin, alkoholfritt, annet);
+    }
+  }
+};
+
 const ProductListView = () => {
   const classes = useStyles();
   const history = useHistory();
   const [isFetching, setIsFetching] = useState<Boolean>(false);
-  const [searchMode, setSearchMode] = useState<Boolean>(false);
+  const [staticMode, setStaticMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
   const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, { variables: { index: 0 } });
   const searchText: string = useSelector((state: AppState) => state.searchText);
+  let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -163,6 +258,19 @@ const ProductListView = () => {
     setOrderBy(property);
   };
 
+  const filterGlobalToArray = () => {
+    let filteredArray: string[] = [];
+    console.log('FilterArray: ', filteredArray);
+    Object.keys(filterOptions.kategorier).map((key, index) => {
+      if (filterOptions.kategorier[key]) {
+        filteredArray = filteredArray.concat(getProductType(key));
+      }
+    });
+    filteredArray = filteredArray.length == 0 ? getProductType('') : filteredArray;
+    console.log('CORRECT: ', filteredArray);
+    return filteredArray;
+  };
+
   let searchData = (searchText: string) => {
     fetchMore({
       query: SEARCH_PRODUCTS,
@@ -176,7 +284,7 @@ const ProductListView = () => {
         });
       },
     });
-    setSearchMode(true);
+    setStaticMode(true);
   };
 
   let loadMore = () => {
@@ -196,6 +304,26 @@ const ProductListView = () => {
     });
   };
 
+  let filterData = (filterArray: string[]) => {
+    fetchMore({
+      query: FILTER_PRODUCTS,
+      variables: {
+        typer: filterArray,
+        prisgt: filterOptions.minPrice,
+        prisls: filterOptions.maxPrice,
+        volumgt: filterOptions.minVolum,
+        volumls: filterOptions.maxVolum,
+      },
+      updateQuery: (prev: any, { fetchMoreResult }) => {
+        if (!fetchMoreResult) return prev;
+        return Object.assign({}, prev, {
+          startProducts: [...fetchMoreResult.filterProducts],
+        });
+      },
+    });
+    setStaticMode(true);
+  };
+
   const handleScroll = () => {
     if (
       Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
@@ -203,11 +331,10 @@ const ProductListView = () => {
     )
       return;
     setIsFetching(true);
-    console.log(isFetching);
   };
 
   useEffect(() => {
-    if (!isFetching || searchMode) return;
+    if (!isFetching || staticMode) return;
     loadMore();
     setIsFetching(false);
   }, [isFetching]);
@@ -219,6 +346,16 @@ const ProductListView = () => {
       searchData(searchText);
     }
   }, [searchText]);
+
+  useEffect(() => {
+    if (filterOptions.filterMode === false) {
+      return;
+    } else {
+      let filterList = filterGlobalToArray();
+      console.log(filterOptions);
+      filterData(filterList);
+    }
+  }, [filterOptions]);
 
   if (loading) return <LoadingIndicator />;
   if (error) return <h1>ERROR</h1>;

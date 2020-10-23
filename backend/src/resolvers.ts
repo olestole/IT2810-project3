@@ -1,5 +1,4 @@
 import { AuthenticationError } from "apollo-server-express";
-import { Cat } from "./models/Cat";
 import { Product } from "./models/Product";
 import { WhiteWine } from "./models/WhiteWine";
 
@@ -9,14 +8,12 @@ export const resolvers = {
   Query: {
     products: async () => {
       //let products = await Product.find({}).skip(2).limit(4).exec()
-      let products = await Product.find({ Volum: { $ne: "0,00" } })
-        .limit(10)
-        .exec();
+      let products = await Product.find().limit(10).exec();
       return products;
     },
     startProducts: async (_: any, { startIndex }: any) => {
       //let products = await Product.find({}).skip(2).limit(4).exec()
-      let products = await Product.find({ Volum: { $ne: "0,00" } })
+      let products = await Product.find({ Volum: { $ne: 0.0 } })
         .skip(startIndex)
         .limit(20)
         .exec();
@@ -28,6 +25,28 @@ export const resolvers = {
         .exec();
       return whiteWines;
     },
+    // singleProduct: async (_: any, { productNumber }: any) => {
+    //   // if (!isAuthenticated) {
+    //   //   throw new AuthenticationError("Not logged in!");
+    //   // }
+    //   return (await Product.find({ Varenummer: productNumber })).length > 0
+    //     ? (await Product.find({ Varenummer: productNumber }))[0]
+    //     : null;
+    // },
+    // singleProduct: async (_ :any, { productNumber }: any) => await Product.find({Varenummer: productNumber}),
+    searchProducts: async (_: any, { searchSequence }: any) =>
+      await Product.find({
+        Varenavn: { $regex: searchSequence, $options: "i" },
+      }).limit(200),
+    filterProducts: async (
+      _: any,
+      { varetyper, prisgt, prisls, volumgt, volumls }: any
+    ) =>
+      await Product.find({
+        Varetype: { $in: varetyper },
+        Pris: { $gte: prisgt, $lte: prisls },
+        Volum: { $gte: volumgt, $lte: volumls },
+      }).limit(200),
     singleProduct: async (_: any, { productNumber }: any) => {
       // if (!isAuthenticated) {
       //   throw new AuthenticationError("Not logged in!");
@@ -36,14 +55,6 @@ export const resolvers = {
         ? (await Product.find({ Varenummer: productNumber }))[0]
         : null;
     },
-    // singleProduct: withAuth(async (_: any, { productNumber }: any) => {
-    //   // if (!isAuthenticated) {
-    //   //   throw new AuthenticationError("Not logged in!");
-    //   // }
-    //   return (await Product.find({ Varenummer: productNumber })).length > 0
-    //     ? (await Product.find({ Varenummer: productNumber }))[0]
-    //     : null;
-    // }),
     // singleProduct: async (
     //   _: any,
     //   { productNumber }: any,
@@ -56,10 +67,11 @@ export const resolvers = {
     //     ? (await Product.find({ Varenummer: productNumber }))[0]
     //     : null;
     // },
-    searchProducts: async (_: any, { searchSequence }: any) =>
-      await Product.find({
-        Varenavn: { $regex: searchSequence, $options: "i" },
-      }).limit(200),
+    // searchProducts: async (_: any, { searchSequence }: any) =>
+    //   await Product.find({
+    //     Varenavn: { $regex: searchSequence, $options: "i" },
+    //   }).limit(200),
+
     typeProduct: async (_: any, { type }: any) =>
       await Product.find().byType(type),
     nameProduct: async (_: any, { name }: any) =>
