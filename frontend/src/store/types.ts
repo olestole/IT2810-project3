@@ -4,6 +4,7 @@ export type AppState = {
   filterOptions: FilterOptions;
   modalOpen: boolean;
   currentProduct?: Product | null;
+  viewMode: ViewMode;
 };
 
 export type FilterOptions = {
@@ -26,4 +27,13 @@ export type Kategorier = {
   brennevin: boolean;
   alkoholfritt: boolean;
   annet: boolean;
+};
+
+export type ViewMode = {
+  startMode: boolean;
+  searchMode: boolean;
+  filterMode: boolean;
+  initialLoad: boolean;
+  initialSearch: boolean;
+  initialFilter: boolean;
 };

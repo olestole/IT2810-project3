@@ -8,6 +8,7 @@ import {
   setFilterMode,
   setCurrentProduct,
   setModalOpen,
+  updateViewMode,
 } from './action';
 import { AppState, FilterOptions } from './types';
 
@@ -33,6 +34,14 @@ const initialAppState: AppState = {
     minPrice: 0,
     maxPrice: 2000000,
   },
+  viewMode: {
+    startMode: true,
+    searchMode: false,
+    filterMode: false,
+    initialLoad: false,
+    initialSearch: true,
+    initialFilter: true,
+  },
 };
 
 type Actions =
@@ -44,7 +53,8 @@ type Actions =
   | ReturnType<typeof setFilterMode>
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof filter>
-  | ReturnType<typeof filterVolumAndPrice>;
+  | ReturnType<typeof filterVolumAndPrice>
+  | ReturnType<typeof updateViewMode>;
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
   switch (action.type) {
@@ -97,6 +107,14 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
         ...state,
         filterOptions: {
           ...state.filterOptions,
+          [action.payload.field]: action.payload.value,
+        },
+      };
+    case 'UPDATE_VIEW_MODE':
+      return {
+        ...state,
+        viewMode: {
+          ...state.viewMode,
           [action.payload.field]: action.payload.value,
         },
       };

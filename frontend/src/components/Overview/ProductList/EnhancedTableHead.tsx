@@ -1,0 +1,124 @@
+import React, { useEffect, useState } from 'react';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  TableSortLabel,
+  Paper,
+} from '@material-ui/core';
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    visuallyHidden: {
+      border: 0,
+      clip: 'rect(0 0 0 0)',
+      height: 1,
+      margin: -1,
+      overflow: 'hidden',
+      padding: 0,
+      position: 'absolute',
+      top: 20,
+      width: 1,
+    },
+  }),
+);
+
+export interface HeaderData {
+  Varetype: string;
+  Volum: string;
+  Pris: string;
+  Varenavn: string;
+  Varenummer: string;
+  Produsent: string;
+}
+
+function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+export type Order = 'asc' | 'desc';
+
+export function getComparator<Key extends keyof any>(
+  order: Order,
+  orderBy: Key,
+): (a: { [key in Key]: string }, b: { [key in Key]: string }) => number {
+  return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+}
+
+export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
+  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
+  stabilizedThis.sort((a, b) => {
+    const order = comparator(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+  return stabilizedThis.map((el) => el[0]);
+}
+
+interface HeadCell {
+  id: keyof HeaderData;
+  label: string;
+  numeric: boolean;
+}
+
+const headCells: HeadCell[] = [
+  { id: 'Varenavn', numeric: false, label: 'Varenavn' },
+  { id: 'Varetype', numeric: true, label: 'Varetype' },
+  { id: 'Volum', numeric: true, label: 'Volum' },
+  { id: 'Pris', numeric: true, label: 'Pris' },
+  { id: 'Produsent', numeric: true, label: 'Produsent' },
+];
+
+interface EnhancedTableProps {
+  classes: ReturnType<typeof useStyles>;
+  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof HeaderData) => void;
+  order: Order;
+  orderBy: string;
+  rowCount: number;
+}
+
+export const EnhancedTableHead = (props: EnhancedTableProps) => {
+  const { classes, order, orderBy, onRequestSort } = props;
+  const createSortHandler = (property: keyof HeaderData) => (event: React.MouseEvent<unknown>) => {
+    onRequestSort(event, property);
+  };
+
+  return (
+    <TableHead>
+      <TableRow>
+        {headCells.map((headCell) => (
+          <TableCell
+            key={headCell.id}
+            align={headCell.numeric ? 'right' : 'left'}
+            sortDirection={orderBy === headCell.id ? order : false}
+          >
+            <TableSortLabel
+              active={orderBy === headCell.id}
+              direction={orderBy === headCell.id ? order : 'asc'}
+              onClick={createSortHandler(headCell.id)}
+            >
+              {headCell.label}
+              {orderBy === headCell.id ? (
+                <span className={classes.visuallyHidden}>
+                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
+                </span>
+              ) : null}
+            </TableSortLabel>
+          </TableCell>
+        ))}
+      </TableRow>
+    </TableHead>
+  );
+};

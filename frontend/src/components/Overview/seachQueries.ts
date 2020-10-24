@@ -14,8 +14,8 @@ export const GET_START_PRODUCTS = gql`
 `;
 
 export const SEARCH_PRODUCTS = gql`
-  query Query($matchedString: String!) {
-    searchProducts(searchSequence: $matchedString) {
+  query Query($matchedString: String!, $searchIndex: Int!) {
+    searchProducts(searchSequence: $matchedString, index: $searchIndex) {
       Varenavn
       Varetype
       Varenummer
@@ -27,8 +27,22 @@ export const SEARCH_PRODUCTS = gql`
 `;
 
 export const FILTER_PRODUCTS = gql`
-  query Query($typer: [String]!, $prisgt: Float!, $prisls: Float!, $volumgt: Float!, $volumls: Float!) {
-    filterProducts(varetyper: $typer, prisgt: $prisgt, prisls: $prisls, volumgt: $volumgt, volumls: $volumls) {
+  query Query(
+    $typer: [String]!
+    $prisgt: Float!
+    $prisls: Float!
+    $volumgt: Float!
+    $volumls: Float!
+    $filterIndex: Int!
+  ) {
+    filterProducts(
+      varetyper: $typer
+      prisgt: $prisgt
+      prisls: $prisls
+      volumgt: $volumgt
+      volumls: $volumls
+      index: $filterIndex
+    ) {
       Varenavn
       Varetype
       Varenummer

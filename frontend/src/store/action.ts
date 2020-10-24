@@ -13,7 +13,7 @@ export const decrement = () => {
 export const setFilterMode = (boolValue: boolean) => {
   return {
     type: 'FILTER_MODE',
-    payload: boolValue
+    payload: boolValue,
   } as const;
 };
 
@@ -38,7 +38,6 @@ export const setModalOpen = (value: boolean) => {
   } as const;
 };
 
-
 interface fieldAndBool {
   field: string;
   value: boolean;
@@ -47,7 +46,7 @@ interface fieldAndBool {
 export const filter = (filterAndBool: fieldAndBool) => {
   return {
     type: 'FILTER',
-    payload: filterAndBool
+    payload: filterAndBool,
   } as const;
 };
 
@@ -59,6 +58,13 @@ interface fieldAndNumber {
 export const filterVolumAndPrice = (fieldAndNumber: fieldAndNumber) => {
   return {
     type: 'FILTER_RANGE',
-    payload: fieldAndNumber
+    payload: fieldAndNumber,
+  } as const;
+};
+
+export const updateViewMode = (filterAndBool: fieldAndBool) => {
+  return {
+    type: 'UPDATE_VIEW_MODE',
+    payload: filterAndBool,
   } as const;
 };

@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setCurrentProduct } from 'store/action';
+import { setCurrentProduct, updateViewMode } from 'store/action';
 import './logo.css';
 
 const useStyles = makeStyles((theme: Theme) =>

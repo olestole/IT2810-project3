@@ -1,4 +1,16 @@
-import { Checkbox, Collapse, Divider, FormControlLabel, FormGroup, List, ListItem, ListItemIcon, ListItemText, Slider, Typography } from '@material-ui/core';
+import {
+  Checkbox,
+  Collapse,
+  Divider,
+  FormControlLabel,
+  FormGroup,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Slider,
+  Typography,
+} from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import AttachMoney from '@material-ui/icons/AttachMoney';
 import IconDashboard from '@material-ui/icons/Dashboard';
@@ -7,13 +19,13 @@ import IconExpandMore from '@material-ui/icons/ExpandMore';
 import LocalDrink from '@material-ui/icons/LocalDrink';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filter, filterVolumAndPrice, setFilterMode } from 'store/action';
+import { filter, filterVolumAndPrice, setFilterMode, updateViewMode } from 'store/action';
 import { AppState, FilterOptions } from 'store/types';
 import './sidebar.css';
 
-const drawerWidth = 240
+const drawerWidth = 240;
 
-const useStyles = makeStyles(theme =>
+const useStyles = makeStyles((theme) =>
   createStyles({
     appMenu: {
       width: '100%',
@@ -33,17 +45,17 @@ const useStyles = makeStyles(theme =>
       justifyContent: 'center',
       alignItems: 'auto',
       position: 'relative',
-    }
+    },
   }),
-)
+);
 
 let Sidebar = () => {
-  const classes = useStyles()
-  const [volumRange, setVolumeRange] = React.useState<number[]>([0,6])
-  const [priceRange, setPriceRange] = React.useState<number[]>([0,50000])
-  const [openCategory, setOpenCategory] = React.useState<boolean>(false)
-  const [openVolume, setOpenVolume] = React.useState<boolean>(false)
-  const [openPrice, setOpenPrice] = React.useState<boolean>(false)
+  const classes = useStyles();
+  const [volumRange, setVolumeRange] = React.useState<number[]>([0, 6]);
+  const [priceRange, setPriceRange] = React.useState<number[]>([0, 50000]);
+  const [openCategory, setOpenCategory] = React.useState<boolean>(false);
+  const [openVolume, setOpenVolume] = React.useState<boolean>(false);
+  const [openPrice, setOpenPrice] = React.useState<boolean>(false);
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
   const dispatch = useDispatch();
 
@@ -62,15 +74,22 @@ let Sidebar = () => {
   };
   */
 
+  let setFilteringMode = () => {
+    dispatch(updateViewMode({ field: 'filterMode', value: true }));
+    dispatch(updateViewMode({ field: 'startMode', value: false }));
+    dispatch(updateViewMode({ field: 'searchMode', value: false }));
+    dispatch(updateViewMode({ field: 'initialFilter', value: true }));
+  };
+
   let handleClick = (func: any, openValue: boolean) => {
-    func(!openValue)
-  }
+    func(!openValue);
+  };
 
   const changePriceRange = (event: any, newValue: number | number[]) => {
     setPriceRange(newValue as number[]);
-    dispatch(dispatch(setFilterMode(true)))
-    dispatch(filterVolumAndPrice({field: "minPrice", value: (newValue as number[])[0]}))
-    dispatch(filterVolumAndPrice({field: "maxPrice", value: (newValue as number[])[1]}))
+    setFilteringMode();
+    dispatch(filterVolumAndPrice({ field: 'minPrice', value: (newValue as number[])[0] }));
+    dispatch(filterVolumAndPrice({ field: 'maxPrice', value: (newValue as number[])[1] }));
   };
 
   const handleLocalPriceChange = (event: any, newValue: number | number[]) => {
@@ -78,9 +97,9 @@ let Sidebar = () => {
   };
 
   const changeVolumeRange = (event: any, newValue: number | number[]) => {
-    dispatch(dispatch(setFilterMode(true)))
-    dispatch(filterVolumAndPrice({field: "minVolum", value: (newValue as number[])[0]}))
-    dispatch(filterVolumAndPrice({field: "maxVolum", value: (newValue as number[])[1]}))
+    setFilteringMode();
+    dispatch(filterVolumAndPrice({ field: 'minVolum', value: (newValue as number[])[0] }));
+    dispatch(filterVolumAndPrice({ field: 'maxVolum', value: (newValue as number[])[1] }));
   };
 
   const handleLocalVolumeChange = (event: any, newValue: number | number[]) => {
@@ -101,59 +120,95 @@ let Sidebar = () => {
         <Collapse in={openCategory} timeout="auto" unmountOnExit>
           <Divider />
           <FormGroup className={classes.formGroup}>
-            <FormControlLabel 
+            <FormControlLabel
+              checked={filterOptions.kategorier.rodvin}
               control={<Checkbox color="primary" />}
-              label={"Rødvin"}
+              label={'Rødvin'}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "rodvin", value: !filterOptions.kategorier.rodvin})); dispatch(setFilterMode(true))}}
-              />
-            <FormControlLabel 
-              control={<Checkbox color="primary" />}
-              label={"Hvitvin"}
-              labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "hvitvin", value: !filterOptions.kategorier.hvitvin})); dispatch(setFilterMode(true))}}
+              onChange={() => {
+                dispatch(filter({ field: 'rodvin', value: !filterOptions.kategorier.rodvin }));
+                setFilteringMode();
+              }}
             />
-            <FormControlLabel 
+            <FormControlLabel
+              checked={filterOptions.kategorier.hvitvin}
               control={<Checkbox color="primary" />}
-              label={"Musserende Vin"}
+              label={'Hvitvin'}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "musserende_vin", value: !filterOptions.kategorier.musserende_vin})); dispatch(setFilterMode(true))}}
+              onChange={() => {
+                dispatch(filter({ field: 'hvitvin', value: !filterOptions.kategorier.hvitvin }));
+                setFilteringMode();
+              }}
             />
-            <FormControlLabel 
+            <FormControlLabel
+              checked={filterOptions.kategorier.musserende_vin}
               control={<Checkbox color="primary" />}
-              label={"Sterk Vin"}
+              label={'Musserende Vin'}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "sterk_vin", value: !filterOptions.kategorier.sterk_vin})); dispatch(setFilterMode(true))}}
+              onChange={() => {
+                dispatch(filter({ field: 'musserende_vin', value: !filterOptions.kategorier.musserende_vin }));
+                setFilteringMode();
+              }}
             />
-            <FormControlLabel 
+            <FormControlLabel
+              checked={filterOptions.kategorier.sterk_vin}
               control={<Checkbox color="primary" />}
-              label={"Annen Vin"}
+              label={'Sterk Vin'}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "annen_vin", value: !filterOptions.kategorier.annen_vin})); dispatch(setFilterMode(true))}}
+              onChange={() => {
+                dispatch(filter({ field: 'sterk_vin', value: !filterOptions.kategorier.sterk_vin }));
+                setFilteringMode();
+              }}
             />
-            <FormControlLabel 
+            <FormControlLabel
+              checked={filterOptions.kategorier.annen_vin}
               control={<Checkbox color="primary" />}
-              label={"Øl"}
+              label={'Annen Vin'}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "ol", value: !filterOptions.kategorier.ol})); dispatch(setFilterMode(true))}}
+              onChange={() => {
+                dispatch(filter({ field: 'annen_vin', value: !filterOptions.kategorier.annen_vin }));
+                setFilteringMode();
+              }}
             />
-            <FormControlLabel 
+            <FormControlLabel
+              checked={filterOptions.kategorier.ol}
               control={<Checkbox color="primary" />}
-              label={"Brennevin"}
+              label={'Øl'}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "brennevin", value: !filterOptions.kategorier.brennevin})); dispatch(setFilterMode(true))}}
+              onChange={() => {
+                dispatch(filter({ field: 'ol', value: !filterOptions.kategorier.ol }));
+                setFilteringMode();
+              }}
             />
-            <FormControlLabel 
+            <FormControlLabel
+              checked={filterOptions.kategorier.brennevin}
               control={<Checkbox color="primary" />}
-              label={"Alkoholfritt"}
+              label={'Brennevin'}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "alkoholfritt", value: !filterOptions.kategorier.alkoholfritt})); dispatch(setFilterMode(true))}}
+              onChange={() => {
+                dispatch(filter({ field: 'brennevin', value: !filterOptions.kategorier.brennevin }));
+                setFilteringMode();
+              }}
             />
-            <FormControlLabel 
+            <FormControlLabel
+              checked={filterOptions.kategorier.alkoholfritt}
               control={<Checkbox color="primary" />}
-              label={"Annet"}
+              label={'Alkoholfritt'}
               labelPlacement="start"
-              onChange={() => {dispatch(filter({field: "annet", value: !filterOptions.kategorier.annet})); dispatch(setFilterMode(true))}}
+              onChange={() => {
+                dispatch(filter({ field: 'alkoholfritt', value: !filterOptions.kategorier.alkoholfritt }));
+                setFilteringMode();
+              }}
+            />
+            <FormControlLabel
+              checked={filterOptions.kategorier.annet}
+              control={<Checkbox color="primary" />}
+              label={'Annet'}
+              labelPlacement="start"
+              onChange={() => {
+                dispatch(filter({ field: 'annet', value: !filterOptions.kategorier.annet }));
+                setFilteringMode();
+              }}
             />
           </FormGroup>
         </Collapse>
@@ -209,11 +264,9 @@ let Sidebar = () => {
             />
           </FormGroup>
         </Collapse>
-
-    </List>
+      </List>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
-
+export default Sidebar;
