@@ -26,11 +26,13 @@ const Logo = () => {
   const dispatch = useDispatch();
 
   const handleBackClick = () => {
+    if (history.location.pathname == '/') {
+      dispatch(updateViewMode({ field: 'filterMode', value: false }));
+      dispatch(updateViewMode({ field: 'startMode', value: true }));
+      dispatch(updateViewMode({ field: 'searchMode', value: false }));
+      dispatch(updateViewMode({ field: 'initialLoad', value: true }));
+    }
     dispatch(setCurrentProduct(null));
-    dispatch(updateViewMode({ field: 'filterMode', value: false }));
-    dispatch(updateViewMode({ field: 'startMode', value: true }));
-    dispatch(updateViewMode({ field: 'searchMode', value: false }));
-    dispatch(updateViewMode({ field: 'initialLoad', value: true }));
     // If the user's already on the overview-page we don't want to add x amount of overview-history to the historystack.
     if (history.location.pathname != '/') {
       history.push('/');
