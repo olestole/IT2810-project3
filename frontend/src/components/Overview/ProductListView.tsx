@@ -82,17 +82,32 @@ const ProductListView = () => {
     fetchMore basically allows you to do a new GraphQL query and merge the result into the original result.
     */
     console.log('RUNNING LOADMORE');
-    fetchMore({
-      variables: {
-        index: data.startProducts.length,
-      },
-      updateQuery: (prev: any, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-        return Object.assign({}, prev, {
-          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
-        });
-      },
-    });
+    if (viewMode.initialLoad) {
+      dispatch(updateViewMode({ field: 'initialLoad', value: false }));
+      fetchMore({
+        variables: {
+          index: 0,
+        },
+        updateQuery: (prev: any, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            startProducts: [...fetchMoreResult.startProducts],
+          });
+        },
+      });
+    } else {
+      fetchMore({
+        variables: {
+          index: data.startProducts.length,
+        },
+        updateQuery: (prev: any, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
+          });
+        },
+      });
+    }
   };
 
   let searchData = (searchText: string) => {
@@ -208,6 +223,15 @@ const ProductListView = () => {
     let filterList = filterGlobalToArray();
     filterData(filterList);
   }, [filterOptions]);
+
+  useEffect(() => {
+    console.log('FIRES');
+    if (!viewMode.initialLoad) {
+      console.log('RETUR NULL');
+      return;
+    }
+    loadMore();
+  }, [viewMode.initialLoad]);
 
   if (loading) return <LoadingIndicator />;
   if (error) return <h1>ERROR</h1>;

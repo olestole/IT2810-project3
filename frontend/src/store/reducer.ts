@@ -39,7 +39,7 @@ const initialAppState: AppState = {
     searchMode: false,
     filterMode: false,
     initialLoad: false,
-    initialSearch: true,
+    initialSearch: false,
     initialFilter: true,
   },
 };
