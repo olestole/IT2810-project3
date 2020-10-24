@@ -66,14 +66,12 @@ const ProductListView = () => {
 
   const filterGlobalToArray = () => {
     let filteredArray: string[] = [];
-    console.log('FilterArray: ', filteredArray);
     Object.keys(filterOptions.kategorier).map((key, index) => {
       if (filterOptions.kategorier[key]) {
         filteredArray = filteredArray.concat(getProductType(key));
       }
     });
     filteredArray = filteredArray.length == 0 ? getProductType('') : filteredArray;
-    console.log('CORRECT: ', filteredArray);
     return filteredArray;
   };
 
@@ -81,7 +79,6 @@ const ProductListView = () => {
     /*
     fetchMore basically allows you to do a new GraphQL query and merge the result into the original result.
     */
-    console.log('RUNNING LOADMORE');
     if (viewMode.initialLoad) {
       dispatch(updateViewMode({ field: 'initialLoad', value: false }));
       fetchMore({
@@ -144,9 +141,7 @@ const ProductListView = () => {
   };
 
   let filterData = (filterArray: string[]) => {
-    console.log(viewMode.initialFilter);
     if (viewMode.initialFilter) {
-      console.log('FETCHING FIRST');
       dispatch(updateViewMode({ field: 'initialFilter', value: false }));
       fetchMore({
         query: FILTER_PRODUCTS,
@@ -166,7 +161,6 @@ const ProductListView = () => {
         },
       });
     } else {
-      console.log('FETCHING MORE');
       fetchMore({
         query: FILTER_PRODUCTS,
         variables: {
@@ -225,9 +219,7 @@ const ProductListView = () => {
   }, [filterOptions]);
 
   useEffect(() => {
-    console.log('FIRES');
     if (!viewMode.initialLoad) {
-      console.log('RETUR NULL');
       return;
     }
     loadMore();
@@ -237,7 +229,7 @@ const ProductListView = () => {
   if (error) return <h1>ERROR</h1>;
 
   if (data && data.startProducts) {
-    //console.log('D: ', data.startProducts);
+    console.log('D: ', data.startProducts);
   }
 
   return (
