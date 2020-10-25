@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ClassAttributes } from 'react';
 import { useQuery } from '@apollo/client';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
 import {
   Table,
   TableBody,
@@ -10,11 +10,14 @@ import {
   TableRow,
   TableSortLabel,
   Paper,
+  Hidden,
+  HiddenProps,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { AppState } from 'store/types';
 import { useSelector } from 'react-redux';
 import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
+
 
 interface HeaderData {
   Varetype: string;
@@ -56,19 +59,60 @@ function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+    },
+    paper: {
+      width: '100%',
+      marginBottom: theme.spacing(2),
+    },
+    table: {
+      
+    },
+    visuallyHidden: {
+      border: 0,
+      clip: 'rect(0 0 0 0)',
+      height: 1,
+      margin: -1,
+      overflow: 'hidden',
+      padding: 0,
+      position: 'absolute',
+      top: 20,
+      width: 1,
+    },
+    produsent: {
+      [theme.breakpoints.down(960)]: {
+        display: 'none',
+      },
+    },
+    pris: {
+      [theme.breakpoints.down(750)]: {
+        display: 'none',
+      },
+    },
+    volum: {
+      [theme.breakpoints.down(500)]: {
+        display: 'none',
+      },
+    },
+  }),
+);
+
+
+
+
+
 interface HeadCell {
   id: keyof HeaderData;
   label: string;
   numeric: boolean;
+  classes: string;
 }
 
-const headCells: HeadCell[] = [
-  { id: 'Varenavn', numeric: false, label: 'Varenavn' },
-  { id: 'Varetype', numeric: true, label: 'Varetype' },
-  { id: 'Volum', numeric: true, label: 'Volum' },
-  { id: 'Pris', numeric: true, label: 'Pris' },
-  { id: 'Produsent', numeric: true, label: 'Produsent' },
-];
+
+
 
 interface EnhancedTableProps {
   classes: ReturnType<typeof useStyles>;
@@ -84,14 +128,25 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     onRequestSort(event, property);
   };
 
+  const headCells: HeadCell[] = [
+    { id: 'Varenavn', numeric: false, label: 'Varenavn', classes: classes.table},
+    { id: 'Varetype', numeric: true, label: 'Varetype', classes: classes.table},
+    { id: 'Volum', numeric: true, label: 'Volum', classes: classes.volum},
+    { id: 'Pris', numeric: true, label: 'Pris', classes: classes.pris},
+    { id: 'Produsent', numeric: true, label: 'Produsent', classes: classes.produsent},
+  ];
+  
+
   return (
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <TableCell
+          <Hidden >
+          <TableCell 
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             sortDirection={orderBy === headCell.id ? order : false}
+            className={headCell.classes}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -106,37 +161,14 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               ) : null}
             </TableSortLabel>
           </TableCell>
+          </Hidden>
         ))}
       </TableRow>
     </TableHead>
   );
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    paper: {
-      width: '100%',
-      marginBottom: theme.spacing(2),
-    },
-    table: {
-      minWidth: 750,
-    },
-    visuallyHidden: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1,
-    },
-  }),
-);
+
 
 const ProductListView = () => {
   const classes = useStyles();
@@ -243,13 +275,13 @@ const ProductListView = () => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
-                    <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
+                    <TableCell component="th" id={labelId}  padding="default" align="left">
                       {row.Varenavn}
                     </TableCell>
                     <TableCell align="right">{row.Varetype}</TableCell>
-                    <TableCell align="right">{row.Volum}</TableCell>
-                    <TableCell align="right">{row.Pris}</TableCell>
-                    <TableCell align="right">{row.Produsent}</TableCell>
+                    <TableCell align="right" className={classes.volum}>{row.Volum}</TableCell>
+                    <TableCell align="right" className={classes.pris}>{row.Pris}</TableCell>
+                    <TableCell align="right" className={classes.produsent}>{row.Produsent} </TableCell>
                   </TableRow>
                 );
               })}
