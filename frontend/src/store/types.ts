@@ -8,7 +8,6 @@ export type AppState = {
 };
 
 export type FilterOptions = {
-  filterMode: boolean;
   kategorier: Kategorier;
   minVolum: number;
   maxVolum: number;
@@ -30,10 +29,10 @@ export type Kategorier = {
 };
 
 export type ViewMode = {
-  startMode: boolean;
-  searchMode: boolean;
-  filterMode: boolean;
+  filterDisplay: FilterDisplay;
   initialLoad: boolean;
   initialSearch: boolean;
   initialFilter: boolean;
 };
+
+export type FilterDisplay = 'startMode' | 'searchMode' | 'filterMode';

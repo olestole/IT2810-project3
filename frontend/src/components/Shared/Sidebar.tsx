@@ -12,6 +12,7 @@ import {
   Typography,
 } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
+import { ViewAgenda } from '@material-ui/icons';
 import AttachMoney from '@material-ui/icons/AttachMoney';
 import IconDashboard from '@material-ui/icons/Dashboard';
 import IconExpandLess from '@material-ui/icons/ExpandLess';
@@ -19,7 +20,7 @@ import IconExpandMore from '@material-ui/icons/ExpandMore';
 import LocalDrink from '@material-ui/icons/LocalDrink';
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filter, filterVolumAndPrice, setFilterMode, updateViewMode } from 'store/action';
+import { filter, filterVolumAndPrice, setFilterMode, updateFilterDisplay, updateViewMode } from 'store/action';
 import { AppState, FilterOptions } from 'store/types';
 import './sidebar.css';
 
@@ -75,9 +76,7 @@ let Sidebar = () => {
   */
 
   let setFilteringMode = () => {
-    dispatch(updateViewMode({ field: 'filterMode', value: true }));
-    dispatch(updateViewMode({ field: 'startMode', value: false }));
-    dispatch(updateViewMode({ field: 'searchMode', value: false }));
+    dispatch(updateFilterDisplay('filterMode'));
     dispatch(updateViewMode({ field: 'initialFilter', value: true }));
   };
 

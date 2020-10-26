@@ -1,3 +1,5 @@
+import { FilterDisplay } from './types';
+
 export const increment = () => {
   return {
     type: 'INCREMENT',
@@ -66,5 +68,12 @@ export const updateViewMode = (filterAndBool: fieldAndBool) => {
   return {
     type: 'UPDATE_VIEW_MODE',
     payload: filterAndBool,
+  } as const;
+};
+
+export const updateFilterDisplay = (value: FilterDisplay) => {
+  return {
+    type: 'UPDATE_FILTER_DISPLAY',
+    payload: value,
   } as const;
 };

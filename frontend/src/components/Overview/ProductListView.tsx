@@ -192,11 +192,12 @@ const ProductListView = () => {
 
   useEffect(() => {
     if (!isFetching || staticMode) return;
-    if (viewMode.startMode) {
+    if (viewMode.filterDisplay == 'startMode') {
       loadMore();
-    } else if (viewMode.searchMode) {
+    } else if (viewMode.filterDisplay == 'searchMode') {
       searchData(searchText);
-    } else if (viewMode.filterMode && !viewMode.initialFilter) {
+    } else if (viewMode.filterDisplay == 'filterMode' && !viewMode.initialFilter) {
+      console.log('FILTERDISPLAY: ', viewMode.filterDisplay == 'filterMode');
       let filterList = filterGlobalToArray();
       filterData(filterList);
     }
@@ -211,7 +212,7 @@ const ProductListView = () => {
   }, [searchText]);
 
   useEffect(() => {
-    if (viewMode.filterMode === false) {
+    if (viewMode.filterDisplay !== 'filterMode') {
       return;
     }
     let filterList = filterGlobalToArray();

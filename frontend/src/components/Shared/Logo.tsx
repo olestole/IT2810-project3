@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setCurrentProduct, updateViewMode } from 'store/action';
+import { setCurrentProduct, updateFilterDisplay, updateViewMode } from 'store/action';
 import './logo.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -27,9 +27,7 @@ const Logo = () => {
 
   const handleBackClick = () => {
     if (history.location.pathname == '/') {
-      dispatch(updateViewMode({ field: 'filterMode', value: false }));
-      dispatch(updateViewMode({ field: 'startMode', value: true }));
-      dispatch(updateViewMode({ field: 'searchMode', value: false }));
+      dispatch(updateFilterDisplay('startMode'));
       dispatch(updateViewMode({ field: 'initialLoad', value: true }));
     }
     dispatch(setCurrentProduct(null));
