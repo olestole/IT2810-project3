@@ -6,6 +6,7 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import Router from 'pages/Router';
 import { BrowserRouter } from 'react-router-dom';
 import ApolloWrapper from 'utils/ApolloWrapper';
+import { CustomToastContainer } from 'components/Shared/FeedbackToast';
 import './App.css';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <ApolloWrapper>
         <BrowserRouter>
           <Provider store={store}>
+            <CustomToastContainer />
             <Header />
             <Router />
           </Provider>

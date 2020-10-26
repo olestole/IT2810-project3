@@ -5,9 +5,6 @@ import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles'
 import { useDispatch } from 'react-redux';
 import { setSearchText } from 'store/action';
 
-
-
-
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     search: {

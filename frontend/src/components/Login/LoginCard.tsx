@@ -9,6 +9,8 @@ import LoginFields from './LoginFields';
 import RegistrationFields from './RegistrationFields';
 import { Button } from '@material-ui/core';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
+import { useSelector } from 'react-redux';
+import { AppState } from 'store/types';
 
 const useStyles = makeStyles({
   root: {
@@ -40,8 +42,23 @@ const useStyles = makeStyles({
 
 export default function LoginCard() {
   const classes = useStyles();
+  const currentProduct = useSelector((state: AppState) => state.currentProduct);
   const { user, logout, loginWithRedirect, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
   const [renderRegistration, setRenderRegistration] = useState(false);
+
+  const handleLogin = () => {
+    // Save the current product to sessionStorage so that it can be retrieved after the callback
+    sessionStorage.setItem('currentProduct', JSON.stringify(currentProduct));
+    loginWithRedirect({
+      redirectUri: 'http://localhost:3000/callback',
+    });
+  };
+
+  const handleLogout = () => {
+    logout({
+      returnTo: 'http://localhost:3000/callback',
+    });
+  };
 
   if (isLoading) return <LoadingIndicator />;
 
@@ -58,13 +75,13 @@ export default function LoginCard() {
         {/* {renderRegistration ? <RegistrationFields /> : <LoginFields />} */}
         {isAuthenticated ? (
           <div className={classes.buttonGroup}>
-            <Button variant="contained" onClick={() => logout({ returnTo: window.location.origin })}>
+            <Button variant="contained" onClick={handleLogout}>
               Logg ut
             </Button>
           </div>
         ) : (
           <div className={classes.buttonGroup}>
-            <Button variant="contained" onClick={() => loginWithRedirect()}>
+            <Button variant="contained" onClick={handleLogin}>
               Logg inn
             </Button>
           </div>
