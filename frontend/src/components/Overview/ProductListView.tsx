@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ClassAttributes } from 'react';
 import { useQuery } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@material-ui/core';
@@ -7,35 +7,17 @@ import { AppState, FilterOptions, ViewMode } from 'store/types';
 import { useDispatch, useSelector } from 'react-redux';
 import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS } from 'components/Overview/seachQueries';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import { getProductType } from './ProductList/productTypes';
-import { EnhancedTableHead, getComparator, HeaderData, Order, stableSort } from './ProductList/EnhancedTableHead';
-import { updateViewMode } from 'store/action';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    paper: {
-      width: '100%',
-      marginBottom: theme.spacing(2),
-    },
-    table: {
-      minWidth: 750,
-    },
-    visuallyHidden: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1,
-    },
-  }),
-);
+import { getProductType } from './ProductList/productTypes';
+import {
+  EnhancedTableHead,
+  getComparator,
+  HeaderData,
+  Order,
+  stableSort,
+  useStyles,
+} from './ProductList/EnhancedTableHead';
+import { updateViewMode } from 'store/action';
 
 const ProductListView = () => {
   const classes = useStyles();
@@ -249,13 +231,19 @@ const ProductListView = () => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
-                    <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
+                    <TableCell component="th" id={labelId} padding="default" align="left">
                       {row.Varenavn}
                     </TableCell>
                     <TableCell align="right">{row.Varetype}</TableCell>
-                    <TableCell align="right">{row.Volum}</TableCell>
-                    <TableCell align="right">{row.Pris}</TableCell>
-                    <TableCell align="right">{row.Produsent}</TableCell>
+                    <TableCell align="right" className={classes.volum}>
+                      {row.Volum}
+                    </TableCell>
+                    <TableCell align="right" className={classes.pris}>
+                      {row.Pris}
+                    </TableCell>
+                    <TableCell align="right" className={classes.produsent}>
+                      {row.Produsent}{' '}
+                    </TableCell>
                   </TableRow>
                 );
               })}

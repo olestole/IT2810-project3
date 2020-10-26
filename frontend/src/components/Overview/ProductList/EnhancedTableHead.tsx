@@ -11,22 +11,6 @@ import {
   Paper,
 } from '@material-ui/core';
 
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    visuallyHidden: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1,
-    },
-  }),
-);
-
 export interface HeaderData {
   Varetype: string;
   Volum: string;
@@ -36,7 +20,7 @@ export interface HeaderData {
   Produsent: string;
 }
 
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
+export function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
     return -1;
   }
@@ -67,19 +51,51 @@ export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '100%',
+    },
+    paper: {
+      width: '100%',
+      marginBottom: theme.spacing(2),
+    },
+    table: {},
+    visuallyHidden: {
+      border: 0,
+      clip: 'rect(0 0 0 0)',
+      height: 1,
+      margin: -1,
+      overflow: 'hidden',
+      padding: 0,
+      position: 'absolute',
+      top: 20,
+      width: 1,
+    },
+    produsent: {
+      [theme.breakpoints.down(960)]: {
+        display: 'none',
+      },
+    },
+    pris: {
+      [theme.breakpoints.down(750)]: {
+        display: 'none',
+      },
+    },
+    volum: {
+      [theme.breakpoints.down(500)]: {
+        display: 'none',
+      },
+    },
+  }),
+);
+
 interface HeadCell {
   id: keyof HeaderData;
   label: string;
   numeric: boolean;
+  classes: string;
 }
-
-const headCells: HeadCell[] = [
-  { id: 'Varenavn', numeric: false, label: 'Varenavn' },
-  { id: 'Varetype', numeric: true, label: 'Varetype' },
-  { id: 'Volum', numeric: true, label: 'Volum' },
-  { id: 'Pris', numeric: true, label: 'Pris' },
-  { id: 'Produsent', numeric: true, label: 'Produsent' },
-];
 
 interface EnhancedTableProps {
   classes: ReturnType<typeof useStyles>;
@@ -89,11 +105,19 @@ interface EnhancedTableProps {
   rowCount: number;
 }
 
-export const EnhancedTableHead = (props: EnhancedTableProps) => {
+export function EnhancedTableHead(props: EnhancedTableProps) {
   const { classes, order, orderBy, onRequestSort } = props;
   const createSortHandler = (property: keyof HeaderData) => (event: React.MouseEvent<unknown>) => {
     onRequestSort(event, property);
   };
+
+  const headCells: HeadCell[] = [
+    { id: 'Varenavn', numeric: false, label: 'Varenavn', classes: classes.table },
+    { id: 'Varetype', numeric: true, label: 'Varetype', classes: classes.table },
+    { id: 'Volum', numeric: true, label: 'Volum', classes: classes.volum },
+    { id: 'Pris', numeric: true, label: 'Pris', classes: classes.pris },
+    { id: 'Produsent', numeric: true, label: 'Produsent', classes: classes.produsent },
+  ];
 
   return (
     <TableHead>
@@ -103,6 +127,7 @@ export const EnhancedTableHead = (props: EnhancedTableProps) => {
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
             sortDirection={orderBy === headCell.id ? order : false}
+            className={headCell.classes}
           >
             <TableSortLabel
               active={orderBy === headCell.id}
@@ -121,4 +146,4 @@ export const EnhancedTableHead = (props: EnhancedTableProps) => {
       </TableRow>
     </TableHead>
   );
-};
+}
