@@ -1,6 +1,6 @@
 import React, { useEffect, useState, ClassAttributes } from 'react';
 import { useQuery } from '@apollo/client';
-import { createStyles, makeStyles, Theme, createMuiTheme, MuiThemeProvider } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import {
   Table,
   TableBody,
@@ -10,8 +10,6 @@ import {
   TableRow,
   TableSortLabel,
   Paper,
-  Hidden,
-  HiddenProps,
 } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { AppState, FilterOptions, Kategorier } from 'store/types';
@@ -201,7 +199,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
     <TableHead>
       <TableRow>
         {headCells.map((headCell) => (
-          <Hidden >
           <TableCell 
             key={headCell.id}
             align={headCell.numeric ? 'right' : 'left'}
@@ -221,7 +218,6 @@ function EnhancedTableHead(props: EnhancedTableProps) {
               ) : null}
             </TableSortLabel>
           </TableCell>
-          </Hidden>
         ))}
       </TableRow>
     </TableHead>
