@@ -14,6 +14,7 @@ export const resolvers = {
     startProducts: async (_: any, { startIndex }: any) => {
       //let products = await Product.find({}).skip(2).limit(4).exec()
       let products = await Product.find({ Volum: { $ne: 0.0 } })
+        .sort({ Varenavn: 1 })
         .skip(startIndex)
         .limit(20)
         .exec();
@@ -34,19 +35,26 @@ export const resolvers = {
     //     : null;
     // },
     // singleProduct: async (_ :any, { productNumber }: any) => await Product.find({Varenummer: productNumber}),
-    searchProducts: async (_: any, { searchSequence }: any) =>
+    searchProducts: async (_: any, { searchSequence, index }: any) =>
       await Product.find({
         Varenavn: { $regex: searchSequence, $options: "i" },
-      }).limit(200),
+        Volum: { $ne: 0.0 },
+      })
+        .sort({ Varenavn: 1 })
+        .skip(index)
+        .limit(20),
     filterProducts: async (
       _: any,
-      { varetyper, prisgt, prisls, volumgt, volumls }: any
+      { varetyper, prisgt, prisls, volumgt, volumls, index }: any
     ) =>
       await Product.find({
         Varetype: { $in: varetyper },
         Pris: { $gte: prisgt, $lte: prisls },
         Volum: { $gte: volumgt, $lte: volumls },
-      }).limit(200),
+      })
+        .sort({ Varenavn: 1 })
+        .skip(index)
+        .limit(20),
     singleProduct: async (_: any, { productNumber }: any) => {
       // if (!isAuthenticated) {
       //   throw new AuthenticationError("Not logged in!");

@@ -4,10 +4,10 @@ export type AppState = {
   filterOptions: FilterOptions;
   modalOpen: boolean;
   currentProduct?: Product | null;
+  viewMode: ViewMode;
 };
 
 export type FilterOptions = {
-  filterMode: boolean;
   kategorier: Kategorier;
   minVolum: number;
   maxVolum: number;
@@ -27,3 +27,12 @@ export type Kategorier = {
   alkoholfritt: boolean;
   annet: boolean;
 };
+
+export type ViewMode = {
+  filterDisplay: FilterDisplay;
+  initialLoad: boolean;
+  initialSearch: boolean;
+  initialFilter: boolean;
+};
+
+export type FilterDisplay = 'startMode' | 'searchMode' | 'filterMode';
