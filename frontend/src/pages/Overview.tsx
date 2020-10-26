@@ -24,10 +24,6 @@ const GET_SINGLE_PRODUCT = gql`
 
 const Overview = () => {
   //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
-  const { data, loading, error } = useQuery(GET_WHITE_WINES);
-
-  if (loading) return <LoadingIndicator />;
-
   return (
     <div className="container">
       <ProductListView />

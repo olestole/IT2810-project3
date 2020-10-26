@@ -1,3 +1,5 @@
+import { Product } from 'types/globalTypes';
+
 export const increment = () => {
   return {
     type: 'INCREMENT',

@@ -5,7 +5,7 @@ import { WhiteWine } from "./models/WhiteWine";
 
 import withAuth from "graphql-auth";
 // import { Review } from "./models/User";
-import { IReview, Review } from "./models/Review";
+import { IReview, IReviewResponse, Review } from "./models/Review";
 
 export const resolvers = {
   Query: {
@@ -58,6 +58,11 @@ export const resolvers = {
     //     ? (await Product.find({ Varenummer: productNumber }))[0]
     //     : null;
     // },
+    reviews: async (_: any, { varenummer }: any) =>
+      await Review.find({
+        varenummer: varenummer,
+      }),
+
     searchProducts: async (_: any, { searchSequence }: any) =>
       await Product.find({
         Varenavn: { $regex: searchSequence, $options: "i" },
@@ -70,29 +75,46 @@ export const resolvers = {
 
   Mutation: {
     addReview: async (_: any, { review }: any) => {
-      console.log(review.user.email);
-      console.log(review.title);
-      console.log(review.description);
-      console.log(review.rating);
-      return {
-        status: 200,
-        description: review.title,
-        user: review.user.email,
-      };
-    },
-    helloWorld: (_: any, { hello }: any) => {
-      return hello;
+      const newReview = new Review({
+        userEmail: review.userEmail,
+        varenummer: review.varenummer,
+        title: review.title,
+        description: review.description,
+        rating: review.rating,
+      }) as IReview;
 
-      return new Number(123);
-
-      const review = new Review({
-        user: "Ole August",
-        title: "Fett",
-        description: "Nice beer",
-        rating: 3,
-      });
-      return review;
+      try {
+        await newReview.save();
+        return {
+          code: "200",
+          success: true,
+          message: "Successfully added a review",
+          title: review.title,
+          user: review.userEmail,
+        } as IReviewResponse;
+      } catch (error) {
+        return {
+          code: "400",
+          success: false,
+          message: error,
+          title: "",
+          user: "",
+        } as IReviewResponse;
+      }
     },
+    // helloWorld: (_: any, { hello }: any) => {
+    //   return hello;
+
+    //   return new Number(123);
+
+    //   const review = new Review({
+    //     user: "Ole August",
+    //     title: "Fett",
+    //     description: "Nice beer",
+    //     rating: 3,
+    //   });
+    //   return review;
+    // },
   },
 
   /*

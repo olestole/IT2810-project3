@@ -10,3 +10,11 @@ interface Product {
   Lukt: string;
   Smak: string;
 }
+
+export interface IReview {
+  userEmail: string;
+  varenummer: string;
+  title: string;
+  description: string;
+  rating: number;
+}

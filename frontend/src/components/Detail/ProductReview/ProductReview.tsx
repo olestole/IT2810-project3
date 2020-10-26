@@ -11,6 +11,7 @@ import { ADD_REVIEW } from 'graphql/mutations';
 import { useMutation } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
+import { IReview } from 'types/globalTypes';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -46,21 +47,24 @@ const ProductReview = () => {
     console.log(user);
 
     const review = {
-      user: {
-        email: user.email,
-      },
+      userEmail: user.email,
+      varenummer: currentProduct!.Varenummer,
       title: reviewTitle,
       description: description,
       rating: rating,
-    };
+    } as IReview;
 
-    const res = await addReview({
+    await addReview({
       variables: { addReviewReview: review },
     });
   };
 
   const handleSubmitReview = async () => {
     // If any of the fields haven't been filled out
+    if (!currentProduct) {
+      toast.error(`Produktet ser ikke ut til å ha lastet korrekt, forsøk pånytt`);
+      return;
+    }
     if (!(rating >= 1 && rating <= 5 && description !== '' && reviewTitle !== '')) {
       toast.error(`Husk å fylle ut alle feltene 👮🏽‍♀`);
       setInputError(true);

@@ -1,14 +1,24 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface IReview extends Document {
-  user: string;
+  userEmail: string;
+  varenummer: string;
   title: string;
   description: string;
   rating: number;
 }
 
+export interface IReviewResponse {
+  code: string;
+  success: boolean;
+  message: string;
+  user: string;
+  title: string;
+}
+
 const ReviewSchema = new Schema({
-  user: String,
+  userEmail: String,
+  varenummer: String,
   title: String,
   description: String,
   rating: Number,

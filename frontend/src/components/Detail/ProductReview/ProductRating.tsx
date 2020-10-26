@@ -8,7 +8,7 @@ import SentimentSatisfiedAltIcon from '@material-ui/icons/SentimentSatisfiedAltO
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 import Box from '@material-ui/core/Box';
 
-const customIcons: { [index: string]: { icon: React.ReactElement; label: string } } = {
+export const customIcons: { [index: string]: { icon: React.ReactElement; label: string } } = {
   1: {
     icon: <SentimentVeryDissatisfiedIcon />,
     label: 'Very Dissatisfied',
@@ -61,7 +61,7 @@ interface IRating {
 }
 
 export const ProductRating: React.FC<IRating> = ({ rating, setRating, inputError }) => {
-  const showError = () => inputError && rating == 0;
+  const showError = () => inputError && rating === 0;
   const classes = useStyles(showError());
 
   return (

@@ -1,4 +1,4 @@
-import { createStore, combineReducers, Store } from 'redux';
+import { createStore, Store } from 'redux';
 import { decrement, increment, setSearchText, setCurrentProduct, setModalOpen } from './action';
 import { AppState } from './types';
 
@@ -49,11 +49,6 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
 };
 
 const neverReached = (never: never) => {};
-
-//Utility-funksjon for å kombinere flere reducere
-// const rootReducer = combineReducers<AppState>({
-//   count: countReducer,
-// });
 
 function configureStore(): Store<AppState> {
   return createStore(

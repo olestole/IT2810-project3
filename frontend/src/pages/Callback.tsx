@@ -3,6 +3,7 @@ import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { AppState } from 'store/types';
+import { Product } from 'types/globalTypes';
 
 /**
  * Handles conditional logic after a redirect to another page, e.g after Auth0s login-page

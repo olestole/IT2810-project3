@@ -27,4 +27,16 @@ const SEARCH_PRODUCTS = gql`
   }
 `;
 
-export { GET_START_PRODUCTS, SEARCH_PRODUCTS };
+const GET_REVIEWS = gql`
+  query Query($reviewsVarenummer: String!) {
+    reviews(varenummer: $reviewsVarenummer) {
+      userEmail
+      varenummer
+      title
+      description
+      rating
+    }
+  }
+`;
+
+export { GET_START_PRODUCTS, SEARCH_PRODUCTS, GET_REVIEWS };

@@ -3,10 +3,15 @@ import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { Typography, Button } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCurrentProduct, setModalOpen } from 'store/action';
 import { useAuth0 } from '@auth0/auth0-react';
+import { Product } from 'types/globalTypes';
+import { AppState } from 'store/types';
+
 import './detail.css';
+import LoadingIndicator from 'components/Shared/LoadingIndicator';
+import { ReviewList } from './ProductReview';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,14 +34,18 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const baseURL = 'https://bilder.vinmonopolet.no/cache/800x800-0/';
 
-const DetailView = (props: any) => {
+const DetailView = () => {
   const [loadingImage, setLoadingImage] = useState(true);
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const { isAuthenticated } = useAuth0();
 
-  const url = baseURL + props.product.Varenummer + '-1.jpg';
+  const currentProduct = useSelector((state: AppState) => state.currentProduct);
+
+  if (!currentProduct) return <LoadingIndicator />;
+
+  const url = baseURL + currentProduct.Varenummer + '-1.jpg';
 
   const handleBackClick = () => {
     dispatch(setCurrentProduct(null));
@@ -53,34 +62,15 @@ const DetailView = (props: any) => {
       <div className="info">
         <div className="headline">
           <Typography className={classes.titleVaretype} color="textSecondary" gutterBottom>
-            {props.product.Varetype}
+            {currentProduct.Varetype}
           </Typography>
           <Typography className={classes.titleVarenavn} variant="h5" component="h2">
-            {props.product.Varenavn}
+            {currentProduct.Varenavn}
           </Typography>
-          <Typography color="textSecondary">{props.product.Land}</Typography>
+          <Typography color="textSecondary">{currentProduct.Land}</Typography>
         </div>
 
-        <div className="text">
-          <p>
-            Volum: <span>{props.product.Volum} L</span>
-          </p>
-          <p>
-            Pris: <span>{props.product.Pris},- NOK</span>
-          </p>
-          <p>
-            Farge: <span>{props.product.Farge}</span>
-          </p>
-          <p>
-            Lukt: <span>{props.product.Lukt}</span>
-          </p>
-          <p>
-            Smak: <span>{props.product.Smak}</span>
-          </p>
-          <p>
-            Produsent: <span>{props.product.Produsent}</span>
-          </p>
-        </div>
+        <ProductInfo currentProduct={currentProduct} />
 
         <div className="back">
           <Button
@@ -111,9 +101,38 @@ const DetailView = (props: any) => {
             </Button>
           )}
         </div>
+        <ReviewList />
       </div>
     </div>
   );
 };
 
+interface IProductInfo {
+  currentProduct: Product;
+}
+
+const ProductInfo = ({ currentProduct }: IProductInfo) => {
+  return (
+    <div className="text">
+      <p>
+        Volum: <span>{currentProduct.Volum} L</span>
+      </p>
+      <p>
+        Pris: <span>{currentProduct.Pris},- NOK</span>
+      </p>
+      <p>
+        Farge: <span>{currentProduct.Farge}</span>
+      </p>
+      <p>
+        Lukt: <span>{currentProduct.Lukt}</span>
+      </p>
+      <p>
+        Smak: <span>{currentProduct.Smak}</span>
+      </p>
+      <p>
+        Produsent: <span>{currentProduct.Produsent}</span>
+      </p>
+    </div>
+  );
+};
 export default DetailView;

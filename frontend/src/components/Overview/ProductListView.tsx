@@ -222,11 +222,6 @@ const ProductListView = () => {
 
   if (loading) return <LoadingIndicator />;
   if (error) return <h1>ERROR</h1>;
-
-  if (data && data.startProducts) {
-    console.log('D: ', data.startProducts);
-  }
-
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>

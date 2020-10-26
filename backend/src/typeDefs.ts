@@ -9,6 +9,28 @@ export const typeDefs = gql`
     searchProducts(searchSequence: String!): [Product!]!
     typeProduct(type: String!): [Product]
     nameProduct(name: String!): [Product]
+    reviews(varenummer: String!): [OutputReview]
+  }
+
+  type Mutation {
+    # createProduct(Varenavn: String!): Product!
+    helloWorld(hello: String!): String!
+    addReview(review: InputReview!): ReviewResponse!
+  }
+
+  interface MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+  }
+
+  type ReviewResponse implements MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+
+    user: String!
+    title: String!
   }
 
   type Product {
@@ -34,26 +56,19 @@ export const typeDefs = gql`
     Distrikt: String
   }
 
-  type ReviewResponse {
-    status: Int!
-    description: String!
-    user: String
-  }
-
-  input Review {
-    user: User!
+  type OutputReview {
+    userEmail: String!
+    varenummer: String!
     title: String!
     description: String!
     rating: Int!
   }
 
-  input User {
-    email: String!
-  }
-
-  type Mutation {
-    # createProduct(Varenavn: String!): Product!
-    helloWorld(hello: String!): String!
-    addReview(review: Review!): ReviewResponse!
+  input InputReview {
+    userEmail: String!
+    varenummer: String!
+    title: String!
+    description: String!
+    rating: Int!
   }
 `;

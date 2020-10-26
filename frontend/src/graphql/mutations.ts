@@ -1,11 +1,14 @@
 import { gql } from '@apollo/client';
 
 const ADD_REVIEW = gql`
-  mutation AddReviewMutation($addReviewReview: Review!) {
+  mutation AddReviewMutation($addReviewReview: InputReview!) {
     addReview(review: $addReviewReview) {
-      status
-      description
+      code
+      title
+      message
+
       user
+      title
     }
   }
 `;
