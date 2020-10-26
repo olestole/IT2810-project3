@@ -1,6 +1,6 @@
 import Detail from './Detail';
 import Overview from './Overview';
 import TemporaryPLW from './TemporaryPLW';
-import Login from './Login';
+import Profile from './Profile';
 
-export { Detail, Overview, TemporaryPLW, Login };
+export { Detail, Overview, TemporaryPLW, Profile };

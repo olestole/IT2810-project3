@@ -9,7 +9,7 @@ const Header = () => {
   const history = useHistory();
 
   const handleProfileClick = () => {
-    history.push('/login');
+    history.push('/profile');
   };
 
   return (

@@ -11,7 +11,7 @@ import { AppState } from 'store/types';
 
 import './detail.css';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import { ReviewList } from './ProductReview';
+import { ReviewList } from 'components/Shared';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -93,7 +93,7 @@ const DetailView = () => {
           ) : (
             <Button
               variant="contained"
-              onClick={() => history.push('/login')}
+              onClick={() => history.push('/profile')}
               className={classes.button}
               // startIcon={<ArrowBackIcon />}
             >

@@ -1,8 +1,8 @@
 import { ReviewList } from 'components/Detail/ProductReview';
-import LoginCard from 'components/Login/LoginCard';
+import { LoginCard } from 'components/Profile/';
 import React from 'react';
 
-const Login = () => {
+const Profile = () => {
   return (
     <div className="loginPage">
       {/* <LoginCard /> */}
@@ -11,4 +11,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Profile;

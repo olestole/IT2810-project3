@@ -10,7 +10,7 @@ import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { useAuth0 } from '@auth0/auth0-react';
 import ProductReview from 'components/Detail/ProductReview/ProductReview';
 import { Product } from 'types/globalTypes';
-import ReviewList from 'components/Detail/ProductReview/ReviewList';
+import { ReviewList } from 'components/Shared';
 
 const GET_SINGLE_PRODUCT = gql`
   query Query($number: String!) {
