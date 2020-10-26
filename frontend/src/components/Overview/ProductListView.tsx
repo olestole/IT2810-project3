@@ -197,7 +197,6 @@ const ProductListView = () => {
     } else if (viewMode.filterDisplay == 'searchMode') {
       searchData(searchText);
     } else if (viewMode.filterDisplay == 'filterMode' && !viewMode.initialFilter) {
-      console.log('FILTERDISPLAY: ', viewMode.filterDisplay == 'filterMode');
       let filterList = filterGlobalToArray();
       filterData(filterList);
     }
