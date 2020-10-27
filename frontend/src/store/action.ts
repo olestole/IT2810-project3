@@ -77,3 +77,9 @@ export const updateFilterDisplay = (value: FilterDisplay) => {
     payload: value,
   } as const;
 };
+
+export const resetFilter = () => {
+  return {
+    type: 'RESET_FILTER',
+  } as const;
+};
