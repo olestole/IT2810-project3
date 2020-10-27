@@ -6,7 +6,6 @@ const ADD_REVIEW = gql`
       code
       title
       message
-
       user
       title
     }

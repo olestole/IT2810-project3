@@ -9,7 +9,8 @@ export const typeDefs = gql`
     searchProducts(searchSequence: String!): [Product!]!
     typeProduct(type: String!): [Product]
     nameProduct(name: String!): [Product]
-    reviews(varenummer: String!): [OutputReview]
+    reviews(varenummer: String!): [OutputReview]!
+    personalReviews(userEmail: String!): [OutputReview]!
   }
 
   type Mutation {

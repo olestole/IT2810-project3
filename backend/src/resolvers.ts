@@ -71,6 +71,10 @@ export const resolvers = {
       await Product.find().byType(type),
     nameProduct: async (_: any, { name }: any) =>
       await Product.find().byName(name),
+    personalReviews: async (_: any, { userEmail }: any) =>
+      await Review.find({
+        userEmail: userEmail,
+      }),
   },
 
   Mutation: {

@@ -16,12 +16,13 @@ import { AppState } from 'store/types';
 import { useSelector } from 'react-redux';
 import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
+import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
 interface HeaderData {
+  Varenavn: string;
   Varetype: string;
   Volum: string;
   Pris: string;
-  Varenavn: string;
   Varenummer: string;
   Produsent: string;
 }
@@ -146,7 +147,9 @@ const ProductListView = () => {
   const [searchMode, setSearchMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
-  const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, { variables: { index: 0 } });
+  const { data, loading, error, fetchMore } = useQuery<StartProductsQuery>(GET_START_PRODUCTS, {
+    variables: { index: 0 },
+  });
   const searchText: string = useSelector((state: AppState) => state.searchText);
 
   useEffect(() => {
@@ -169,7 +172,7 @@ const ProductListView = () => {
       variables: {
         matchedString: searchText,
       },
-      updateQuery: (prev: any, { fetchMoreResult }) => {
+      updateQuery: (prev: any, { fetchMoreResult }: any) => {
         if (!fetchMoreResult) return prev;
         return Object.assign({}, prev, {
           startProducts: [...fetchMoreResult.searchProducts],
@@ -180,12 +183,10 @@ const ProductListView = () => {
   };
 
   let loadMore = () => {
-    /*
-    fetchMore basically allows you to do a new GraphQL query and merge the result into the original result.
-    */
+    // fetchMore basically allows you to do a new GraphQL query and merge the result into the original result.
     fetchMore({
       variables: {
-        index: data.startProducts.length,
+        index: data?.startProducts.length,
       },
       updateQuery: (prev: any, { fetchMoreResult }) => {
         if (!fetchMoreResult) return prev;
@@ -221,7 +222,7 @@ const ProductListView = () => {
   }, [searchText]);
 
   if (loading) return <LoadingIndicator />;
-  if (error) return <h1>ERROR</h1>;
+  if (error || !data) return <h1>ERROR</h1>;
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -235,7 +236,7 @@ const ProductListView = () => {
               rowCount={data.startProducts.length}
             />
             <TableBody>
-              {stableSort(data.startProducts, getComparator(order, orderBy)).map((row, index) => {
+              {stableSort(data.startProducts as any, getComparator(order, orderBy)).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>

@@ -11,7 +11,7 @@ import { ADD_REVIEW } from 'graphql/mutations';
 import { useMutation } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import { IReview } from 'types/globalTypes';
+import { InputReview } from '../../../../__generated__/globalTypes';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -52,7 +52,7 @@ const ProductReview = () => {
       title: reviewTitle,
       description: description,
       rating: rating,
-    } as IReview;
+    } as InputReview;
 
     await addReview({
       variables: { addReviewReview: review },

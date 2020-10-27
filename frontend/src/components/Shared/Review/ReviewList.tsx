@@ -1,11 +1,13 @@
 import { useQuery } from '@apollo/client';
 import { createStyles, List, makeStyles } from '@material-ui/core';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import { GET_REVIEWS } from 'graphql/queries';
+import { GET_PERSONAL_REVIEWS, GET_REVIEWS } from 'graphql/queries';
+import { GetReviewsQuery_reviews } from 'graphql/__generated__/GetReviewsQuery';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from 'store/types';
 import { IReview } from 'types/globalTypes';
+import { InputReview } from '../../../../__generated__/globalTypes';
 import ReviewItem from './ReviewItem';
 
 // const data = {
@@ -75,26 +77,25 @@ const useStyles = makeStyles(() =>
   }),
 );
 
-const ReviewList = () => {
+interface IReviewList {
+  reviews: IReview[];
+}
+
+const ReviewList = ({ reviews }: IReviewList) => {
   const classes = useStyles();
 
-  const currentProduct = useSelector((state: AppState) => state.currentProduct);
-  const { data, loading, error } = useQuery(GET_REVIEWS, {
-    variables: { reviewsVarenummer: currentProduct?.Varenummer },
-    fetchPolicy: 'network-only',
-  });
-
-  if (loading) return <LoadingIndicator />;
-  if (error) return <h1>ERROR</h1>;
-  if (data) {
-    console.log(data);
-  }
   return (
     <div>
       <List className={classes.root}>
-        {data.reviews.map((review: IReview, index: number) => (
-          <ReviewItem key={index} review={review} />
-        ))}
+        {reviews ? (
+          reviews.map((review: IReview | null, index: number) => {
+            if (review !== null) {
+              return <ReviewItem key={index} review={review} />;
+            }
+          })
+        ) : (
+          <h1>No reviews</h1>
+        )}
       </List>
     </div>
   );

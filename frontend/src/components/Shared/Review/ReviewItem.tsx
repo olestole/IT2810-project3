@@ -1,7 +1,6 @@
 import { Card, createStyles, makeStyles } from '@material-ui/core';
 import React from 'react';
 import { IReview } from 'types/globalTypes';
-
 import { customIcons } from '../../Detail/ProductReview/ProductRating';
 
 const useStyles = makeStyles(() =>
@@ -63,9 +62,5 @@ const ReviewItem = ({ review }: IReviewItem) => {
     </Card>
   );
 };
-
-// const RatingIcon = ({rating}: number) => {
-
-// }
 
 export default ReviewItem;
