@@ -61,7 +61,7 @@ const Search = () => {
   };
 
   return (
-    <div className={classes.search}>
+    <div id={'searchField'} className={classes.search}>
       <div className={classes.searchIcon}>
         <SearchIcon />
       </div>
