@@ -166,7 +166,8 @@ const ProductListView = () => {
   const handleScroll = () => {
     if (
       Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
-      isFetching
+      isFetching ||
+      history.location.pathname !== '/'
     )
       return;
     setIsFetching(true);

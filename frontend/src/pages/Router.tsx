@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Callback } from './Callback';
 import Detail from './Detail';
 import Login from './Login';
-import Overview from './Overview';
+import Overview from './Overview/Overview';
 
 const Router = () => (
   <div className="layout">

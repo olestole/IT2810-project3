@@ -27,12 +27,14 @@ import { filter, filterVolumAndPrice, updateFilterDisplay, updateViewMode } from
 import { AppState, FilterOptions } from 'store/types';
 import './sidebar.css';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     appMenu: {
       width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
     },
     navList: {
       width: drawerWidth,
@@ -49,8 +51,7 @@ const useStyles = makeStyles((theme) =>
     formGroup: {
       width: drawerWidth,
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'auto',
+      alignItems: 'right',
       position: 'relative',
     },
   }),
