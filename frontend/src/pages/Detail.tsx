@@ -9,12 +9,12 @@ import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import ProductReview from 'components/Detail/ProductReview/ProductReview';
 import { Product } from 'types/globalTypes';
 import { GET_SINGLE_PRODUCT } from 'graphql/queries';
-import { SingleProductQuery } from 'graphql/__generated__/SingleProductQuery';
+// import { SingleProductQuery } from 'graphql/__generated__/SingleProductQuery';
 
 const Detail = () => {
   const location = useLocation();
   const dispatch = useDispatch();
-  const { data, loading, error } = useQuery<SingleProductQuery>(GET_SINGLE_PRODUCT, {
+  const { data, loading, error } = useQuery(GET_SINGLE_PRODUCT, {
     variables: { number: location.pathname.substr(1) },
   });
 

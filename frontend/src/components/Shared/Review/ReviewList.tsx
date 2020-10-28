@@ -2,12 +2,12 @@ import { useQuery } from '@apollo/client';
 import { createStyles, List, makeStyles } from '@material-ui/core';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { GET_PERSONAL_REVIEWS, GET_REVIEWS } from 'graphql/queries';
-import { GetReviewsQuery_reviews } from 'graphql/__generated__/GetReviewsQuery';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { AppState } from 'store/types';
 import { IReview } from 'types/globalTypes';
-import { InputReview } from '../../../../__generated__/globalTypes';
+// import { GetReviewsQuery_reviews } from 'graphql/__generated__/GetReviewsQuery';
+// import { InputReview } from '../../../../__generated__/globalTypes';
 import ReviewItem from './ReviewItem';
 
 // const data = {

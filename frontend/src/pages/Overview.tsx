@@ -2,7 +2,6 @@ import React from 'react';
 import { ProductListView } from 'components/Overview';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import Sidebar from 'components/Shared/Sidebar';
-import './overview.css';
 import { createStyles, makeStyles } from '@material-ui/core';
 
 const useStyles = makeStyles(() =>

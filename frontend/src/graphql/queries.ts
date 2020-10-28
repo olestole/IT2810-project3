@@ -41,7 +41,7 @@ const GET_SINGLE_PRODUCT = gql`
   }
 `;
 
-const GET_START_PRODUCTS = gql`
+export const GET_START_PRODUCTS = gql`
   query StartProductsQuery($index: Int!) {
     startProducts(startIndex: $index) {
       Varenavn
@@ -55,7 +55,7 @@ const GET_START_PRODUCTS = gql`
   }
 `;
 
-const SEARCH_PRODUCTS = gql`
+export const SEARCH_PRODUCTS = gql`
   query SearchProductsQuery($matchedString: String!, $searchIndex: Int!) {
     searchProducts(searchSequence: $matchedString, index: $searchIndex) {
       Varenavn
@@ -67,7 +67,8 @@ const SEARCH_PRODUCTS = gql`
     }
   }
 `;
-const FILTER_PRODUCTS = gql`
+
+export const FILTER_PRODUCTS = gql`
   query FilterProductsQuery(
     $typer: [String]!
     $prisgt: Float!
@@ -94,4 +95,5 @@ const FILTER_PRODUCTS = gql`
   }
 `;
 
-export { GET_START_PRODUCTS, SEARCH_PRODUCTS, GET_REVIEWS, GET_PERSONAL_REVIEWS, GET_SINGLE_PRODUCT, FILTER_PRODUCTS };
+// export { GET_START_PRODUCTS, SEARCH_PRODUCTS, GET_REVIEWS, GET_PERSONAL_REVIEWS, GET_SINGLE_PRODUCT, FILTER_PRODUCTS };
+export { GET_REVIEWS, GET_PERSONAL_REVIEWS, GET_SINGLE_PRODUCT };

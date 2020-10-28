@@ -1,12 +1,10 @@
 import React, { useEffect, useState, ClassAttributes } from 'react';
 import { useQuery } from '@apollo/client';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { AppState, FilterOptions, ViewMode } from 'store/types';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
 import { getProductType } from './ProductList/productTypes';
 import {
@@ -18,8 +16,8 @@ import {
   useStyles,
 } from './ProductList/EnhancedTableHead';
 import { updateViewMode } from 'store/action';
-import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql';
-import { FILTER_PRODUCTS } from 'graphql/queries';
+import { FILTER_PRODUCTS, GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
+// import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
 const ProductListView = () => {
   const classes = useStyles();
@@ -28,7 +26,7 @@ const ProductListView = () => {
   const [staticMode, setStaticMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
-  const { data, loading, error, fetchMore } = useQuery<StartProductsQuery>(GET_START_PRODUCTS, {
+  const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, {
     variables: { index: 0 },
   });
   const searchText: string = useSelector((state: AppState) => state.searchText);
