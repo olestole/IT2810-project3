@@ -66,6 +66,7 @@ const Search = () => {
         <SearchIcon />
       </div>
       <InputBase
+        id={'searchInputField'}
         placeholder="Produkt…"
         classes={{
           root: classes.inputRoot,
