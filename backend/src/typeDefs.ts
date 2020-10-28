@@ -2,7 +2,15 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Query {
-    products: [Product!]!
+    products(
+      searchSequence: String!
+      varetyper: [String]!
+      prisgt: Float!
+      prisls: Float!
+      volumgt: Float!
+      volumls: Float!
+      index: Int!
+    ): [Product!]!
     whiteWines: [Wine!]!
     singleProduct(productNumber: String!): Product
     startProducts(startIndex: Int!): [Product!]!

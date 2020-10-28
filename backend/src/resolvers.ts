@@ -6,11 +6,27 @@ import withAuth from "graphql-auth";
 
 export const resolvers = {
   Query: {
-    products: async () => {
-      //let products = await Product.find({}).skip(2).limit(4).exec()
-      let products = await Product.find().limit(10).exec();
-      return products;
-    },
+    products: async (
+      _: any,
+      {
+        searchSequence,
+        varetyper,
+        prisgt,
+        prisls,
+        volumgt,
+        volumls,
+        index,
+      }: any
+    ) =>
+      await Product.find({
+        Varenavn: { $regex: searchSequence, $options: "i" },
+        Varetype: { $in: varetyper },
+        Pris: { $gte: prisgt, $lte: prisls },
+        Volum: { $gte: volumgt, $lte: volumls },
+      })
+        .sort({ Varenavn: 1 })
+        .skip(index)
+        .limit(20),
     startProducts: async (_: any, { startIndex }: any) => {
       //let products = await Product.find({}).skip(2).limit(4).exec()
       let products = await Product.find({ Volum: { $ne: 0.0 } })
