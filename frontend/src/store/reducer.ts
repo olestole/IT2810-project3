@@ -1,18 +1,59 @@
 import { createStore, Store } from 'redux';
-import { decrement, increment, setSearchText, setCurrentProduct, setModalOpen } from './action';
-import { AppState } from './types';
+import {
+  decrement,
+  increment,
+  setSearchText,
+  filter,
+  filterVolumAndPrice,
+  setFilterMode,
+  setCurrentProduct,
+  setModalOpen,
+  updateViewMode,
+  updateFilterDisplay,
+  resetFilter,
+} from './action';
+import { AppState, FilterOptions } from './types';
 
 type Actions =
   | ReturnType<typeof increment>
   | ReturnType<typeof decrement>
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof setCurrentProduct>
-  | ReturnType<typeof setModalOpen>;
+  | ReturnType<typeof setModalOpen>
+  | ReturnType<typeof setFilterMode>
+  | ReturnType<typeof filter>
+  | ReturnType<typeof filterVolumAndPrice>
+  | ReturnType<typeof updateViewMode>
+  | ReturnType<typeof updateFilterDisplay>
+  | ReturnType<typeof resetFilter>;
 
 const initialAppState: AppState = {
   count: 0,
   searchText: '',
   modalOpen: false,
+  filterOptions: {
+    kategorier: {
+      rodvin: false,
+      hvitvin: false,
+      musserende_vin: false,
+      sterk_vin: false,
+      annen_vin: false,
+      ol: false,
+      brennevin: false,
+      alkoholfritt: false,
+      annet: false,
+    },
+    minVolum: 0,
+    maxVolum: 10,
+    minPrice: 0,
+    maxPrice: 2000000,
+  },
+  viewMode: {
+    filterDisplay: 'startMode',
+    initialLoad: false,
+    initialSearch: false,
+    initialFilter: true,
+  },
 };
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
@@ -26,6 +67,14 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
       return {
         ...state,
         count: state.count - 1,
+      };
+    case 'FILTER_MODE':
+      return {
+        ...state,
+        filterOptions: {
+          ...state.filterOptions,
+          filterMode: action.payload,
+        },
       };
     case 'SET_SEARCH_TEXT':
       return {
@@ -41,6 +90,62 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
       return {
         ...state,
         modalOpen: action.payload,
+      };
+    case 'FILTER':
+      return {
+        ...state,
+        filterOptions: {
+          ...state.filterOptions,
+          kategorier: {
+            ...state.filterOptions.kategorier,
+            [action.payload.field]: action.payload.value,
+          },
+        },
+      };
+    case 'FILTER_RANGE':
+      return {
+        ...state,
+        filterOptions: {
+          ...state.filterOptions,
+          [action.payload.field]: action.payload.value,
+        },
+      };
+    case 'UPDATE_VIEW_MODE':
+      return {
+        ...state,
+        viewMode: {
+          ...state.viewMode,
+          [action.payload.field]: action.payload.value,
+        },
+      };
+    case 'UPDATE_FILTER_DISPLAY':
+      return {
+        ...state,
+        viewMode: {
+          ...state.viewMode,
+          filterDisplay: action.payload,
+        },
+      };
+    case 'RESET_FILTER':
+      return {
+        ...state,
+        filterOptions: {
+          kategorier: {
+            rodvin: false,
+            hvitvin: false,
+            ol: false,
+            musserende_vin: false,
+            sterk_vin: false,
+            annen_vin: false,
+            brennevin: false,
+            alkoholfritt: false,
+            annet: false,
+          },
+          minVolum: 0,
+          maxVolum: 10,
+          minPrice: 0,
+          maxPrice: 2000000,
+        },
       };
     default:
       neverReached(action);

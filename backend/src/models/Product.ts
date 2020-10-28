@@ -4,8 +4,8 @@ interface InterfaceProduct extends Document {
   Varenavn: string;
   Varenummer: string;
   Varetype: string;
-  Volum: string;
-  Pris: string;
+  Volum: number;
+  Pris: number;
   Produsent: string;
   Land: string;
   Farge: string;
@@ -17,8 +17,8 @@ const ProductSchema = new Schema({
   Varenavn: String,
   Varenummer: String,
   Varetype: String,
-  Volum: String,
-  Pris: String,
+  Volum: Number,
+  Pris: Number,
   Produsent: String,
   Land: String,
   Farge: String,

@@ -3,7 +3,7 @@ import { Typography } from '@material-ui/core';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { setCurrentProduct } from 'store/action';
+import { resetFilter, setCurrentProduct, updateFilterDisplay, updateViewMode } from 'store/action';
 import './logo.css';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -26,8 +26,12 @@ const Logo = () => {
   const dispatch = useDispatch();
 
   const handleBackClick = () => {
+    if (history.location.pathname == '/') {
+      dispatch(updateFilterDisplay('startMode'));
+      dispatch(resetFilter());
+      dispatch(updateViewMode({ field: 'initialLoad', value: true }));
+    }
     dispatch(setCurrentProduct(null));
-
     // If the user's already on the overview-page we don't want to add x amount of overview-history to the historystack.
     if (history.location.pathname != '/') {
       history.push('/');

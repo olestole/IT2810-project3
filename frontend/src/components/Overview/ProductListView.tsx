@@ -1,156 +1,40 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, ClassAttributes } from 'react';
 import { useQuery } from '@apollo/client';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-  Paper,
-} from '@material-ui/core';
+import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import { AppState } from 'store/types';
-import { useSelector } from 'react-redux';
-import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
+import { AppState, FilterOptions, ViewMode } from 'store/types';
+import { useDispatch, useSelector } from 'react-redux';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
-interface HeaderData {
-  Varenavn: string;
-  Varetype: string;
-  Volum: string;
-  Pris: string;
-  Varenummer: string;
-  Produsent: string;
-}
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (a: { [key in Key]: string }, b: { [key in Key]: string }) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
-interface HeadCell {
-  id: keyof HeaderData;
-  label: string;
-  numeric: boolean;
-}
-
-const headCells: HeadCell[] = [
-  { id: 'Varenavn', numeric: false, label: 'Varenavn' },
-  { id: 'Varetype', numeric: true, label: 'Varetype' },
-  { id: 'Volum', numeric: true, label: 'Volum' },
-  { id: 'Pris', numeric: true, label: 'Pris' },
-  { id: 'Produsent', numeric: true, label: 'Produsent' },
-];
-
-interface EnhancedTableProps {
-  classes: ReturnType<typeof useStyles>;
-  onRequestSort: (event: React.MouseEvent<unknown>, property: keyof HeaderData) => void;
-  order: Order;
-  orderBy: string;
-  rowCount: number;
-}
-
-function EnhancedTableHead(props: EnhancedTableProps) {
-  const { classes, order, orderBy, onRequestSort } = props;
-  const createSortHandler = (property: keyof HeaderData) => (event: React.MouseEvent<unknown>) => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map((headCell) => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? 'right' : 'left'}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={orderBy === headCell.id ? order : 'asc'}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === 'desc' ? 'sorted descending' : 'sorted ascending'}
-                </span>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      width: '100%',
-    },
-    paper: {
-      width: '100%',
-      marginBottom: theme.spacing(2),
-    },
-    table: {
-      minWidth: 750,
-    },
-    visuallyHidden: {
-      border: 0,
-      clip: 'rect(0 0 0 0)',
-      height: 1,
-      margin: -1,
-      overflow: 'hidden',
-      padding: 0,
-      position: 'absolute',
-      top: 20,
-      width: 1,
-    },
-  }),
-);
+import { getProductType } from './ProductList/productTypes';
+import {
+  EnhancedTableHead,
+  getComparator,
+  HeaderData,
+  Order,
+  stableSort,
+  useStyles,
+} from './ProductList/EnhancedTableHead';
+import { updateViewMode } from 'store/action';
+import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql';
+import { FILTER_PRODUCTS } from 'graphql/queries';
 
 const ProductListView = () => {
   const classes = useStyles();
   const history = useHistory();
   const [isFetching, setIsFetching] = useState<Boolean>(false);
-  const [searchMode, setSearchMode] = useState<Boolean>(false);
+  const [staticMode, setStaticMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
   const { data, loading, error, fetchMore } = useQuery<StartProductsQuery>(GET_START_PRODUCTS, {
     variables: { index: 0 },
   });
   const searchText: string = useSelector((state: AppState) => state.searchText);
+  let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
+  let viewMode: ViewMode = useSelector((state: AppState) => state.viewMode);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
@@ -166,60 +50,167 @@ const ProductListView = () => {
     setOrderBy(property);
   };
 
-  let searchData = (searchText: string) => {
-    fetchMore({
-      query: SEARCH_PRODUCTS,
-      variables: {
-        matchedString: searchText,
-      },
-      updateQuery: (prev: any, { fetchMoreResult }: any) => {
-        if (!fetchMoreResult) return prev;
-        return Object.assign({}, prev, {
-          startProducts: [...fetchMoreResult.searchProducts],
-        });
-      },
+  const filterGlobalToArray = () => {
+    let filteredArray: string[] = [];
+    Object.keys(filterOptions.kategorier).map((key, index) => {
+      if (filterOptions.kategorier[key]) {
+        filteredArray = filteredArray.concat(getProductType(key));
+      }
     });
-    setSearchMode(true);
+    filteredArray = filteredArray.length == 0 ? getProductType('') : filteredArray;
+    return filteredArray;
   };
 
   let loadMore = () => {
-    // fetchMore basically allows you to do a new GraphQL query and merge the result into the original result.
-    fetchMore({
-      variables: {
-        index: data?.startProducts.length,
-      },
-      updateQuery: (prev: any, { fetchMoreResult }) => {
-        if (!fetchMoreResult) return prev;
-        return Object.assign({}, prev, {
-          startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
-        });
-      },
-    });
+    /*
+    fetchMore basically allows you to do a new GraphQL query and merge the result into the original result.
+    */
+    if (viewMode.initialLoad) {
+      dispatch(updateViewMode({ field: 'initialLoad', value: false }));
+      fetchMore({
+        variables: {
+          index: 0,
+        },
+        updateQuery: (prev: any, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            startProducts: [...fetchMoreResult.startProducts],
+          });
+        },
+      });
+    } else {
+      fetchMore({
+        variables: {
+          index: data?.startProducts.length,
+        },
+        updateQuery: (prev: any, { fetchMoreResult }) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
+          });
+        },
+      });
+    }
+  };
+
+  let searchData = (searchText: string) => {
+    if (viewMode.initialSearch) {
+      dispatch(updateViewMode({ field: 'initialSearch', value: false }));
+      fetchMore({
+        query: SEARCH_PRODUCTS,
+        variables: {
+          matchedString: searchText,
+          searchIndex: 0,
+        },
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            startProducts: [...fetchMoreResult.searchProducts],
+          });
+        },
+      });
+    } else {
+      fetchMore({
+        query: SEARCH_PRODUCTS,
+        variables: {
+          matchedString: searchText,
+          searchIndex: data?.startProducts.length,
+        },
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            startProducts: [...prev.startProducts, ...fetchMoreResult.searchProducts],
+          });
+        },
+      });
+    }
+  };
+
+  let filterData = (filterArray: string[]) => {
+    if (viewMode.initialFilter) {
+      dispatch(updateViewMode({ field: 'initialFilter', value: false }));
+      fetchMore({
+        query: FILTER_PRODUCTS,
+        variables: {
+          filterIndex: 0,
+          typer: filterArray,
+          prisgt: filterOptions.minPrice,
+          prisls: filterOptions.maxPrice,
+          volumgt: filterOptions.minVolum,
+          volumls: filterOptions.maxVolum,
+        },
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            startProducts: [...fetchMoreResult.filterProducts],
+          });
+        },
+      });
+    } else {
+      fetchMore({
+        query: FILTER_PRODUCTS,
+        variables: {
+          filterIndex: data?.startProducts.length,
+          typer: filterArray,
+          prisgt: filterOptions.minPrice,
+          prisls: filterOptions.maxPrice,
+          volumgt: filterOptions.minVolum,
+          volumls: filterOptions.maxVolum,
+        },
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
+          if (!fetchMoreResult) return prev;
+          return Object.assign({}, prev, {
+            startProducts: [...prev.startProducts, ...fetchMoreResult.filterProducts],
+          });
+        },
+      });
+    }
   };
 
   const handleScroll = () => {
     if (
       Math.ceil(window.innerHeight + document.documentElement.scrollTop) !== document.documentElement.offsetHeight ||
-      isFetching
+      isFetching ||
+      history.location.pathname !== '/'
     )
       return;
     setIsFetching(true);
-    console.log(isFetching);
   };
 
   useEffect(() => {
-    if (!isFetching || searchMode) return;
-    loadMore();
+    if (!isFetching || staticMode) return;
+    if (viewMode.filterDisplay == 'startMode') {
+      loadMore();
+    } else if (viewMode.filterDisplay == 'searchMode') {
+      searchData(searchText);
+    } else if (viewMode.filterDisplay == 'filterMode' && !viewMode.initialFilter) {
+      let filterList = filterGlobalToArray();
+      filterData(filterList);
+    }
     setIsFetching(false);
   }, [isFetching]);
 
   useEffect(() => {
     if (searchText == '') {
       return;
-    } else {
-      searchData(searchText);
     }
+    searchData(searchText);
   }, [searchText]);
+
+  useEffect(() => {
+    if (viewMode.filterDisplay !== 'filterMode') {
+      return;
+    }
+    let filterList = filterGlobalToArray();
+    filterData(filterList);
+  }, [filterOptions]);
+
+  useEffect(() => {
+    if (!viewMode.initialLoad) {
+      return;
+    }
+    loadMore();
+  }, [viewMode.initialLoad]);
 
   if (loading) return <LoadingIndicator />;
   if (error || !data) return <h1>ERROR</h1>;
@@ -240,13 +231,19 @@ const ProductListView = () => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
-                    <TableCell component="th" id={labelId} scope="row" padding="none" align="center">
+                    <TableCell component="th" id={labelId} padding="default" align="left">
                       {row.Varenavn}
                     </TableCell>
                     <TableCell align="right">{row.Varetype}</TableCell>
-                    <TableCell align="right">{row.Volum}</TableCell>
-                    <TableCell align="right">{row.Pris}</TableCell>
-                    <TableCell align="right">{row.Produsent}</TableCell>
+                    <TableCell align="right" className={classes.volum}>
+                      {row.Volum}
+                    </TableCell>
+                    <TableCell align="right" className={classes.pris}>
+                      {row.Pris}
+                    </TableCell>
+                    <TableCell align="right" className={classes.produsent}>
+                      {row.Produsent}{' '}
+                    </TableCell>
                   </TableRow>
                 );
               })}

@@ -6,8 +6,8 @@ import { Auth0Provider } from '@auth0/auth0-react';
 import Router from 'pages/Router';
 import { BrowserRouter } from 'react-router-dom';
 import ApolloWrapper from 'utils/ApolloWrapper';
-import './App.css';
 import { CustomToastContainer } from 'components/Shared/FeedbackToast';
+import './App.css';
 
 function App() {
   console.log(process.env.AUTH0_DOMAIN);

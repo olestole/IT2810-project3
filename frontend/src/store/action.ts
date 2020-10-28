@@ -1,4 +1,5 @@
 import { Product } from 'types/globalTypes';
+import { FilterDisplay } from './types';
 
 export const increment = () => {
   return {
@@ -9,6 +10,13 @@ export const increment = () => {
 export const decrement = () => {
   return {
     type: 'DECREMENT',
+  } as const;
+};
+
+export const setFilterMode = (boolValue: boolean) => {
+  return {
+    type: 'FILTER_MODE',
+    payload: boolValue,
   } as const;
 };
 
@@ -30,5 +38,49 @@ export const setModalOpen = (value: boolean) => {
   return {
     type: 'SET_MODAL_OPEN',
     payload: value,
+  } as const;
+};
+
+interface fieldAndBool {
+  field: string;
+  value: boolean;
+}
+
+export const filter = (filterAndBool: fieldAndBool) => {
+  return {
+    type: 'FILTER',
+    payload: filterAndBool,
+  } as const;
+};
+
+interface fieldAndNumber {
+  field: string;
+  value: number;
+}
+
+export const filterVolumAndPrice = (fieldAndNumber: fieldAndNumber) => {
+  return {
+    type: 'FILTER_RANGE',
+    payload: fieldAndNumber,
+  } as const;
+};
+
+export const updateViewMode = (filterAndBool: fieldAndBool) => {
+  return {
+    type: 'UPDATE_VIEW_MODE',
+    payload: filterAndBool,
+  } as const;
+};
+
+export const updateFilterDisplay = (value: FilterDisplay) => {
+  return {
+    type: 'UPDATE_FILTER_DISPLAY',
+    payload: value,
+  } as const;
+};
+
+export const resetFilter = () => {
+  return {
+    type: 'RESET_FILTER',
   } as const;
 };

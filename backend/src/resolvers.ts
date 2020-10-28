@@ -1,24 +1,18 @@
 import { AuthenticationError } from "apollo-server-express";
-import { Cat } from "./models/Cat";
 import { Product } from "./models/Product";
 import { WhiteWine } from "./models/WhiteWine";
-
 import withAuth from "graphql-auth";
-// import { Review } from "./models/User";
 import { IReview, IReviewResponse, Review } from "./models/Review";
 
 export const resolvers = {
   Query: {
     products: async () => {
-      //let products = await Product.find({}).skip(2).limit(4).exec()
-      let products = await Product.find({ Volum: { $ne: "0,00" } })
-        .limit(10)
-        .exec();
+      let products = await Product.find().limit(10).exec();
       return products;
     },
     startProducts: async (_: any, { startIndex }: any) => {
-      //let products = await Product.find({}).skip(2).limit(4).exec()
-      let products = await Product.find({ Volum: { $ne: "0,00" } })
+      let products = await Product.find({ Volum: { $ne: 0.0 } })
+        .sort({ Varenavn: 1 })
         .skip(startIndex)
         .limit(20)
         .exec();
@@ -30,6 +24,26 @@ export const resolvers = {
         .exec();
       return whiteWines;
     },
+    searchProducts: async (_: any, { searchSequence, index }: any) =>
+      await Product.find({
+        Varenavn: { $regex: searchSequence, $options: "i" },
+        Volum: { $ne: 0.0 },
+      })
+        .sort({ Varenavn: 1 })
+        .skip(index)
+        .limit(20),
+    filterProducts: async (
+      _: any,
+      { varetyper, prisgt, prisls, volumgt, volumls, index }: any
+    ) =>
+      await Product.find({
+        Varetype: { $in: varetyper },
+        Pris: { $gte: prisgt, $lte: prisls },
+        Volum: { $gte: volumgt, $lte: volumls },
+      })
+        .sort({ Varenavn: 1 })
+        .skip(index)
+        .limit(20),
     singleProduct: async (_: any, { productNumber }: any) => {
       // if (!isAuthenticated) {
       //   throw new AuthenticationError("Not logged in!");
@@ -38,35 +52,10 @@ export const resolvers = {
         ? (await Product.find({ Varenummer: productNumber }))[0]
         : null;
     },
-    // singleProduct: withAuth(async (_: any, { productNumber }: any) => {
-    //   // if (!isAuthenticated) {
-    //   //   throw new AuthenticationError("Not logged in!");
-    //   // }
-    //   return (await Product.find({ Varenummer: productNumber })).length > 0
-    //     ? (await Product.find({ Varenummer: productNumber }))[0]
-    //     : null;
-    // }),
-    // singleProduct: async (
-    //   _: any,
-    //   { productNumber }: any,
-    //   { isAuthenticated }: any
-    // ) => {
-    //   if (!isAuthenticated) {
-    //     throw new AuthenticationError("Not logged in!");
-    //   }
-    //   return (await Product.find({ Varenummer: productNumber })).length > 0
-    //     ? (await Product.find({ Varenummer: productNumber }))[0]
-    //     : null;
-    // },
     reviews: async (_: any, { varenummer }: any) =>
       await Review.find({
         varenummer: varenummer,
       }),
-
-    searchProducts: async (_: any, { searchSequence }: any) =>
-      await Product.find({
-        Varenavn: { $regex: searchSequence, $options: "i" },
-      }).limit(200),
     typeProduct: async (_: any, { type }: any) =>
       await Product.find().byType(type),
     nameProduct: async (_: any, { name }: any) =>
@@ -106,28 +95,5 @@ export const resolvers = {
         } as IReviewResponse;
       }
     },
-    // helloWorld: (_: any, { hello }: any) => {
-    //   return hello;
-
-    //   return new Number(123);
-
-    //   const review = new Review({
-    //     user: "Ole August",
-    //     title: "Fett",
-    //     description: "Nice beer",
-    //     rating: 3,
-    //   });
-    //   return review;
-    // },
   },
-
-  /*
-  Mutation: {
-    createProduct: async (_: any,  Varenavn: String ) => {
-      const product = new Product({ Varenavn });
-      await product.save();
-      return product;
-    },
-  },
-  */
 };
