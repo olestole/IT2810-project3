@@ -1,13 +1,13 @@
-import { useQuery } from '@apollo/client';
+import { ApolloError, useQuery } from '@apollo/client';
 import { createStyles, List, makeStyles } from '@material-ui/core';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { GET_PERSONAL_REVIEWS, GET_REVIEWS } from 'graphql/queries';
 import React from 'react';
 import { useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { AppState } from 'store/types';
 import { IReview } from 'types/globalTypes';
-// import { GetReviewsQuery_reviews } from 'graphql/__generated__/GetReviewsQuery';
-// import { InputReview } from '../../../../__generated__/globalTypes';
+import DefaultItem from './DefaultItem';
 import ReviewItem from './ReviewItem';
 
 // const data = {
@@ -79,24 +79,35 @@ const useStyles = makeStyles(() =>
 
 interface IReviewList {
   reviews: IReview[];
+  error?: ApolloError | null | undefined;
+  user?: any;
 }
 
-const ReviewList = ({ reviews }: IReviewList) => {
+const ReviewList: React.FC<IReviewList> = ({ reviews, error, user }) => {
   const classes = useStyles();
+  const location = useLocation();
+
+  const renderReviews = () => {
+    if (!user && location.pathname.substring(1) === 'profile') {
+      return <DefaultItem title={'Not logged in'} description={'Log in to see your review stats'} />;
+    } else if (error) {
+      return <DefaultItem title={'Something wrong happened'} description={'Try to refresh the page'} />;
+    } else if (reviews.length > 0) {
+      return reviews.map((review: IReview | null, index: number) => {
+        if (review !== null) {
+          return <ReviewItem key={index} review={review} />;
+        }
+      });
+    } else if (reviews.length === 0) {
+      return (
+        <DefaultItem title={'No reviews'} description={'This product has not been reviewed yet - be the first!'} />
+      );
+    }
+  };
 
   return (
     <div>
-      <List className={classes.root}>
-        {reviews ? (
-          reviews.map((review: IReview | null, index: number) => {
-            if (review !== null) {
-              return <ReviewItem key={index} review={review} />;
-            }
-          })
-        ) : (
-          <h1>No reviews</h1>
-        )}
-      </List>
+      <List className={classes.root}>{renderReviews()}</List>
     </div>
   );
 };

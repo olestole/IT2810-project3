@@ -17,6 +17,7 @@ import {
 } from './ProductList/EnhancedTableHead';
 import { updateViewMode } from 'store/action';
 import { FILTER_PRODUCTS, GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
+import { StartProductsQuery } from 'graphql/__generated__/StartProductsQuery';
 // import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
 const ProductListView = () => {
@@ -26,7 +27,7 @@ const ProductListView = () => {
   const [staticMode, setStaticMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
-  const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, {
+  const { data, loading, error, fetchMore } = useQuery<StartProductsQuery>(GET_START_PRODUCTS, {
     variables: { index: 0 },
   });
   const searchText: string = useSelector((state: AppState) => state.searchText);

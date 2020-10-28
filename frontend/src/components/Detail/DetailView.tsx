@@ -14,6 +14,7 @@ import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { ReviewList } from 'components/Shared';
 import { useQuery } from '@apollo/client';
 import { GET_REVIEWS } from 'graphql/queries';
+import { GetReviewsQuery } from 'graphql/__generated__/GetReviewsQuery';
 // import { GetReviewsQuery } from 'graphql/__generated__/GetReviewsQuery';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -39,20 +40,18 @@ const baseURL = 'https://bilder.vinmonopolet.no/cache/800x800-0/';
 
 const DetailView = () => {
   const currentProduct = useSelector((state: AppState) => state.currentProduct);
-
-  const { data, loading, error } = useQuery(GET_REVIEWS, {
-    variables: { reviewsVarenummer: currentProduct?.Varenummer },
-    fetchPolicy: 'network-only',
-  });
-
   const [loadingImage, setLoadingImage] = useState(true);
   const dispatch = useDispatch();
   const history = useHistory();
   const classes = useStyles();
   const { isAuthenticated } = useAuth0();
 
-  if (!currentProduct) return <LoadingIndicator />;
+  const { data, loading, error } = useQuery<GetReviewsQuery>(GET_REVIEWS, {
+    variables: { reviewsVarenummer: currentProduct?.Varenummer },
+    fetchPolicy: 'network-only',
+  });
 
+  if (!currentProduct) return <LoadingIndicator />;
   const url = baseURL + currentProduct.Varenummer + '-1.jpg';
 
   const handleBackClick = () => {
@@ -109,7 +108,7 @@ const DetailView = () => {
             </Button>
           )}
         </div>
-        {loading || !data ? <LoadingIndicator /> : <ReviewList reviews={data.reviews as IReview[]} />}
+        {loading ? <LoadingIndicator /> : <ReviewList reviews={data ? (data.reviews as IReview[]) : []} />}
       </div>
     </div>
   );
