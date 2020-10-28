@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@m
 import { useHistory } from 'react-router-dom';
 import { AppState, FilterOptions, ViewMode } from 'store/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS } from 'components/Overview/seachQueries';
+import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS, PRODUCTS } from 'components/Overview/seachQueries';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
 import { getProductType } from './ProductList/productTypes';
@@ -23,13 +23,33 @@ const ProductListView = () => {
   const classes = useStyles();
   const history = useHistory();
   const [isFetching, setIsFetching] = useState<Boolean>(false);
-  const [staticMode, setStaticMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
-  const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, { variables: { index: 0 } });
   const searchText: string = useSelector((state: AppState) => state.searchText);
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
   let viewMode: ViewMode = useSelector((state: AppState) => state.viewMode);
+  const filterGlobalToArray = () => {
+    let filteredArray: string[] = [];
+    Object.keys(filterOptions.kategorier).map((key, index) => {
+      if (filterOptions.kategorier[key]) {
+        filteredArray = filteredArray.concat(getProductType(key));
+      }
+    });
+    filteredArray = filteredArray.length == 0 ? getProductType('') : filteredArray;
+    return filteredArray;
+  };
+
+  const { data, loading, error, fetchMore } = useQuery(PRODUCTS, {
+    variables: {
+      matchedString: searchText,
+      filterIndex: 0,
+      typer: filterGlobalToArray(),
+      prisgt: filterOptions.minPrice,
+      prisls: filterOptions.maxPrice,
+      volumgt: filterOptions.minVolum,
+      volumls: filterOptions.maxVolum,
+    },
+  });
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,17 +66,6 @@ const ProductListView = () => {
     setOrderBy(property);
   };
 
-  const filterGlobalToArray = () => {
-    let filteredArray: string[] = [];
-    Object.keys(filterOptions.kategorier).map((key, index) => {
-      if (filterOptions.kategorier[key]) {
-        filteredArray = filteredArray.concat(getProductType(key));
-      }
-    });
-    filteredArray = filteredArray.length == 0 ? getProductType('') : filteredArray;
-    return filteredArray;
-  };
-
   let loadMore = () => {
     /*
     fetchMore basically allows you to do a new GraphQL query and merge the result into the original result.
@@ -65,71 +74,9 @@ const ProductListView = () => {
       dispatch(updateViewMode({ field: 'initialLoad', value: false }));
       fetchMore({
         variables: {
-          index: 0,
-        },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
-          if (!fetchMoreResult) return prev;
-          return Object.assign({}, prev, {
-            startProducts: [...fetchMoreResult.startProducts],
-          });
-        },
-      });
-    } else {
-      fetchMore({
-        variables: {
-          index: data.startProducts.length,
-        },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
-          if (!fetchMoreResult) return prev;
-          return Object.assign({}, prev, {
-            startProducts: [...prev.startProducts, ...fetchMoreResult.startProducts],
-          });
-        },
-      });
-    }
-  };
-
-  let searchData = (searchText: string) => {
-    if (viewMode.initialSearch) {
-      dispatch(updateViewMode({ field: 'initialSearch', value: false }));
-      fetchMore({
-        query: SEARCH_PRODUCTS,
-        variables: {
           matchedString: searchText,
-          searchIndex: 0,
-        },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
-          if (!fetchMoreResult) return prev;
-          return Object.assign({}, prev, {
-            startProducts: [...fetchMoreResult.searchProducts],
-          });
-        },
-      });
-    } else {
-      fetchMore({
-        query: SEARCH_PRODUCTS,
-        variables: {
-          matchedString: searchText,
-          searchIndex: data.startProducts.length,
-        },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
-          if (!fetchMoreResult) return prev;
-          return Object.assign({}, prev, {
-            startProducts: [...prev.startProducts, ...fetchMoreResult.searchProducts],
-          });
-        },
-      });
-    }
-  };
-
-  let filterData = (filterArray: string[]) => {
-    if (viewMode.initialFilter) {
-      dispatch(updateViewMode({ field: 'initialFilter', value: false }));
-      fetchMore({
-        query: FILTER_PRODUCTS,
-        variables: {
           filterIndex: 0,
-          typer: filterArray,
+          typer: filterGlobalToArray(),
           prisgt: filterOptions.minPrice,
           prisls: filterOptions.maxPrice,
           volumgt: filterOptions.minVolum,
@@ -138,16 +85,16 @@ const ProductListView = () => {
         updateQuery: (prev: any, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
-            startProducts: [...fetchMoreResult.filterProducts],
+            products: [...fetchMoreResult.products],
           });
         },
       });
     } else {
       fetchMore({
-        query: FILTER_PRODUCTS,
         variables: {
-          filterIndex: data.startProducts.length,
-          typer: filterArray,
+          matchedString: searchText,
+          filterIndex: data.products.length,
+          typer: filterGlobalToArray(),
           prisgt: filterOptions.minPrice,
           prisls: filterOptions.maxPrice,
           volumgt: filterOptions.minVolum,
@@ -156,7 +103,7 @@ const ProductListView = () => {
         updateQuery: (prev: any, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
-            startProducts: [...prev.startProducts, ...fetchMoreResult.filterProducts],
+            products: [...prev.products, ...fetchMoreResult.products],
           });
         },
       });
@@ -170,49 +117,34 @@ const ProductListView = () => {
       history.location.pathname !== '/'
     )
       return;
+    dispatch(updateViewMode({ field: 'initialLoad', value: false }));
     setIsFetching(true);
   };
 
   useEffect(() => {
-    if (!isFetching || staticMode) return;
-    if (viewMode.filterDisplay == 'startMode') {
-      loadMore();
-    } else if (viewMode.filterDisplay == 'searchMode') {
-      searchData(searchText);
-    } else if (viewMode.filterDisplay == 'filterMode' && !viewMode.initialFilter) {
-      let filterList = filterGlobalToArray();
-      filterData(filterList);
-    }
+    if (!isFetching) return;
+
+    loadMore();
     setIsFetching(false);
   }, [isFetching]);
 
   useEffect(() => {
-    if (searchText == '') {
-      return;
-    }
-    searchData(searchText);
-  }, [searchText]);
+    console.log('RUNNING Filteroptions');
 
-  useEffect(() => {
-    if (viewMode.filterDisplay !== 'filterMode') {
-      return;
-    }
-    let filterList = filterGlobalToArray();
-    filterData(filterList);
-  }, [filterOptions]);
-
-  useEffect(() => {
-    if (!viewMode.initialLoad) {
+    if (searchText == '' || !viewMode.initialLoad) {
       return;
     }
     loadMore();
-  }, [viewMode.initialLoad]);
+  }, [searchText, filterOptions]);
 
   if (loading) return <LoadingIndicator />;
-  if (error) return <h1>ERROR</h1>;
 
-  if (data && data.startProducts) {
-    console.log('D: ', data.startProducts);
+  if (error) {
+    console.log(error);
+    return <h1>ERROR</h1>;
+  }
+  if (data && data.products) {
+    console.log('D: ', data.products);
   }
 
   return (
@@ -225,10 +157,10 @@ const ProductListView = () => {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={data.startProducts.length}
+              rowCount={data.products.length}
             />
             <TableBody>
-              {stableSort(data.startProducts, getComparator(order, orderBy)).map((row, index) => {
+              {stableSort(data.products, getComparator(order, orderBy)).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>

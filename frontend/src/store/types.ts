@@ -29,10 +29,7 @@ export type Kategorier = {
 };
 
 export type ViewMode = {
-  filterDisplay: FilterDisplay;
   initialLoad: boolean;
-  initialSearch: boolean;
-  initialFilter: boolean;
 };
 
 export type FilterDisplay = 'startMode' | 'searchMode' | 'filterMode';

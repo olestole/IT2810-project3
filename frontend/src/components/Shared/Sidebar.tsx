@@ -101,17 +101,11 @@ let Sidebar = () => {
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
   const dispatch = useDispatch();
 
-  let setFilteringMode = () => {
-    dispatch(updateFilterDisplay('filterMode'));
-    dispatch(updateViewMode({ field: 'initialFilter', value: true }));
-  };
-
   let handleClick = (func: any, openValue: boolean) => {
     func(!openValue);
   };
 
   const changeVolumeRange = (event: any, newValue: number | number[]) => {
-    setFilteringMode();
     dispatch(filterVolumAndPrice({ field: 'minVolum', value: (newValue as number[])[0] }));
     dispatch(filterVolumAndPrice({ field: 'maxVolum', value: (newValue as number[])[1] }));
   };
@@ -121,7 +115,6 @@ let Sidebar = () => {
   };
 
   const handlePChange = (n: number) => {
-    setFilteringMode();
     dispatch(filterVolumAndPrice({ field: 'minPrice', value: getPriceRange(n)[0] }));
     dispatch(filterVolumAndPrice({ field: 'maxPrice', value: getPriceRange(n)[1] }));
   };
@@ -147,7 +140,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'rodvin', value: !filterOptions.kategorier.rodvin }));
-                setFilteringMode();
               }}
             />
             <FormControlLabel
@@ -157,7 +149,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'hvitvin', value: !filterOptions.kategorier.hvitvin }));
-                setFilteringMode();
               }}
             />
             <FormControlLabel
@@ -167,7 +158,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'musserende_vin', value: !filterOptions.kategorier.musserende_vin }));
-                setFilteringMode();
               }}
             />
             <FormControlLabel
@@ -177,7 +167,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'sterk_vin', value: !filterOptions.kategorier.sterk_vin }));
-                setFilteringMode();
               }}
             />
             <FormControlLabel
@@ -187,7 +176,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'annen_vin', value: !filterOptions.kategorier.annen_vin }));
-                setFilteringMode();
               }}
             />
             <FormControlLabel
@@ -197,7 +185,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'ol', value: !filterOptions.kategorier.ol }));
-                setFilteringMode();
               }}
             />
             <FormControlLabel
@@ -207,7 +194,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'brennevin', value: !filterOptions.kategorier.brennevin }));
-                setFilteringMode();
               }}
             />
             <FormControlLabel
@@ -217,7 +203,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'alkoholfritt', value: !filterOptions.kategorier.alkoholfritt }));
-                setFilteringMode();
               }}
             />
             <FormControlLabel
@@ -227,7 +212,6 @@ let Sidebar = () => {
               labelPlacement="start"
               onChange={() => {
                 dispatch(filter({ field: 'annet', value: !filterOptions.kategorier.annet }));
-                setFilteringMode();
               }}
             />
           </FormGroup>

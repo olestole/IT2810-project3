@@ -60,8 +60,7 @@ const Search = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
       dispatch(setSearchText(textInput.current.value));
-      dispatch(updateViewMode({ field: 'initialSearch', value: true }));
-      dispatch(updateFilterDisplay('searchMode'));
+      dispatch(updateViewMode({ field: 'initialLoad', value: true }));
 
       textInput.current.value = '';
       /*Search function */
@@ -70,8 +69,6 @@ const Search = () => {
 
   const handleDelete = () => {
     dispatch(setSearchText(''));
-    dispatch(updateFilterDisplay('startMode'));
-    dispatch(resetFilter());
     dispatch(updateViewMode({ field: 'initialLoad', value: true }));
   };
 

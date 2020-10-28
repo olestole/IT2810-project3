@@ -52,3 +52,32 @@ export const FILTER_PRODUCTS = gql`
     }
   }
 `;
+
+export const PRODUCTS = gql`
+  query Query(
+    $matchedString: String!
+    $typer: [String]!
+    $prisgt: Float!
+    $prisls: Float!
+    $volumgt: Float!
+    $volumls: Float!
+    $filterIndex: Int!
+  ) {
+    products(
+      searchSequence: $matchedString
+      varetyper: $typer
+      prisgt: $prisgt
+      prisls: $prisls
+      volumgt: $volumgt
+      volumls: $volumls
+      index: $filterIndex
+    ) {
+      Varenavn
+      Varetype
+      Varenummer
+      Produsent
+      Volum
+      Pris
+    }
+  }
+`;
