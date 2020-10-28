@@ -10,6 +10,7 @@ import {
   setModalOpen,
   updateViewMode,
   updateFilterDisplay,
+  resetFilter,
 } from './action';
 import { AppState, FilterOptions } from './types';
 
@@ -53,7 +54,8 @@ type Actions =
   | ReturnType<typeof filter>
   | ReturnType<typeof filterVolumAndPrice>
   | ReturnType<typeof updateViewMode>
-  | ReturnType<typeof updateFilterDisplay>;
+  | ReturnType<typeof updateFilterDisplay>
+  | ReturnType<typeof resetFilter>;
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
   switch (action.type) {
@@ -123,6 +125,27 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
         viewMode: {
           ...state.viewMode,
           filterDisplay: action.payload,
+        },
+      };
+    case 'RESET_FILTER':
+      return {
+        ...state,
+        filterOptions: {
+          kategorier: {
+            rodvin: false,
+            hvitvin: false,
+            ol: false,
+            musserende_vin: false,
+            sterk_vin: false,
+            annen_vin: false,
+            brennevin: false,
+            alkoholfritt: false,
+            annet: false,
+          },
+          minVolum: 0,
+          maxVolum: 10,
+          minPrice: 0,
+          maxPrice: 2000000,
         },
       };
     default:
