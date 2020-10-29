@@ -2,34 +2,39 @@ import {
   Checkbox,
   Collapse,
   Divider,
+  FormControl,
   FormControlLabel,
   FormGroup,
+  InputLabel,
   List,
   ListItem,
   ListItemIcon,
   ListItemText,
+  MenuItem,
+  Select,
   Slider,
   Typography,
 } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { ViewAgenda } from '@material-ui/icons';
 import AttachMoney from '@material-ui/icons/AttachMoney';
 import IconDashboard from '@material-ui/icons/Dashboard';
 import IconExpandLess from '@material-ui/icons/ExpandLess';
 import IconExpandMore from '@material-ui/icons/ExpandMore';
 import LocalDrink from '@material-ui/icons/LocalDrink';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filter, filterVolumAndPrice, setFilterMode, updateFilterDisplay, updateViewMode } from 'store/action';
+import { filter, filterVolumAndPrice, updateFilterDisplay, updateViewMode } from 'store/action';
 import { AppState, FilterOptions } from 'store/types';
 import './sidebar.css';
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const useStyles = makeStyles((theme) =>
   createStyles({
     appMenu: {
       width: '100%',
+      display: 'flex',
+      flexDirection: 'column',
     },
     navList: {
       width: drawerWidth,
@@ -40,40 +45,61 @@ const useStyles = makeStyles((theme) =>
     menuItemIcon: {
       color: '#D95459',
     },
+    divider: {
+      width: drawerWidth,
+    },
     formGroup: {
       width: drawerWidth,
       display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'auto',
+      alignItems: 'right',
       position: 'relative',
     },
   }),
 );
 
+const getPriceRange = (price: number) => {
+  switch (price) {
+    case 0: {
+      return [0, 100];
+    }
+    case 100: {
+      return [100, 150];
+    }
+    case 150: {
+      return [150, 200];
+    }
+    case 200: {
+      return [200, 300];
+    }
+    case 300: {
+      return [300, 500];
+    }
+    case 500: {
+      return [500, 750];
+    }
+    case 750: {
+      return [750, 1000];
+    }
+    case 1000: {
+      return [1000, 5000];
+    }
+    case 5000: {
+      return [5000, 500000];
+    }
+    default: {
+      return [0, 500000];
+    }
+  }
+};
+
 let Sidebar = () => {
   const classes = useStyles();
   const [volumRange, setVolumeRange] = React.useState<number[]>([0, 6]);
-  const [priceRange, setPriceRange] = React.useState<number[]>([0, 50000]);
   const [openCategory, setOpenCategory] = React.useState<boolean>(false);
   const [openVolume, setOpenVolume] = React.useState<boolean>(false);
   const [openPrice, setOpenPrice] = React.useState<boolean>(false);
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
   const dispatch = useDispatch();
-
-  /*
-  Not working with changing value, only changes the first time
-
-  const createCheckOption = (label: string, type: string) => {
-    return(
-      <FormControlLabel 
-              control={<Checkbox color="primary" />}
-              label={label}
-              labelPlacement="start"
-              onChange={() => {dispatch(filter({field: type, value: !filterOptions.kategorier.type}))}}
-              />
-    )
-  };
-  */
 
   let setFilteringMode = () => {
     dispatch(updateFilterDisplay('filterMode'));
@@ -84,17 +110,6 @@ let Sidebar = () => {
     func(!openValue);
   };
 
-  const changePriceRange = (event: any, newValue: number | number[]) => {
-    setPriceRange(newValue as number[]);
-    setFilteringMode();
-    dispatch(filterVolumAndPrice({ field: 'minPrice', value: (newValue as number[])[0] }));
-    dispatch(filterVolumAndPrice({ field: 'maxPrice', value: (newValue as number[])[1] }));
-  };
-
-  const handleLocalPriceChange = (event: any, newValue: number | number[]) => {
-    setPriceRange(newValue as number[]);
-  };
-
   const changeVolumeRange = (event: any, newValue: number | number[]) => {
     setFilteringMode();
     dispatch(filterVolumAndPrice({ field: 'minVolum', value: (newValue as number[])[0] }));
@@ -103,6 +118,12 @@ let Sidebar = () => {
 
   const handleLocalVolumeChange = (event: any, newValue: number | number[]) => {
     setVolumeRange(newValue as number[]);
+  };
+
+  const handlePChange = (n: number) => {
+    setFilteringMode();
+    dispatch(filterVolumAndPrice({ field: 'minPrice', value: getPriceRange(n)[0] }));
+    dispatch(filterVolumAndPrice({ field: 'maxPrice', value: getPriceRange(n)[1] }));
   };
 
   return (
@@ -122,7 +143,7 @@ let Sidebar = () => {
         </ListItem>
 
         <Collapse in={openCategory} timeout="auto" unmountOnExit>
-          <Divider />
+          <Divider className={classes.divider} />
           <FormGroup className={classes.formGroup}>
             <FormControlLabel
               checked={filterOptions.kategorier.rodvin}
@@ -226,7 +247,7 @@ let Sidebar = () => {
         </ListItem>
 
         <Collapse in={openVolume} timeout="auto" unmountOnExit>
-          <Divider />
+          <Divider className={classes.divider} />
           <FormGroup className={classes.formGroup}>
             <Typography id="range-slider" gutterBottom>
               Volume (L)
@@ -252,20 +273,31 @@ let Sidebar = () => {
         </ListItem>
 
         <Collapse in={openPrice} timeout="auto" unmountOnExit>
-          <Divider />
+          <Divider className={classes.divider} />
           <FormGroup className={classes.formGroup}>
             <Typography id="price-slider" gutterBottom>
               Price range (kr)
             </Typography>
-            <Slider
-              min={0}
-              max={50000}
-              step={50}
-              value={priceRange}
-              onChange={handleLocalPriceChange}
-              onChangeCommitted={changePriceRange}
-              valueLabelDisplay="auto"
-            />
+            <FormControl className={classes.formGroup}>
+              <InputLabel id="customized-select-label"></InputLabel>
+              <Select
+                id="customized-select"
+                variant="outlined"
+                value={filterOptions.minPrice}
+                onChange={(e) => handlePChange(e.target.value as number)}
+                //input={<BootstrapInput />}
+              >
+                <MenuItem value={0}>Under 100 kr</MenuItem>
+                <MenuItem value={100}>100 til 150 kr</MenuItem>
+                <MenuItem value={150}>150 til 200 kr</MenuItem>
+                <MenuItem value={200}>200 til 300 kr</MenuItem>
+                <MenuItem value={300}>300 til 500 kr</MenuItem>
+                <MenuItem value={500}>500 til 750 kr</MenuItem>
+                <MenuItem value={750}>750 til 1000 kr</MenuItem>
+                <MenuItem value={1000}>1000 til 5000 kr</MenuItem>
+                <MenuItem value={5000}>Over 5000 kr</MenuItem>
+              </Select>
+            </FormControl>
           </FormGroup>
         </Collapse>
       </List>

@@ -1,3 +1,4 @@
+import { Product } from 'types/globalTypes';
 import { FilterDisplay } from './types';
 
 export const increment = () => {
@@ -75,5 +76,11 @@ export const updateFilterDisplay = (value: FilterDisplay) => {
   return {
     type: 'UPDATE_FILTER_DISPLAY',
     payload: value,
+  } as const;
+};
+
+export const resetFilter = () => {
+  return {
+    type: 'RESET_FILTER',
   } as const;
 };
