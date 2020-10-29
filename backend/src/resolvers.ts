@@ -25,7 +25,7 @@ export const resolvers = {
       })
         .sort({ Varenavn: 1 })
         .skip(index)
-        .limit(20),
+        .limit(40),
     singleProduct: async (_: any, { productNumber }: any) => {
       // if (!isAuthenticated) {
       //   throw new AuthenticationError("Not logged in!");
