@@ -1,5 +1,5 @@
 .header {
-  background: #002025;
+  background: var(--primary);
   position: fixed !important;
   top: 0;
   width: 100%;

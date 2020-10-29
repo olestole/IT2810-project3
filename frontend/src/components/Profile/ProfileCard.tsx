@@ -13,6 +13,7 @@ const useStyles = makeStyles({
   root: {
     width: '80%',
     height: '100%',
+    overflow: 'auto',
   },
   content: {
     display: 'flex',
@@ -31,19 +32,25 @@ const useStyles = makeStyles({
     display: 'flex',
     justifyContent: 'center',
     '& > *': {
-      marginTop: '50px',
+      background: 'var(--primary)',
+      color: '#fff',
       width: '100%',
     },
   },
-  flexColumn: {
+  grid: {
     display: 'flex',
-    justifyContent: 'space-between',
+    flexWrap: 'wrap',
   },
   reviews: {
-    maxWidth: '70%',
+    alignSelf: 'center',
+    marginBottom: 20,
+    maxWidth: '100%',
+    flex: '1 1 500px',
   },
   userInfo: {
     margin: 'auto',
+    textAlign: 'center',
+    flex: '1 1 200px',
   },
 });
 
@@ -55,12 +62,16 @@ const ProfileCard: React.FC = ({ children }) => {
   const handleLogin = () => {
     // Save the current product to sessionStorage so that it can be retrieved after the callback
     sessionStorage.setItem('currentProduct', JSON.stringify(currentProduct));
+    sessionStorage.setItem('loggedIn', JSON.stringify(true));
     loginWithRedirect({
       redirectUri: 'http://localhost:3000/callback',
     });
   };
 
   const handleLogout = () => {
+    // Always return to the profile-page after logout
+    sessionStorage.setItem('currentProduct', JSON.stringify(null));
+    sessionStorage.setItem('loggedIn', JSON.stringify(false));
     logout({
       returnTo: 'http://localhost:3000/callback',
     });
@@ -71,7 +82,7 @@ const ProfileCard: React.FC = ({ children }) => {
   return (
     <Card className={classes.root}>
       <CardContent className={classes.content}>
-        <div className={classes.flexColumn}>
+        <div className={classes.grid}>
           {isAuthenticated && (
             <div className={classes.userInfo}>
               <img src={user.picture} alt={user.name} />
@@ -81,19 +92,19 @@ const ProfileCard: React.FC = ({ children }) => {
           )}
           <div className={classes.reviews}>{children}</div>
         </div>
-        {isAuthenticated ? (
+        {
           <div className={classes.buttonGroup}>
-            <Button variant="contained" onClick={handleLogout}>
-              Logg ut
-            </Button>
+            {isAuthenticated ? (
+              <Button variant="contained" onClick={handleLogout}>
+                Logg ut
+              </Button>
+            ) : (
+              <Button id="loginButton" variant="contained" onClick={handleLogin}>
+                Logg inn
+              </Button>
+            )}
           </div>
-        ) : (
-          <div className={classes.buttonGroup}>
-            <Button id="loginButton" variant="contained" onClick={handleLogin}>
-              Logg inn
-            </Button>
-          </div>
-        )}
+        }
       </CardContent>
     </Card>
   );
