@@ -6,12 +6,13 @@ import { ProductRating } from './ProductRating';
 import { Button, createStyles, makeStyles } from '@material-ui/core';
 import { ReviewDescription, ReviewTitle } from './ProductInput';
 import { toast } from 'react-toastify';
-import { setModalOpen } from 'store/action';
+import { setAddedReview, setModalOpen } from 'store/action';
 import { ADD_REVIEW } from 'graphql/mutations';
 import { useMutation } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
-// import { InputReview } from '../../../../__generated__/globalTypes';
+import { InputReview } from '../../../../__generated__/globalTypes';
+import { AddReviewMutation } from 'graphql/__generated__/AddReviewMutation';
 
 const useStyles = makeStyles(() =>
   createStyles({
@@ -36,7 +37,7 @@ const ProductReview = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
 
-  const [addReview] = useMutation(ADD_REVIEW);
+  const [addReview] = useMutation<AddReviewMutation>(ADD_REVIEW);
   const { user } = useAuth0();
 
   const [inputError, setInputError] = useState(false);
@@ -45,20 +46,20 @@ const ProductReview = () => {
   const [reviewTitle, setReviewTitle] = useState('');
 
   const submitReview = async () => {
-    console.log(user);
-
     const review = {
       userEmail: user.email,
       varenummer: currentProduct!.Varenummer,
       title: reviewTitle,
       description: description,
       rating: rating,
-      // } as InputReview;
-    };
+    } as InputReview;
 
     await addReview({
       variables: { addReviewReview: review },
     });
+
+    // Don't wait for the data from useMutation when we already have it locally
+    dispatch(setAddedReview(review));
   };
 
   const handleSubmitReview = async () => {
