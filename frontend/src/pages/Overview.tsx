@@ -15,10 +15,6 @@ const useStyles = makeStyles(() =>
 );
 
 const Overview = () => {
-  const { user } = useAuth0();
-
-  console.log('USER:', user);
-
   const classes = useStyles();
   //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
   return (

@@ -4,7 +4,7 @@ import { Typography, Button } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentProduct, setModalOpen } from 'store/action';
+import { setAddedReview, setCurrentProduct, setModalOpen } from 'store/action';
 import { useAuth0 } from '@auth0/auth0-react';
 import { IReview, Product } from 'types/globalTypes';
 import { AppState } from 'store/types';
@@ -59,6 +59,7 @@ const DetailView = () => {
 
   const handleBackClick = () => {
     dispatch(setCurrentProduct(null));
+    dispatch(setAddedReview(null));
     history.push('/');
   };
 

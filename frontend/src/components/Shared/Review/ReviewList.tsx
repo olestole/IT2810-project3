@@ -86,18 +86,41 @@ interface IReviewList {
 const ReviewList: React.FC<IReviewList> = ({ reviews, error, user }) => {
   const classes = useStyles();
   const location = useLocation();
+  const addedReview = useSelector((state: AppState) => state.addedReview);
 
   const renderReviews = () => {
     if (!user && location.pathname.substring(1) === 'profile') {
       return <DefaultItem title={'Not logged in'} description={'Log in to see your review stats'} />;
     } else if (error) {
       return <DefaultItem title={'Something wrong happened'} description={'Try to refresh the page'} />;
-    } else if (reviews.length > 0) {
-      return reviews.map((review: IReview | null, index: number) => {
-        if (review !== null) {
-          return <ReviewItem key={index} review={review} />;
-        }
-      });
+    } else if (reviews.length > 0 || addedReview) {
+      if (addedReview) {
+        return reviews.concat(addedReview).map((review: IReview | null, index: number) => {
+          if (review !== null) {
+            return <ReviewItem key={index} review={review} />;
+          }
+        });
+      } else {
+        return reviews.map((review: IReview | null, index: number) => {
+          if (review !== null) {
+            return <ReviewItem key={index} review={review} />;
+          }
+        });
+      }
+      // return addedReview
+      //   ? [
+      //       ...reviews.map((review: IReview | null, index: number) => {
+      //         if (review !== null) {
+      //           return <ReviewItem key={index} review={review} />;
+      //         }
+      //       }),
+      //       <ReviewItem key={addedReview?.description} review={addedReview} />,
+      //     ]
+      //   : reviews.map((review: IReview | null, index: number) => {
+      //       if (review !== null) {
+      //         return <ReviewItem key={index} review={review} />;
+      //       }
+      //     });
     } else if (reviews.length === 0) {
       return location.pathname.substring(1) === 'profile' ? (
         <DefaultItem title={'Ingen produktanmeldelser'} description={'Du har ikke anmeldt noen produkter enda'} />

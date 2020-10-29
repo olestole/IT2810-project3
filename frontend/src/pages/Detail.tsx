@@ -10,7 +10,6 @@ import ProductReview from 'components/Detail/ProductReview/ProductReview';
 import { Product } from 'types/globalTypes';
 import { GET_SINGLE_PRODUCT } from 'graphql/queries';
 import { SingleProductQuery } from 'graphql/__generated__/SingleProductQuery';
-import { useAuth0 } from '@auth0/auth0-react';
 
 const Detail = () => {
   const location = useLocation();
@@ -18,10 +17,6 @@ const Detail = () => {
   const { data, loading, error } = useQuery<SingleProductQuery>(GET_SINGLE_PRODUCT, {
     variables: { number: location.pathname.substr(1) },
   });
-
-  const { user } = useAuth0();
-
-  console.log('USER:', user);
 
   //useLazyQuery return a function which can be used to trigger the query manually and we should use this for dynamic loading
   if (loading) return <LoadingIndicator />;

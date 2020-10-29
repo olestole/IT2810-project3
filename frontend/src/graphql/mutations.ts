@@ -4,10 +4,13 @@ const ADD_REVIEW = gql`
   mutation AddReviewMutation($addReviewReview: InputReview!) {
     addReview(review: $addReviewReview) {
       code
-      title
+      success
       message
-      user
+      rating
+      description
+      varenummer
       title
+      userEmail
     }
   }
 `;
