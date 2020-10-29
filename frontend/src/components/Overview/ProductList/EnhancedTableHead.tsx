@@ -61,17 +61,17 @@ export const useStyles = makeStyles((theme: Theme) =>
       width: 1,
     },
     produsent: {
-      [theme.breakpoints.down(960)]: {
+      [theme.breakpoints.down(1180)]: {
         display: 'none',
       },
     },
     pris: {
-      [theme.breakpoints.down(750)]: {
+      [theme.breakpoints.down(970)]: {
         display: 'none',
       },
     },
     volum: {
-      [theme.breakpoints.down(500)]: {
+      [theme.breakpoints.down(720)]: {
         display: 'none',
       },
     },
