@@ -1,4 +1,4 @@
-interface Product {
+export interface Product {
   Varenavn: string;
   Varenummer: string;
   Varetype: string;
@@ -9,4 +9,12 @@ interface Product {
   Farge: string;
   Lukt: string;
   Smak: string;
+}
+
+export interface IReview {
+  userEmail?: string;
+  varenummer: string;
+  title: string;
+  description: string;
+  rating: number;
 }

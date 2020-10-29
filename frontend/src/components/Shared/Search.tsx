@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
-import { InputBase } from '@material-ui/core';
+import { Chip, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
-import { setSearchText, updateFilterDisplay, updateViewMode } from 'store/action';
+import { useDispatch, useSelector } from 'react-redux';
+import { resetFilter, setSearchText, updateFilterDisplay, updateViewMode } from 'store/action';
+import { AppState } from 'store/types';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -19,6 +20,12 @@ const useStyles = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(3),
         width: 'auto',
       },
+    },
+    searchAndChip: {
+      position: 'relative',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
     },
     searchIcon: {
       padding: theme.spacing(0, 2),
@@ -48,6 +55,7 @@ const Search = () => {
   const classes = useStyles();
   let textInput = useRef<any>(null); // Think type is HTMLDivElement but does not work
   const dispatch = useDispatch();
+  const searchText: string = useSelector((state: AppState) => state.searchText);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
@@ -61,21 +69,32 @@ const Search = () => {
     }
   };
 
+  const handleDelete = () => {
+    dispatch(setSearchText(''));
+    dispatch(updateFilterDisplay('startMode'));
+    dispatch(resetFilter());
+    dispatch(updateViewMode({ field: 'initialLoad', value: true }));
+  };
+
   return (
-    <div className={classes.search}>
-      <div className={classes.searchIcon}>
-        <SearchIcon aria-label="searchIcon"/>
+    <div id={'searchField'} className={classes.searchAndChip}>
+      <div className={classes.search}>
+        <div className={classes.searchIcon}>
+          <SearchIcon aria-label="searchIcon" />
+        </div>
+        <InputBase
+          id={'searchInputField'}
+          placeholder="Produkt…"
+          classes={{
+            root: classes.inputRoot,
+            input: classes.inputInput,
+          }}
+          inputProps={{ 'aria-label': 'search' }}
+          onKeyDown={(e) => handleKeyDown(e)}
+          inputRef={textInput}
+        />
       </div>
-      <InputBase
-        placeholder="Produkt…"
-        classes={{
-          root: classes.inputRoot,
-          input: classes.inputInput,
-        }}
-        inputProps={{ 'aria-label': 'search' }}
-        onKeyDown={(e) => handleKeyDown(e)}
-        inputRef={textInput}
-      />
+      {searchText === '' ? null : <Chip label={searchText} onDelete={handleDelete} color="primary" />}
     </div>
   );
 };
