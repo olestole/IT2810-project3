@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-  Paper,
-} from '@material-ui/core';
+import { TableCell, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
 
 export interface HeaderData {
   Varetype: string;

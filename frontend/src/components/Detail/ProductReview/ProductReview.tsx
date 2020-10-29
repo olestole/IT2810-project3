@@ -10,7 +10,6 @@ import { setAddedReview, setModalOpen } from 'store/action';
 import { ADD_REVIEW } from 'graphql/mutations';
 import { useMutation } from '@apollo/client';
 import { useAuth0 } from '@auth0/auth0-react';
-import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { InputReview } from '../../../../__generated__/globalTypes';
 import { AddReviewMutation } from 'graphql/__generated__/AddReviewMutation';
 

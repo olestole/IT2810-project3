@@ -3,7 +3,7 @@ import { Chip, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetFilter, setSearchText, updateFilterDisplay, updateViewMode } from 'store/action';
+import { setSearchText, updateViewMode } from 'store/action';
 import { AppState } from 'store/types';
 
 const useStyles = makeStyles((theme: Theme) =>

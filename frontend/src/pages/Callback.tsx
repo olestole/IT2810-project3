@@ -1,9 +1,7 @@
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import React, { useEffect } from 'react';
-import { useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { AppState } from 'store/types';
 import { Product } from 'types/globalTypes';
 
 /**
@@ -20,7 +18,7 @@ export const Callback = () => {
       loggedIn ? toast.info('Vellykket innlogging 🦄') : toast.info('Vellykket utlogging 🦄');
 
       const res = sessionStorage.getItem('currentProduct');
-      if (res == 'null' || res == 'undefined') return history.push('/profile');
+      if (res === 'null' || res === 'undefined') return history.push('/profile');
 
       const json = await JSON.parse(res!);
       if (!json) return history.push('/');

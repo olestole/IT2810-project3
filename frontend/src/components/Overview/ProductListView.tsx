@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ClassAttributes } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
@@ -35,7 +35,7 @@ const ProductListView = () => {
         filteredArray = filteredArray.concat(getProductType(key));
       }
     });
-    filteredArray = filteredArray.length == 0 ? getProductType('') : filteredArray;
+    filteredArray = filteredArray.length === 0 ? getProductType('') : filteredArray;
     return filteredArray;
   };
 
@@ -129,9 +129,7 @@ const ProductListView = () => {
   }, [isFetching]);
 
   useEffect(() => {
-    console.log('RUNNING Filteroptions');
-
-    if (searchText == '' || !viewMode.initialLoad) {
+    if (searchText === '' || !viewMode.initialLoad) {
       return;
     }
     loadMore();
@@ -141,9 +139,6 @@ const ProductListView = () => {
 
   if (error) {
     return <h1>ERROR</h1>;
-  }
-  if (data && data.products) {
-    console.log('D: ', data.products);
   }
 
   return (

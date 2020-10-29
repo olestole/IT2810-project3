@@ -50,7 +50,7 @@ const useStyles = makeStyles((theme) =>
 
 const Profile = () => {
   const classes = useStyles();
-  const { isAuthenticated, user } = useAuth0();
+  const { user } = useAuth0();
   const { loading, error, data } = useQuery<GetPersonalReviewsQuery>(GET_PERSONAL_REVIEWS, {
     variables: { personalReviewUserEmail: user ? user.email : 'none' },
   });

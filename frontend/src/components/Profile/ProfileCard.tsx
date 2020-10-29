@@ -57,7 +57,7 @@ const useStyles = makeStyles({
 const ProfileCard: React.FC = ({ children }) => {
   const classes = useStyles();
   const currentProduct = useSelector((state: AppState) => state.currentProduct);
-  const { user, logout, loginWithRedirect, isAuthenticated, isLoading, getAccessTokenSilently } = useAuth0();
+  const { user, logout, loginWithRedirect, isAuthenticated, isLoading } = useAuth0();
 
   const handleLogin = () => {
     // Save the current product to sessionStorage so that it can be retrieved after the callback

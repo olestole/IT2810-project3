@@ -1,5 +1,5 @@
 import React from 'react';
-import { createStyles, makeStyles, withStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@material-ui/core/styles';
 import Rating, { IconContainerProps } from '@material-ui/lab/Rating';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SentimentDissatisfiedIcon from '@material-ui/icons/SentimentDissatisfied';

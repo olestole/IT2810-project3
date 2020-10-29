@@ -23,7 +23,7 @@ import IconExpandMore from '@material-ui/icons/ExpandMore';
 import LocalDrink from '@material-ui/icons/LocalDrink';
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { filter, filterVolumAndPrice, updateFilterDisplay, updateViewMode } from 'store/action';
+import { filter, filterVolumAndPrice } from 'store/action';
 import { AppState, FilterOptions } from 'store/types';
 import './sidebar.css';
 
