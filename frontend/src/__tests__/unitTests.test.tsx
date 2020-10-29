@@ -1,6 +1,5 @@
 import React from 'react';
-import {render, fireEvent, RenderResult, cleanup, screen} from '@testing-library/react'
-import userEvent from '@testing-library/user-event';
+import {render, fireEvent, RenderResult, cleanup, screen } from '@testing-library/react'
 import { Provider } from 'react-redux';
 import { store } from 'store/reducer';
 import { Logo, Header, Search } from 'components/Shared'
@@ -11,14 +10,14 @@ import ApolloWrapper from 'utils/ApolloWrapper';
 import { createMemoryHistory } from 'history';
 import * as actions from 'store/action';
 import { MockedProvider } from '@apollo/client/testing'
-import Detail, { GET_SINGLE_PRODUCT } from 'pages/Detail'
+import Detail from 'pages/Detail'
+import { GET_SINGLE_PRODUCT, GET_REVIEWS } from 'graphql/queries';
 
 let documentBody: RenderResult;
 
 afterEach(cleanup)
 
-
-describe('Logo', () => {
+describe('logo', () => {
   beforeEach(() => {
     documentBody = render(<ApolloWrapper>
       <BrowserRouter>
@@ -55,6 +54,32 @@ describe('Logo', () => {
 
 });
 
+describe('search', () => {
+  beforeEach(() => {
+    documentBody = render(<ApolloWrapper>
+      <BrowserRouter>
+        <Provider store={store}>
+          <CustomToastContainer />
+          <Search />
+        </Provider>
+      </BrowserRouter>
+    </ApolloWrapper>
+  )})
+
+
+  it('renders correctly', () => {
+    expect(documentBody.getByLabelText('searchIcon')).toBeTruthy()
+    expect(documentBody.getByPlaceholderText('Produkt…')).toBeTruthy()
+  })
+
+  it('shows chip when search', () => {
+    fireEvent.change(documentBody.getByPlaceholderText('Produkt…'), { target: { value: "whiskey" } })
+    fireEvent.keyDown(documentBody.getByPlaceholderText('Produkt…'), { key: 'Enter', keyCode: 13, charCode: 13 })
+
+    expect(documentBody.getByRole('chip')).toHaveTextContent('whiskey');
+  })
+});
+
 describe('actions', () => {
   it('should set search string', () => {
     const text = 'whiskey'
@@ -87,7 +112,7 @@ const mocks= [{
     data: {
       singleProduct: {
         Varenummer: "232101",
-        Varenavn: "Dom perignon Brut 2010",
+        Varenavn: "Dom Perignon Brut 2010",
         Volum: "0.75",
         Pris: "1649.9",
         Varetype: "Champagne, brut",
@@ -98,12 +123,35 @@ const mocks= [{
         Produsent: "Moët & Chandon",
       }
     }
+  },
+
+},
+{
+  request: {
+    query: GET_REVIEWS,
+    variables: {
+      reviewsVarenummer: "232101"
+    },
+    fetchPolicy: 'network-only',
+  }, 
+  result: {
+    data: {
+      reviews: [
+        {
+          userEmail: "oleastole@gmail.com",
+          varenummer: "232101",
+          title: "Nydelig guttastemning",
+          description: "Drakk denne på fest og ble damenes midtpunkt på en, to, tre! Anbefales\n\n-Henrik Gundersen (23, Holmenkollen)",
+          rating: 5
+        }
+      ]
+    }
   }
 }]
 
-describe('graphql query', () => {
-  it('get single product', async () => {
-    const { findByText, getByText } = render(
+describe('graphql queries', () => {
+  it('get single product with user reviews', async () => {
+    const { findByText, getByRole } = render(
       <BrowserRouter>
         <Provider store={store}>
           <MockedProvider mocks={mocks} addTypename={false}>
@@ -112,17 +160,18 @@ describe('graphql query', () => {
         </Provider>
       </BrowserRouter>
    )
+    expect(getByRole("loading")).toBeInTheDocument();
     
-    const itemName = await findByText("Dom perignon Brut 2010");
+    const itemName = await findByText("Dom Perignon Brut 2010");
+    const title = await findByText("Nydelig guttastemning");
     expect(itemName).toBeInTheDocument();
+    expect(title).toBeInTheDocument();
   })
 })
 
 
 
-
-
-describe('App', () => {
+describe('app', () => {
   it('matches snapshot', () => {
     const { asFragment } = render(<ApolloWrapper>
       <BrowserRouter>

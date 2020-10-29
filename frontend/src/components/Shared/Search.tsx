@@ -59,7 +59,6 @@ const Search = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
-      console.log(textInput)
       dispatch(setSearchText(textInput.current.value));
       dispatch(updateViewMode({ field: 'initialSearch', value: true }));
       dispatch(updateFilterDisplay('searchMode'));
@@ -94,7 +93,7 @@ const Search = () => {
           inputRef={textInput}
         />
       </div>
-      {searchText === '' ? null : <Chip label={searchText} onDelete={handleDelete} color="primary" />}
+      {searchText === '' ? null : <Chip label={searchText} onDelete={handleDelete} color="primary" role="chip"/>}
     </div>
   );
 };

@@ -17,7 +17,7 @@ export default function LoadingIndicator() {
   const classes = useStyles();
 
   return (
-    <div className="loadingIndicator">
+    <div className="loadingIndicator" role="loading">
       <div className={classes.root}>
         <CircularProgress size="6rem" />
       </div>
