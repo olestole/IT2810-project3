@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) =>
       width: drawerWidth,
     },
     menuItemIcon: {
-      color: '#D95459',
+      color: 'var(--secondary)',
     },
     divider: {
       width: drawerWidth,

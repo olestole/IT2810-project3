@@ -11,8 +11,9 @@ import {
   updateViewMode,
   updateFilterDisplay,
   resetFilter,
+  setAddedReview,
 } from './action';
-import { AppState, FilterOptions } from './types';
+import { AppState } from './types';
 
 type Actions =
   | ReturnType<typeof increment>
@@ -25,7 +26,8 @@ type Actions =
   | ReturnType<typeof filterVolumAndPrice>
   | ReturnType<typeof updateViewMode>
   | ReturnType<typeof updateFilterDisplay>
-  | ReturnType<typeof resetFilter>;
+  | ReturnType<typeof resetFilter>
+  | ReturnType<typeof setAddedReview>;
 
 const initialAppState: AppState = {
   count: 0,
@@ -143,6 +145,15 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
           minPrice: 0,
           maxPrice: 2000000,
         },
+      };
+    case 'SET_ADDED_REVIEW':
+      return {
+        ...state,
+        addedReview: action.payload
+          ? state.addedReview
+            ? [...state.addedReview, action.payload]
+            : [action.payload]
+          : null,
       };
     default:
       neverReached(action);

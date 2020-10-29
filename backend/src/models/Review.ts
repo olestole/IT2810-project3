@@ -12,8 +12,12 @@ export interface IReviewResponse {
   code: string;
   success: boolean;
   message: string;
-  user: string;
+
+  userEmail: string;
+  varenummer: string;
   title: string;
+  description: string;
+  rating: number;
 }
 
 const ReviewSchema = new Schema({

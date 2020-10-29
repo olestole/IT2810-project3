@@ -60,20 +60,36 @@ export const resolvers = {
 
       try {
         await newReview.save();
+
         return {
           code: "200",
           success: true,
           message: "Successfully added a review",
+
+          userEmail: review.userEmail,
+          varenummer: review.varenummer,
           title: review.title,
-          user: review.userEmail,
+          description: review.description,
+          rating: review.rating,
         } as IReviewResponse;
+        // return {
+        //   code: "200",
+        //   success: true,
+        //   message: "Successfully added a review",
+        //   title: review.title,
+        //   user: review.userEmail,
+        // } as IReviewResponse;
       } catch (error) {
         return {
           code: "400",
           success: false,
           message: error,
+
+          userEmail: "",
+          varenummer: "",
           title: "",
-          user: "",
+          description: "",
+          rating: 0,
         } as IReviewResponse;
       }
     },

@@ -4,7 +4,7 @@ import { Typography, Button } from '@material-ui/core';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCurrentProduct, setModalOpen } from 'store/action';
+import { setAddedReview, setCurrentProduct, setModalOpen } from 'store/action';
 import { useAuth0 } from '@auth0/auth0-react';
 import { IReview, Product } from 'types/globalTypes';
 import { AppState } from 'store/types';
@@ -15,13 +15,12 @@ import { ReviewList } from 'components/Shared';
 import { useQuery } from '@apollo/client';
 import { GET_REVIEWS } from 'graphql/queries';
 import { GetReviewsQuery } from 'graphql/__generated__/GetReviewsQuery';
-// import { GetReviewsQuery } from 'graphql/__generated__/GetReviewsQuery';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     button: {
       margin: theme.spacing(1),
-      background: '#002025',
+      background: 'var(--primary)',
       color: '#DCF2EB',
       size: 'small',
     },
@@ -32,6 +31,10 @@ const useStyles = makeStyles((theme: Theme) =>
     titleVarenavn: {
       color: '#344d51',
       fontWeight: 'bold',
+    },
+    reviewList: {
+      maxHeight: '35vh',
+      overflow: 'auto',
     },
   }),
 );
@@ -56,13 +59,15 @@ const DetailView = () => {
 
   const handleBackClick = () => {
     dispatch(setCurrentProduct(null));
+    dispatch(setAddedReview(null));
     history.push('/');
   };
 
-  return (
+  return loading ? (
+    <LoadingIndicator />
+  ) : (
     <div className="detailcontainer">
       <div className="image">
-        {loadingImage && <img src={'bottlePlaceholder.png'} />}
         <img src={url} onLoad={() => setLoadingImage(false)} />
       </div>
 
@@ -104,13 +109,14 @@ const DetailView = () => {
               variant="contained"
               onClick={() => history.push('/profile')}
               className={classes.button}
-              // startIcon={<ArrowBackIcon />}
             >
               Logg inn for å anmelde produkt
             </Button>
           )}
         </div>
-        {loading ? <LoadingIndicator /> : <ReviewList reviews={data ? (data.reviews as IReview[]) : []} />}
+        <div className={classes.reviewList}>
+          {loading ? <LoadingIndicator /> : <ReviewList reviews={data ? (data.reviews as IReview[]) : []} />}
+        </div>
       </div>
     </div>
   );
