@@ -1,3 +1,15 @@
-const SET_RATING = {};
+import { gql } from '@apollo/client';
 
-export { SET_RATING };
+const ADD_REVIEW = gql`
+  mutation AddReviewMutation($addReviewReview: InputReview!) {
+    addReview(review: $addReviewReview) {
+      code
+      title
+      message
+      user
+      title
+    }
+  }
+`;
+
+export { ADD_REVIEW };

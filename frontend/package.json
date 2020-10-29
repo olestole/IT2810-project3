@@ -32,7 +32,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate": "apollo codegen:generate --target typescript"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@types/react-modal": "^3.10.6",
+    "apollo": "^2.31.0",
     "graphql": "^15.3.0"
   }
 }

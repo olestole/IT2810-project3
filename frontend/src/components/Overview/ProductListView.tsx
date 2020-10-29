@@ -1,11 +1,9 @@
 import React, { useEffect, useState, ClassAttributes } from 'react';
 import { useQuery } from '@apollo/client';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { AppState, FilterOptions, ViewMode } from 'store/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS } from 'components/Overview/seachQueries';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
 import { getProductType } from './ProductList/productTypes';
@@ -18,6 +16,9 @@ import {
   useStyles,
 } from './ProductList/EnhancedTableHead';
 import { updateViewMode } from 'store/action';
+import { FILTER_PRODUCTS, GET_START_PRODUCTS, SEARCH_PRODUCTS } from 'graphql/queries';
+import { StartProductsQuery } from 'graphql/__generated__/StartProductsQuery';
+// import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
 const ProductListView = () => {
   const classes = useStyles();
@@ -26,7 +27,9 @@ const ProductListView = () => {
   const [staticMode, setStaticMode] = useState<Boolean>(false);
   const [order, setOrder] = React.useState<Order>('asc');
   const [orderBy, setOrderBy] = React.useState<keyof HeaderData>('Varenavn');
-  const { data, loading, error, fetchMore } = useQuery(GET_START_PRODUCTS, { variables: { index: 0 } });
+  const { data, loading, error, fetchMore } = useQuery<StartProductsQuery>(GET_START_PRODUCTS, {
+    variables: { index: 0 },
+  });
   const searchText: string = useSelector((state: AppState) => state.searchText);
   let filterOptions: FilterOptions = useSelector((state: AppState) => state.filterOptions);
   let viewMode: ViewMode = useSelector((state: AppState) => state.viewMode);
@@ -77,7 +80,7 @@ const ProductListView = () => {
     } else {
       fetchMore({
         variables: {
-          index: data.startProducts.length,
+          index: data?.startProducts.length,
         },
         updateQuery: (prev: any, { fetchMoreResult }) => {
           if (!fetchMoreResult) return prev;
@@ -98,7 +101,7 @@ const ProductListView = () => {
           matchedString: searchText,
           searchIndex: 0,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
             startProducts: [...fetchMoreResult.searchProducts],
@@ -110,9 +113,9 @@ const ProductListView = () => {
         query: SEARCH_PRODUCTS,
         variables: {
           matchedString: searchText,
-          searchIndex: data.startProducts.length,
+          searchIndex: data?.startProducts.length,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
             startProducts: [...prev.startProducts, ...fetchMoreResult.searchProducts],
@@ -135,7 +138,7 @@ const ProductListView = () => {
           volumgt: filterOptions.minVolum,
           volumls: filterOptions.maxVolum,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
             startProducts: [...fetchMoreResult.filterProducts],
@@ -146,14 +149,14 @@ const ProductListView = () => {
       fetchMore({
         query: FILTER_PRODUCTS,
         variables: {
-          filterIndex: data.startProducts.length,
+          filterIndex: data?.startProducts.length,
           typer: filterArray,
           prisgt: filterOptions.minPrice,
           prisls: filterOptions.maxPrice,
           volumgt: filterOptions.minVolum,
           volumls: filterOptions.maxVolum,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
             startProducts: [...prev.startProducts, ...fetchMoreResult.filterProducts],
@@ -209,12 +212,7 @@ const ProductListView = () => {
   }, [viewMode.initialLoad]);
 
   if (loading) return <LoadingIndicator />;
-  if (error) return <h1>ERROR</h1>;
-
-  if (data && data.startProducts) {
-    console.log('D: ', data.startProducts);
-  }
-
+  if (error || !data) return <h1>ERROR</h1>;
   return (
     <div className={classes.root}>
       <Paper className={classes.paper}>
@@ -228,7 +226,7 @@ const ProductListView = () => {
               rowCount={data.startProducts.length}
             />
             <TableBody>
-              {stableSort(data.startProducts, getComparator(order, orderBy)).map((row, index) => {
+              {stableSort(data.startProducts as any, getComparator(order, orderBy)).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
