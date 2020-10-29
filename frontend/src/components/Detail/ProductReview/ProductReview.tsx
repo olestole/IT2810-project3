@@ -26,6 +26,7 @@ const useStyles = makeStyles(() =>
     button: {
       width: '100%',
       marginTop: 10,
+      backgroundColor: 'var(--primary)',
     },
   }),
 );

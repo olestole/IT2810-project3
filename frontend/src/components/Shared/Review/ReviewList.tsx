@@ -67,12 +67,12 @@ import ReviewItem from './ReviewItem';
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      width: '100%',
+      // width: '500px',
       // maxWidth: 360,
       // backgroundColor: theme.palette.background.paper,
-      position: 'relative',
-      overflow: 'auto',
-      maxHeight: 300,
+      // position: 'relative',
+      // overflow: 'auto',
+      // maxHeight: 'stretch',
     },
   }),
 );
@@ -99,17 +99,18 @@ const ReviewList: React.FC<IReviewList> = ({ reviews, error, user }) => {
         }
       });
     } else if (reviews.length === 0) {
-      return (
-        <DefaultItem title={'No reviews'} description={'This product has not been reviewed yet - be the first!'} />
+      return location.pathname.substring(1) === 'profile' ? (
+        <DefaultItem title={'Ingen produktanmeldelser'} description={'Du har ikke anmeldt noen produkter enda'} />
+      ) : (
+        <DefaultItem
+          title={'Ingen produktanmeldelser'}
+          description={'Dette produktet har ikke blitt anmeldt enda - vær den første!'}
+        />
       );
     }
   };
 
-  return (
-    <div>
-      <List className={classes.root}>{renderReviews()}</List>
-    </div>
-  );
+  return <List className={classes.root}>{renderReviews()}</List>;
 };
 
 export default ReviewList;
