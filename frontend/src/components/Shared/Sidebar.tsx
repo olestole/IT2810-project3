@@ -129,7 +129,12 @@ let Sidebar = () => {
   return (
     <div className="sidebar">
       <List component="nav" className={classes.appMenu} disablePadding>
-        <ListItem button className={classes.menuItem} onClick={() => handleClick(setOpenCategory, openCategory)}>
+        <ListItem
+          id={'kategoriId'}
+          button
+          className={classes.menuItem}
+          onClick={() => handleClick(setOpenCategory, openCategory)}
+        >
           <ListItemIcon className={classes.menuItemIcon}>
             <IconDashboard />
           </ListItemIcon>

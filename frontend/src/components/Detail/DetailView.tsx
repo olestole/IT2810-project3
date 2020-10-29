@@ -90,6 +90,7 @@ const DetailView = () => {
           </Button>
           {isAuthenticated ? (
             <Button
+              id="reviewProductButton"
               variant="contained"
               onClick={() => dispatch(setModalOpen(true))}
               className={classes.button}
@@ -99,6 +100,7 @@ const DetailView = () => {
             </Button>
           ) : (
             <Button
+              id="loginForReviewButton"
               variant="contained"
               onClick={() => history.push('/profile')}
               className={classes.button}

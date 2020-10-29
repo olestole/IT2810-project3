@@ -90,7 +90,13 @@ const ProductReview = () => {
           <ProductRating rating={rating} setRating={setRating} inputError={inputError} />
         </div>
         <ReviewDescription description={description} setDescription={setDescription} inputError={inputError} />
-        <Button className={classes.button} variant="contained" color="primary" onClick={handleSubmitReview}>
+        <Button
+          id="saveReviewButton"
+          className={classes.button}
+          variant="contained"
+          color="primary"
+          onClick={handleSubmitReview}
+        >
           Lagre anmeldelse
         </Button>
       </ReviewModal>

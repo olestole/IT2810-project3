@@ -89,7 +89,7 @@ const ProfileCard: React.FC = ({ children }) => {
           </div>
         ) : (
           <div className={classes.buttonGroup}>
-            <Button variant="contained" onClick={handleLogin}>
+            <Button id="loginButton" variant="contained" onClick={handleLogin}>
               Logg inn
             </Button>
           </div>
