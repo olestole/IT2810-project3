@@ -38,12 +38,12 @@ const Logo = () => {
   };
 
   return (
-    <div className="logoContainer" onClick={handleBackClick}>
-      <div className="logo">
+    <div className="logoContainer" onClick={handleBackClick} role="homeButton">
+      <div className="logo" role="image">
         <img src="appLogo.svg"></img>
       </div>
       <div className="title">
-        <Typography className={classes.title} align="right" variant="h4" noWrap>
+        <Typography role="title" className={classes.title} align="right" variant="h4" noWrap>
           WineEncyclopedia
         </Typography>
       </div>

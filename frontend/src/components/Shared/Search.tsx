@@ -51,6 +51,7 @@ const Search = () => {
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
+      console.log(textInput)
       dispatch(setSearchText(textInput.current.value));
       dispatch(updateViewMode({ field: 'initialSearch', value: true }));
       dispatch(updateFilterDisplay('searchMode'));
@@ -63,7 +64,7 @@ const Search = () => {
   return (
     <div className={classes.search}>
       <div className={classes.searchIcon}>
-        <SearchIcon />
+        <SearchIcon aria-label="searchIcon"/>
       </div>
       <InputBase
         placeholder="Produkt…"
