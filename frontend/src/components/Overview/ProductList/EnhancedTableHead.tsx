@@ -53,9 +53,6 @@ export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      width: '100%',
-    },
     paper: {
       width: '100%',
       marginBottom: theme.spacing(2),

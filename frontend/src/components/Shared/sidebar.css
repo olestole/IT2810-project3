@@ -1,4 +1,10 @@
 .sidebar {
-  /*position: fixed;*/
+  position: fixed;
   padding: 5px;
+}
+
+@media (max-width: 650px) {
+  .sidebar {
+    position: relative;
+  }
 }

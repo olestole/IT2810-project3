@@ -1,0 +1,12 @@
+.list {
+  width: calc(100% - 224px);
+  margin-left: 220px;
+  position: 'relative';
+}
+
+@media (max-width: 650px) {
+  .list {
+    width: 100%;
+    margin-left: 0px;
+  }
+}
