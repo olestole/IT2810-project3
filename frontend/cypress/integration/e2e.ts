@@ -13,17 +13,15 @@ describe('End to end test', () => {
       password: 'ValidPassword123',
       audience: 'https://dev-sti0dl03.eu.auth0.com/api/v2/',
       scope: 'openid profile email',
-      //client_id: '',
-      //client_secret: '',
-      client_id: `${process.env.REACT_APP_AUTH0_CLIENT_ID}`,
-      client_secret: `${process.env.REACT_APP_CLIENT_SECRET}`,
+      client_id: 'sZ1Abv7d35wSvOLJCd4Gg2Dpf47Wj6wV',
+      client_secret: '9FLWtb0Nr6w8NQ40jlqHaJe6So6bV43yLzOtZjIskTGHFRx5cYin0BdPRhe9BHZl',
     },
   };
 
   beforeEach(() => {
     cy.visit('http://localhost:3000');
   });
-  /*
+
   it('Page is showing', () => {
     cy.contains('WineEncyclopedia');
   });
@@ -71,7 +69,7 @@ describe('End to end test', () => {
   });
 
   it('create user', () => {});
-*/
+
   it('Comment item', () => {
     //create function for login
     cy.request(options);
@@ -79,7 +77,6 @@ describe('End to end test', () => {
     cy.contains('Bad Santa Juleakevitt').should('be.visible').click();
     cy.get('#loginForReviewButton').click();
     cy.url().should('eq', 'http://localhost:3000/login');
-    //cy.get('#loginButton').click();
-    //https://stackoverflow.com/questions/51208998/how-to-login-in-auth0-in-an-e2e-test-with-cypress
+    cy.get('#loginButton').click();
   });
 });
