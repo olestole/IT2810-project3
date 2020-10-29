@@ -1,20 +1,17 @@
 export {}; //Makes file turn into a module, added to remove error
 
 describe('End to end test', () => {
-  const email: string = 'testUser123@gmail.com';
-  const password: string = 'ValidPassword123';
-  //https://dev-sti0dl03.eu.auth0.com/login?state=g6Fo2SBZNG5iNXhKRDE3QXQzMlpfeEROekI0RFdfZTF2M2JtZKN0aWTZIEpNZTFyT2V0RVN0NmVfQnJhWU5ScmRmczlUalFQZGNGo2NpZNkgc1oxQWJ2N2QzNXdTdk9MSkNkNEdnMkRwZjQ3V2o2d1Y&client=sZ1Abv7d35wSvOLJCd4Gg2Dpf47Wj6wV&protocol=oauth2&audience=https%3A%2F%2Fdev-sti0dl03.eu.auth0.com%2Fapi%2Fv2%2F&scope=openid%20profile%20email%20read%3Acurrent_user%20update%3Acurrent_user_metadata&redirect_uri=http%3A%2F%2Flocalhost%3A3000%2Fcallback&response_type=code&response_mode=query&nonce=V2tOcVVDNzZDdVBlMFFjTlRqMDEzQ1lfYjFzVndNb1pmbnpneFlPTkZpRw%3D%3D&code_challenge=xN6dyDI_8Ffpe699c_NetEEKP7bGn-8pROl3IoyPAZ8&code_challenge_method=S256&auth0Client=eyJuYW1lIjoiYXV0aDAtcmVhY3QiLCJ2ZXJzaW9uIjoiMS4xLjAifQ%3D%3D
   const options = {
     method: 'POST',
     url: 'https://dev-sti0dl03.eu.auth0.com/oauth/token',
     body: {
       grant_type: 'password',
-      username: 'testUser123@gmail.com',
-      password: 'ValidPassword123',
-      audience: 'https://dev-sti0dl03.eu.auth0.com/api/v2/',
+      username: Cypress.env('username'),
+      password: Cypress.env('password'),
+      audience: Cypress.env('audience'),
       scope: 'openid profile email',
-      client_id: 'sZ1Abv7d35wSvOLJCd4Gg2Dpf47Wj6wV',
-      client_secret: '9FLWtb0Nr6w8NQ40jlqHaJe6So6bV43yLzOtZjIskTGHFRx5cYin0BdPRhe9BHZl',
+      client_id: Cypress.env('client_id'),
+      client_secret: Cypress.env('client_secret'),
     },
   };
 
@@ -30,7 +27,6 @@ describe('End to end test', () => {
     cy.get('#kategoriId').click();
     cy.contains('Rødvin').click();
     cy.contains('4kilos 2018');
-    //cy.should('include', '#NKVO');
   });
 
   it('Filter on Øl, Brennevin, Annet and scroll', () => {
@@ -40,11 +36,8 @@ describe('End to end test', () => {
     cy.contains('Annet').click();
     cy.get('#kategoriId').click(); //Close menu
     cy.contains('1-Enkelt');
-    cy.scrollTo('bottom', { duration: 1000 });
-    cy.scrollTo('bottom', { duration: 1000 });
-    cy.scrollTo('bottom', { duration: 1000 });
-    cy.scrollTo('bottom', { duration: 1000 });
-    cy.contains('Aalborg Nordguld');
+    cy.scrollTo('bottom').as('scroll');
+    cy.contains('7 Fjell Fløien IPA');
   });
 
   it('Search on dom p', () => {
@@ -68,15 +61,21 @@ describe('End to end test', () => {
     cy.contains('Liverpool Gin').should('be.visible');
   });
 
-  it('create user', () => {});
-
   it('Comment item', () => {
     //create function for login
     cy.request(options);
     cy.get('#searchField').type('bad santa{enter}');
     cy.contains('Bad Santa Juleakevitt').should('be.visible').click();
     cy.get('#loginForReviewButton').click();
-    cy.url().should('eq', 'http://localhost:3000/login');
+    cy.url().should('eq', 'http://localhost:3000/profile');
+    cy.request(options);
     cy.get('#loginButton').click();
+    cy.request(options);
+    cy.get('#reviewProductButton').click();
+    cy.get('#reviewHeaderText').type('Test Tittel');
+    cy.get('#reviewRating').click();
+    cy.get('#reviewProductText').type('Wow test is running, cool');
+    cy.get('#saveReviewButton').click();
+    cy.contains('Anmeldelsen er registrert').should('be.visible');
   });
 });

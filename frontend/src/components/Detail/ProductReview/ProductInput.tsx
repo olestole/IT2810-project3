@@ -24,7 +24,7 @@ export const ReviewDescription: React.FC<IProductInput> = ({ description, setDes
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
-      <div>
+      <div id="reviewProductText">
         <TextField
           id="outlined-multiline-static"
           label="Beskrivelse av produktet"
@@ -51,7 +51,7 @@ export const ReviewTitle: React.FC<IReviewTitle> = ({ reviewTitle, setReviewTitl
 
   return (
     <form className={classes.root} noValidate autoComplete="off">
-      <div>
+      <div id="reviewHeaderText">
         <TextField
           id="outlined-multiline-static"
           label="Tittel på anmeldelse"

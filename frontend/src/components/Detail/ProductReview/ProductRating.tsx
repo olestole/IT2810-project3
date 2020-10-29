@@ -65,7 +65,7 @@ export const ProductRating: React.FC<IRating> = ({ rating, setRating, inputError
   const classes = useStyles(showError());
 
   return (
-    <div className={classes.ratingContainer}>
+    <div id="reviewRating" className={classes.ratingContainer}>
       <Box component="fieldset" borderColor="transparent">
         <Rating
           className={classes.rating}
