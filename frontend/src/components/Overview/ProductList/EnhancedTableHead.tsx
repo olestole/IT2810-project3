@@ -13,8 +13,8 @@ import {
 
 export interface HeaderData {
   Varetype: string;
-  Volum: string;
-  Pris: string;
+  Volum: number;
+  Pris: number;
   Varenavn: string;
   Varenummer: string;
   Produsent: string;
@@ -113,10 +113,10 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
 
   const headCells: HeadCell[] = [
     { id: 'Varenavn', numeric: false, label: 'Varenavn', classes: classes.table },
-    { id: 'Varetype', numeric: true, label: 'Varetype', classes: classes.table },
+    { id: 'Varetype', numeric: false, label: 'Varetype', classes: classes.table },
     { id: 'Volum', numeric: true, label: 'Volum', classes: classes.volum },
     { id: 'Pris', numeric: true, label: 'Pris', classes: classes.pris },
-    { id: 'Produsent', numeric: true, label: 'Produsent', classes: classes.produsent },
+    { id: 'Produsent', numeric: false, label: 'Produsent', classes: classes.produsent },
   ];
 
   return (

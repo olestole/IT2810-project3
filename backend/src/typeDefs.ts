@@ -42,8 +42,8 @@ export const typeDefs = gql`
     Varenavn: String!
     Varenummer: String
     Varetype: String
-    Volum: String
-    Pris: String
+    Volum: Float
+    Pris: Float
     Produsent: String
     Land: String
     Farge: String
