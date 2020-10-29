@@ -51,10 +51,7 @@ const initialAppState: AppState = {
     maxPrice: 2000000,
   },
   viewMode: {
-    filterDisplay: 'startMode',
     initialLoad: false,
-    initialSearch: false,
-    initialFilter: true,
   },
 };
 

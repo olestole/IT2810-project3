@@ -1,20 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
-  TableSortLabel,
-  Paper,
-} from '@material-ui/core';
+import { TableCell, TableHead, TableRow, TableSortLabel } from '@material-ui/core';
 
 export interface HeaderData {
   Varetype: string;
-  Volum: string;
-  Pris: string;
+  Volum: number;
+  Pris: number;
   Varenavn: string;
   Varenummer: string;
   Produsent: string;
@@ -53,9 +44,6 @@ export function stableSort<T>(array: T[], comparator: (a: T, b: T) => number) {
 
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
-    root: {
-      width: '100%',
-    },
     paper: {
       width: '100%',
       marginBottom: theme.spacing(2),
@@ -73,17 +61,17 @@ export const useStyles = makeStyles((theme: Theme) =>
       width: 1,
     },
     produsent: {
-      [theme.breakpoints.down(960)]: {
+      [theme.breakpoints.down(1180)]: {
         display: 'none',
       },
     },
     pris: {
-      [theme.breakpoints.down(750)]: {
+      [theme.breakpoints.down(970)]: {
         display: 'none',
       },
     },
     volum: {
-      [theme.breakpoints.down(500)]: {
+      [theme.breakpoints.down(720)]: {
         display: 'none',
       },
     },
@@ -113,10 +101,10 @@ export function EnhancedTableHead(props: EnhancedTableProps) {
 
   const headCells: HeadCell[] = [
     { id: 'Varenavn', numeric: false, label: 'Varenavn', classes: classes.table },
-    { id: 'Varetype', numeric: true, label: 'Varetype', classes: classes.table },
+    { id: 'Varetype', numeric: false, label: 'Varetype', classes: classes.table },
     { id: 'Volum', numeric: true, label: 'Volum', classes: classes.volum },
     { id: 'Pris', numeric: true, label: 'Pris', classes: classes.pris },
-    { id: 'Produsent', numeric: true, label: 'Produsent', classes: classes.produsent },
+    { id: 'Produsent', numeric: false, label: 'Produsent', classes: classes.produsent },
   ];
 
   return (

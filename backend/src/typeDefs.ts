@@ -2,12 +2,8 @@ import { gql } from "apollo-server-express";
 
 export const typeDefs = gql`
   type Query {
-    products: [Product!]!
-    whiteWines: [Wine!]!
-    singleProduct(productNumber: String!): Product
-    startProducts(startIndex: Int!): [Product!]!
-    searchProducts(searchSequence: String!, index: Int!): [Product!]!
-    filterProducts(
+    products(
+      searchSequence: String!
       varetyper: [String]!
       prisgt: Float!
       prisls: Float!
@@ -15,6 +11,7 @@ export const typeDefs = gql`
       volumls: Float!
       index: Int!
     ): [Product!]!
+    singleProduct(productNumber: String!): Product
     typeProduct(type: String!): [Product]
     nameProduct(name: String!): [Product]
     reviews(varenummer: String!): [OutputReview]!
@@ -48,8 +45,8 @@ export const typeDefs = gql`
     Varenavn: String!
     Varenummer: String
     Varetype: String
-    Volum: String
-    Pris: String
+    Volum: Float
+    Pris: Float
     Produsent: String
     Land: String
     Farge: String
@@ -59,8 +56,8 @@ export const typeDefs = gql`
 
   type Wine {
     Varenavn: String!
-    Volum: String
-    Pris: String
+    Volum: Float
+    Pris: Float
     Lukt: String
     Smak: String
     Land: String

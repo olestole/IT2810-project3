@@ -10,8 +10,6 @@ import { CustomToastContainer } from 'components/Shared/FeedbackToast';
 import './App.css';
 
 function App() {
-  console.log(process.env.AUTH0_DOMAIN);
-
   return (
     <Auth0Provider
       domain={process.env.REACT_APP_AUTH0_DOMAIN || ''}

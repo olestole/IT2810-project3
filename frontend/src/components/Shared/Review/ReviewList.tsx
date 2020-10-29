@@ -1,7 +1,5 @@
-import { ApolloError, useQuery } from '@apollo/client';
+import { ApolloError } from '@apollo/client';
 import { createStyles, List, makeStyles } from '@material-ui/core';
-import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import { GET_PERSONAL_REVIEWS, GET_REVIEWS } from 'graphql/queries';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
