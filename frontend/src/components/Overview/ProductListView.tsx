@@ -1,11 +1,9 @@
 import React, { useEffect, useState, ClassAttributes } from 'react';
 import { useQuery } from '@apollo/client';
-import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { AppState, FilterOptions, ViewMode } from 'store/types';
 import { useDispatch, useSelector } from 'react-redux';
-import { GET_START_PRODUCTS, SEARCH_PRODUCTS, FILTER_PRODUCTS, PRODUCTS } from 'components/Overview/seachQueries';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 
 import { getProductType } from './ProductList/productTypes';
@@ -18,6 +16,8 @@ import {
   useStyles,
 } from './ProductList/EnhancedTableHead';
 import { updateViewMode } from 'store/action';
+import { PRODUCTS } from 'graphql/queries';
+// import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
 const ProductListView = () => {
   const classes = useStyles();
@@ -82,7 +82,7 @@ const ProductListView = () => {
           volumgt: filterOptions.minVolum,
           volumls: filterOptions.maxVolum,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
             products: [...fetchMoreResult.products],
@@ -100,7 +100,7 @@ const ProductListView = () => {
           volumgt: filterOptions.minVolum,
           volumls: filterOptions.maxVolum,
         },
-        updateQuery: (prev: any, { fetchMoreResult }) => {
+        updateQuery: (prev: any, { fetchMoreResult }: any) => {
           if (!fetchMoreResult) return prev;
           return Object.assign({}, prev, {
             products: [...prev.products, ...fetchMoreResult.products],
@@ -140,7 +140,6 @@ const ProductListView = () => {
   if (loading) return <LoadingIndicator />;
 
   if (error) {
-    console.log(error);
     return <h1>ERROR</h1>;
   }
   if (data && data.products) {
@@ -160,7 +159,7 @@ const ProductListView = () => {
               rowCount={data.products.length}
             />
             <TableBody>
-              {stableSort(data.products, getComparator(order, orderBy)).map((row, index) => {
+              {stableSort(data.products as any, getComparator(order, orderBy)).map((row, index) => {
                 const labelId = `enhanced-table-checkbox-${index}`;
                 return (
                   <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>

@@ -1,4 +1,4 @@
-import { createStore, combineReducers, Store } from 'redux';
+import { createStore, Store } from 'redux';
 import {
   decrement,
   increment,
@@ -13,6 +13,19 @@ import {
   resetFilter,
 } from './action';
 import { AppState, FilterOptions } from './types';
+
+type Actions =
+  | ReturnType<typeof increment>
+  | ReturnType<typeof decrement>
+  | ReturnType<typeof setSearchText>
+  | ReturnType<typeof setCurrentProduct>
+  | ReturnType<typeof setModalOpen>
+  | ReturnType<typeof setFilterMode>
+  | ReturnType<typeof filter>
+  | ReturnType<typeof filterVolumAndPrice>
+  | ReturnType<typeof updateViewMode>
+  | ReturnType<typeof updateFilterDisplay>
+  | ReturnType<typeof resetFilter>;
 
 const initialAppState: AppState = {
   count: 0,
@@ -39,20 +52,6 @@ const initialAppState: AppState = {
     initialLoad: false,
   },
 };
-
-type Actions =
-  | ReturnType<typeof increment>
-  | ReturnType<typeof decrement>
-  | ReturnType<typeof setSearchText>
-  | ReturnType<typeof setCurrentProduct>
-  | ReturnType<typeof setModalOpen>
-  | ReturnType<typeof setFilterMode>
-  | ReturnType<typeof setSearchText>
-  | ReturnType<typeof filter>
-  | ReturnType<typeof filterVolumAndPrice>
-  | ReturnType<typeof updateViewMode>
-  | ReturnType<typeof updateFilterDisplay>
-  | ReturnType<typeof resetFilter>;
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
   switch (action.type) {
@@ -152,11 +151,6 @@ const rootReducer = (state: AppState = initialAppState, action: Actions) => {
 };
 
 const neverReached = (never: never) => {};
-
-//Utility-funksjon for å kombinere flere reducere
-// const rootReducer = combineReducers<AppState>({
-//   count: countReducer,
-// });
 
 function configureStore(): Store<AppState> {
   return createStore(

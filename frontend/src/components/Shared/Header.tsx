@@ -9,7 +9,7 @@ const Header = () => {
   const history = useHistory();
 
   const handleProfileClick = () => {
-    history.push('/login');
+    history.push('/profile');
   };
 
   return (
@@ -18,7 +18,11 @@ const Header = () => {
         <Logo />
         <div className="headerActionSection">
           <Search />
-          <AccountCircleOutlinedIcon style={{ fontSize: 40, color: 'white' }} onClick={handleProfileClick} />
+          <AccountCircleOutlinedIcon
+            id="profileIcon"
+            style={{ fontSize: 40, color: 'white' }}
+            onClick={handleProfileClick}
+          />
         </div>
       </div>
     </header>

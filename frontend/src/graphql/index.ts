@@ -1,3 +1,4 @@
-import { GET_START_PRODUCTS, SEARCH_PRODUCTS } from './queries';
-import { SET_RATING } from './mutations';
-export { GET_START_PRODUCTS, SEARCH_PRODUCTS, SET_RATING };
+import { GET_REVIEWS, GET_PERSONAL_REVIEWS, GET_SINGLE_PRODUCT } from './queries';
+import { ADD_REVIEW } from './mutations';
+
+export { ADD_REVIEW, GET_REVIEWS, GET_PERSONAL_REVIEWS, GET_SINGLE_PRODUCT };

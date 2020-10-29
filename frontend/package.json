@@ -29,10 +29,12 @@
     "typescript": "^3.7.5"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run generate && react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cy:open": "cypress open",
+    "generate": "apollo codegen:generate --target typescript"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -50,7 +52,10 @@
     ]
   },
   "devDependencies": {
+    "@bahmutov/add-typescript-to-cypress": "^2.1.2",
     "@types/react-modal": "^3.10.6",
+    "cypress": "^5.5.0",
+    "apollo": "^2.31.0",
     "graphql": "^15.3.0"
   }
 }

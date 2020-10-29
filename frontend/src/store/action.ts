@@ -1,3 +1,4 @@
+import { Product } from 'types/globalTypes';
 import { FilterDisplay } from './types';
 
 export const increment = () => {

@@ -11,20 +11,31 @@ export const typeDefs = gql`
       volumls: Float!
       index: Int!
     ): [Product!]!
-    whiteWines: [Wine!]!
     singleProduct(productNumber: String!): Product
-    startProducts(startIndex: Int!): [Product!]!
-    searchProducts(searchSequence: String!, index: Int!): [Product!]!
-    filterProducts(
-      varetyper: [String]!
-      prisgt: Float!
-      prisls: Float!
-      volumgt: Float!
-      volumls: Float!
-      index: Int!
-    ): [Product!]!
     typeProduct(type: String!): [Product]
     nameProduct(name: String!): [Product]
+    reviews(varenummer: String!): [OutputReview]!
+    personalReviews(userEmail: String!): [OutputReview]!
+  }
+
+  type Mutation {
+    helloWorld(hello: String!): String!
+    addReview(review: InputReview!): ReviewResponse!
+  }
+
+  interface MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+  }
+
+  type ReviewResponse implements MutationResponse {
+    code: String!
+    success: Boolean!
+    message: String!
+
+    user: String!
+    title: String!
   }
 
   type Product {
@@ -50,7 +61,19 @@ export const typeDefs = gql`
     Distrikt: String
   }
 
-  type Mutation {
-    createProduct(Varenavn: String!): Product!
+  type OutputReview {
+    userEmail: String!
+    varenummer: String!
+    title: String!
+    description: String!
+    rating: Int!
+  }
+
+  input InputReview {
+    userEmail: String!
+    varenummer: String!
+    title: String!
+    description: String!
+    rating: Int!
   }
 `;

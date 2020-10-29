@@ -73,12 +73,13 @@ const Search = () => {
   };
 
   return (
-    <div className={classes.searchAndChip}>
+    <div id={'searchField'} className={classes.searchAndChip}>
       <div className={classes.search}>
         <div className={classes.searchIcon}>
           <SearchIcon />
         </div>
         <InputBase
+          id={'searchInputField'}
           placeholder="Produkt…"
           classes={{
             root: classes.inputRoot,
