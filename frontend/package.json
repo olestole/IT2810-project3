@@ -55,7 +55,6 @@
     "@bahmutov/add-typescript-to-cypress": "^2.1.2",
     "@types/react-modal": "^3.10.6",
     "graphql": "^15.3.0",
-    "redux-mock-store": "^1.5.4",
     "cypress": "^5.5.0",
     "apollo": "^2.31.0"
   }
