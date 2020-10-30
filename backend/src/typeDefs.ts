@@ -54,16 +54,6 @@ export const typeDefs = gql`
     Smak: String
   }
 
-  type Wine {
-    Varenavn: String!
-    Volum: Float
-    Pris: Float
-    Lukt: String
-    Smak: String
-    Land: String
-    Distrikt: String
-  }
-
   type OutputReview {
     userEmail: String!
     varenummer: String!

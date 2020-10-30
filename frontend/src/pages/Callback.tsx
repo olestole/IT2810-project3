@@ -1,5 +1,5 @@
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useHistory } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { Product } from 'types/globalTypes';
@@ -10,7 +10,7 @@ import { Product } from 'types/globalTypes';
 const Callback = () => {
   const history = useHistory();
 
-  const redirectApp = async () => {
+  const redirectApp = useCallback(async () => {
     // For some unknown reason the redirect needs some time to register the authentication has taken place
     setTimeout(async () => {
       // Display a toast to let the user know if the login/logout was successful
@@ -27,9 +27,8 @@ const Callback = () => {
       console.log(sessionProduct.Varenummer);
 
       history.push(`/${sessionProduct.Varenummer}`);
-      // history.push(`/profile`);
     }, 1000);
-  };
+  }, []);
 
   useEffect(() => {
     redirectApp();

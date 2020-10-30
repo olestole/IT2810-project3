@@ -145,7 +145,6 @@ const DetailView = () => {
               variant="contained"
               onClick={() => dispatch(setModalOpen(true))}
               className={classes.button}
-              // startIcon={<ArrowBackIcon />}
             >
               Anmeld produkt
             </Button>

@@ -1,3 +1,4 @@
+import withAuth from "graphql-auth";
 import { Product } from "./models/Product";
 import { IReview, IReviewResponse, Review } from "./models/Review";
 
@@ -44,7 +45,7 @@ export const resolvers = {
   },
 
   Mutation: {
-    addReview: async (_: any, { review }: any) => {
+    addReview: withAuth(async (_: any, { review }: any) => {
       const newReview = new Review({
         userEmail: review.userEmail,
         varenummer: review.varenummer,
@@ -80,6 +81,6 @@ export const resolvers = {
           rating: 0,
         } as IReviewResponse;
       }
-    },
+    }),
   },
 };

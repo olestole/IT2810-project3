@@ -45,7 +45,6 @@ describe('End to end test', () => {
     cy.contains('#NKVO').should('not.be.visible');
     cy.contains('Dom Perignon Brut 2010').should('be.visible').click();
     cy.contains('Produsent: Moët & Chandon');
-    //cy.should('include', '#NKVO');
   });
 
   it('Perform multiple searches', () => {
@@ -61,7 +60,8 @@ describe('End to end test', () => {
     cy.contains('Liverpool Gin').should('be.visible');
   });
 
-  it('Commenting item working', () => {
+  it('Commenting item and login', () => {
+    //This test is checking both login and commenting
     cy.request(options);
     cy.get('#searchField').type('bad santa{enter}');
     cy.contains('Bad Santa Juleakevitt').should('be.visible').click();

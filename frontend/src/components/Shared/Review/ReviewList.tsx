@@ -8,19 +8,6 @@ import { IReview } from 'types/globalTypes';
 import DefaultItem from './DefaultItem';
 import ReviewItem from './ReviewItem';
 
-const useStyles = makeStyles(() =>
-  createStyles({
-    root: {
-      // width: '500px',
-      // maxWidth: 360,
-      // backgroundColor: theme.palette.background.paper,
-      // position: 'relative',
-      // overflow: 'auto',
-      // maxHeight: '200px',
-    },
-  }),
-);
-
 interface IReviewList {
   reviews: IReview[];
   error?: ApolloError | null | undefined;
@@ -28,7 +15,6 @@ interface IReviewList {
 }
 
 const ReviewList: React.FC<IReviewList> = ({ reviews, error, user }) => {
-  const classes = useStyles();
   const location = useLocation();
   const addedReview = useSelector((state: AppState) => state.addedReview);
 
@@ -63,7 +49,7 @@ const ReviewList: React.FC<IReviewList> = ({ reviews, error, user }) => {
     }
   };
 
-  return <List className={classes.root}>{renderReviews()}</List>;
+  return <List>{renderReviews()}</List>;
 };
 
 export default ReviewList;

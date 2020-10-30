@@ -6,7 +6,6 @@ import ProfileCard from 'components/Profile/ProfileCard';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { GET_PERSONAL_REVIEWS } from 'graphql/queries';
 import { GetPersonalReviewsQuery } from 'graphql/__generated__/GetPersonalReviewsQuery';
-// import { GetPersonalReviewsQuery } from 'graphql/__generated__/GetPersonalReviewsQuery';
 import React from 'react';
 import { IReview } from 'types/globalTypes';
 
@@ -38,6 +37,7 @@ const useStyles = makeStyles((theme) =>
     notLoggedInImage: {
       minWidth: '250px',
       marginRight: '10%',
+      maxHeight: '80%',
       flex: '1 1 50%',
     },
     logInText: {
@@ -71,7 +71,7 @@ const Profile = () => {
             <img className={classes.notLoggedInImage} src="authentication_picture.svg" />
             <div className={classes.logInText}>
               <h1>Ikke logget inn</h1>
-              <p>Logg inn for å få tilgang til informasjon</p>
+              <p>Logg inn for tilgang til ekstra funksjonalitet</p>
             </div>
           </div>
         ) : (
