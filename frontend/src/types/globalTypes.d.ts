@@ -2,8 +2,8 @@ export interface Product {
   Varenavn: string;
   Varenummer: string;
   Varetype: string;
-  Volum: string;
-  Pris: string;
+  Volum: number;
+  Pris: number;
   Produsent: string;
   Land: string;
   Farge: string;

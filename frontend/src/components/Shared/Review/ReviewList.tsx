@@ -1,7 +1,5 @@
-import { ApolloError, useQuery } from '@apollo/client';
+import { ApolloError } from '@apollo/client';
 import { createStyles, List, makeStyles } from '@material-ui/core';
-import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import { GET_PERSONAL_REVIEWS, GET_REVIEWS } from 'graphql/queries';
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
@@ -67,12 +65,12 @@ import ReviewItem from './ReviewItem';
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
-      width: '100%',
+      // width: '500px',
       // maxWidth: 360,
       // backgroundColor: theme.palette.background.paper,
-      position: 'relative',
-      overflow: 'auto',
-      maxHeight: 300,
+      // position: 'relative',
+      // overflow: 'auto',
+      // maxHeight: 'stretch',
     },
   }),
 );
@@ -86,30 +84,54 @@ interface IReviewList {
 const ReviewList: React.FC<IReviewList> = ({ reviews, error, user }) => {
   const classes = useStyles();
   const location = useLocation();
+  const addedReview = useSelector((state: AppState) => state.addedReview);
 
   const renderReviews = () => {
     if (!user && location.pathname.substring(1) === 'profile') {
       return <DefaultItem title={'Not logged in'} description={'Log in to see your review stats'} />;
     } else if (error) {
       return <DefaultItem title={'Something wrong happened'} description={'Try to refresh the page'} />;
-    } else if (reviews.length > 0) {
-      return reviews.map((review: IReview | null, index: number) => {
-        if (review !== null) {
-          return <ReviewItem key={index} review={review} />;
-        }
-      });
+    } else if (reviews.length > 0 || addedReview) {
+      if (addedReview) {
+        return reviews.concat(addedReview).map((review: IReview | null, index: number) => {
+          if (review !== null) {
+            return <ReviewItem key={index} review={review} />;
+          }
+        });
+      } else {
+        return reviews.map((review: IReview | null, index: number) => {
+          if (review !== null) {
+            return <ReviewItem key={index} review={review} />;
+          }
+        });
+      }
+      // return addedReview
+      //   ? [
+      //       ...reviews.map((review: IReview | null, index: number) => {
+      //         if (review !== null) {
+      //           return <ReviewItem key={index} review={review} />;
+      //         }
+      //       }),
+      //       <ReviewItem key={addedReview?.description} review={addedReview} />,
+      //     ]
+      //   : reviews.map((review: IReview | null, index: number) => {
+      //       if (review !== null) {
+      //         return <ReviewItem key={index} review={review} />;
+      //       }
+      //     });
     } else if (reviews.length === 0) {
-      return (
-        <DefaultItem title={'No reviews'} description={'This product has not been reviewed yet - be the first!'} />
+      return location.pathname.substring(1) === 'profile' ? (
+        <DefaultItem title={'Ingen produktanmeldelser'} description={'Du har ikke anmeldt noen produkter enda'} />
+      ) : (
+        <DefaultItem
+          title={'Ingen produktanmeldelser'}
+          description={'Dette produktet har ikke blitt anmeldt enda - vær den første!'}
+        />
       );
     }
   };
 
-  return (
-    <div>
-      <List className={classes.root}>{renderReviews()}</List>
-    </div>
-  );
+  return <List className={classes.root}>{renderReviews()}</List>;
 };
 
 export default ReviewList;

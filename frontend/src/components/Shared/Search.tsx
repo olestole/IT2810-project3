@@ -3,7 +3,7 @@ import { Chip, InputBase } from '@material-ui/core';
 import SearchIcon from '@material-ui/icons/Search';
 import { fade, makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetFilter, setSearchText, updateFilterDisplay, updateViewMode } from 'store/action';
+import { setSearchText, updateViewMode } from 'store/action';
 import { AppState } from 'store/types';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -60,8 +60,7 @@ const Search = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.keyCode === 13) {
       dispatch(setSearchText(textInput.current.value));
-      dispatch(updateViewMode({ field: 'initialSearch', value: true }));
-      dispatch(updateFilterDisplay('searchMode'));
+      dispatch(updateViewMode({ field: 'initialLoad', value: true }));
 
       textInput.current.value = '';
       /*Search function */
@@ -70,8 +69,6 @@ const Search = () => {
 
   const handleDelete = () => {
     dispatch(setSearchText(''));
-    dispatch(updateFilterDisplay('startMode'));
-    dispatch(resetFilter());
     dispatch(updateViewMode({ field: 'initialLoad', value: true }));
   };
 

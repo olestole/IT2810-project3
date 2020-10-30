@@ -1,49 +1,31 @@
 import { AuthenticationError } from "apollo-server-express";
 import { Product } from "./models/Product";
-import { WhiteWine } from "./models/WhiteWine";
 import withAuth from "graphql-auth";
 import { IReview, IReviewResponse, Review } from "./models/Review";
 
 export const resolvers = {
   Query: {
-    products: async () => {
-      let products = await Product.find().limit(10).exec();
-      return products;
-    },
-    startProducts: async (_: any, { startIndex }: any) => {
-      let products = await Product.find({ Volum: { $ne: 0.0 } })
-        .sort({ Varenavn: 1 })
-        .skip(startIndex)
-        .limit(20)
-        .exec();
-      return products;
-    },
-    whiteWines: async () => {
-      let whiteWines = await WhiteWine.find({ Varetype: "Hvitvin" })
-        .limit(10)
-        .exec();
-      return whiteWines;
-    },
-    searchProducts: async (_: any, { searchSequence, index }: any) =>
-      await Product.find({
-        Varenavn: { $regex: searchSequence, $options: "i" },
-        Volum: { $ne: 0.0 },
-      })
-        .sort({ Varenavn: 1 })
-        .skip(index)
-        .limit(20),
-    filterProducts: async (
+    products: async (
       _: any,
-      { varetyper, prisgt, prisls, volumgt, volumls, index }: any
+      {
+        searchSequence,
+        varetyper,
+        prisgt,
+        prisls,
+        volumgt,
+        volumls,
+        index,
+      }: any
     ) =>
       await Product.find({
+        Varenavn: { $regex: searchSequence, $options: "i" },
         Varetype: { $in: varetyper },
         Pris: { $gte: prisgt, $lte: prisls },
         Volum: { $gte: volumgt, $lte: volumls },
       })
         .sort({ Varenavn: 1 })
         .skip(index)
-        .limit(20),
+        .limit(40),
     singleProduct: async (_: any, { productNumber }: any) => {
       // if (!isAuthenticated) {
       //   throw new AuthenticationError("Not logged in!");
@@ -78,20 +60,36 @@ export const resolvers = {
 
       try {
         await newReview.save();
+
         return {
           code: "200",
           success: true,
           message: "Successfully added a review",
+
+          userEmail: review.userEmail,
+          varenummer: review.varenummer,
           title: review.title,
-          user: review.userEmail,
+          description: review.description,
+          rating: review.rating,
         } as IReviewResponse;
+        // return {
+        //   code: "200",
+        //   success: true,
+        //   message: "Successfully added a review",
+        //   title: review.title,
+        //   user: review.userEmail,
+        // } as IReviewResponse;
       } catch (error) {
         return {
           code: "400",
           success: false,
           message: error,
+
+          userEmail: "",
+          varenummer: "",
           title: "",
-          user: "",
+          description: "",
+          rating: 0,
         } as IReviewResponse;
       }
     },

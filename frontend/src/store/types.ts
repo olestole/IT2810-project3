@@ -1,4 +1,4 @@
-import { Product } from 'types/globalTypes';
+import { IReview, Product } from 'types/globalTypes';
 
 export type AppState = {
   count: number;
@@ -7,6 +7,7 @@ export type AppState = {
   modalOpen: boolean;
   currentProduct?: Product | null;
   viewMode: ViewMode;
+  addedReview?: IReview[] | null;
 };
 
 export type FilterOptions = {
@@ -31,10 +32,7 @@ export type Kategorier = {
 };
 
 export type ViewMode = {
-  filterDisplay: FilterDisplay;
   initialLoad: boolean;
-  initialSearch: boolean;
-  initialFilter: boolean;
 };
 
 export type FilterDisplay = 'startMode' | 'searchMode' | 'filterMode';

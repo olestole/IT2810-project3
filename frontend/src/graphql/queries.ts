@@ -41,35 +41,9 @@ const GET_SINGLE_PRODUCT = gql`
   }
 `;
 
-const GET_START_PRODUCTS = gql`
-  query StartProductsQuery($index: Int!) {
-    startProducts(startIndex: $index) {
-      Varenavn
-      Varenummer
-      Varetype
-      Varenummer
-      Produsent
-      Volum
-      Pris
-    }
-  }
-`;
-
-const SEARCH_PRODUCTS = gql`
-  query SearchProductsQuery($matchedString: String!, $searchIndex: Int!) {
-    searchProducts(searchSequence: $matchedString, index: $searchIndex) {
-      Varenavn
-      Varetype
-      Varenummer
-      Produsent
-      Volum
-      Pris
-    }
-  }
-`;
-
-const FILTER_PRODUCTS = gql`
-  query FilterProductsQuery(
+const PRODUCTS = gql`
+  query Query(
+    $matchedString: String!
     $typer: [String]!
     $prisgt: Float!
     $prisls: Float!
@@ -77,7 +51,8 @@ const FILTER_PRODUCTS = gql`
     $volumls: Float!
     $filterIndex: Int!
   ) {
-    filterProducts(
+    products(
+      searchSequence: $matchedString
       varetyper: $typer
       prisgt: $prisgt
       prisls: $prisls
@@ -95,5 +70,4 @@ const FILTER_PRODUCTS = gql`
   }
 `;
 
-export { GET_START_PRODUCTS, SEARCH_PRODUCTS, GET_REVIEWS, GET_PERSONAL_REVIEWS, GET_SINGLE_PRODUCT, FILTER_PRODUCTS };
-// export { GET_REVIEWS, GET_PERSONAL_REVIEWS, GET_SINGLE_PRODUCT };
+export { GET_REVIEWS, GET_PERSONAL_REVIEWS, GET_SINGLE_PRODUCT, PRODUCTS };

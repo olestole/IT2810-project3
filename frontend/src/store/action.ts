@@ -1,4 +1,4 @@
-import { Product } from 'types/globalTypes';
+import { IReview, Product } from 'types/globalTypes';
 import { FilterDisplay } from './types';
 
 export const increment = () => {
@@ -38,6 +38,13 @@ export const setModalOpen = (value: boolean) => {
   return {
     type: 'SET_MODAL_OPEN',
     payload: value,
+  } as const;
+};
+
+export const setAddedReview = (review: IReview | null) => {
+  return {
+    type: 'SET_ADDED_REVIEW',
+    payload: review,
   } as const;
 };
 
