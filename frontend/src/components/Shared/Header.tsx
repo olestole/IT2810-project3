@@ -24,6 +24,15 @@ const useStyles = makeStyles(() =>
       display: 'flex',
       alignItems: 'center',
     },
+    profileIcon: {
+      fontSize: 40,
+      color: 'white',
+    },
+    profileIconContainer: {
+      '& :hover': {
+        cursor: 'pointer',
+      },
+    },
   }),
 );
 
@@ -41,11 +50,9 @@ const Header = () => {
         <Logo />
         <div className={classes.headerActionSection}>
           <Search />
-          <AccountCircleOutlinedIcon
-            id="profileIcon"
-            style={{ fontSize: 40, color: 'white' }}
-            onClick={handleProfileClick}
-          />
+          <div className={classes.profileIconContainer}>
+            <AccountCircleOutlinedIcon id="profileIcon" onClick={handleProfileClick} className={classes.profileIcon} />
+          </div>
         </div>
       </div>
     </header>
