@@ -6,7 +6,6 @@ import ProfileCard from 'components/Profile/ProfileCard';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { GET_PERSONAL_REVIEWS } from 'graphql/queries';
 import { GetPersonalReviewsQuery } from 'graphql/__generated__/GetPersonalReviewsQuery';
-// import { GetPersonalReviewsQuery } from 'graphql/__generated__/GetPersonalReviewsQuery';
 import React from 'react';
 import { IReview } from 'types/globalTypes';
 

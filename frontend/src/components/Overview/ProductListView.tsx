@@ -17,7 +17,6 @@ import {
 import { updateViewMode } from 'store/action';
 import { PRODUCTS } from 'graphql/queries';
 import { ProductsQuery } from 'graphql/__generated__/ProductsQuery';
-// import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
 const ProductListView = () => {
   const classes = useStyles();

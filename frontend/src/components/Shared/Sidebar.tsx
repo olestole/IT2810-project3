@@ -80,21 +80,6 @@ const useStyles = makeStyles((theme) =>
   }),
 );
 
-// .sidebar {
-//   position: fixed;
-//   padding: 5px;
-//   /* overflow-y: scroll; */
-//   /* overflow: auto; */
-//   height: 100%;
-//   /* width: 100%; */
-// }
-
-// @media (max-width: 650px) {
-//   .sidebar {
-//     position: relative;
-//   }
-// }
-
 const getPriceRange = (price: number) => {
   switch (price) {
     case 0: {
@@ -310,7 +295,6 @@ let Sidebar = () => {
                 variant="outlined"
                 value={filterOptions.minPrice}
                 onChange={(e) => handlePChange(e.target.value as number)}
-                //input={<BootstrapInput />}
               >
                 <MenuItem value={0}>Alle priser</MenuItem>
                 <MenuItem value={1}>Under 100 kr</MenuItem>

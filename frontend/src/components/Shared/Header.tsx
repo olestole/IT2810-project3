@@ -37,12 +37,9 @@ const Header = () => {
 
   return (
     <header className={classes.header}>
-      {/* // <header className="header"> */}
       <div className={classes.headerContent}>
-        {/* <div className="headerContent"> */}
         <Logo />
         <div className={classes.headerActionSection}>
-          {/* <div className="headerActionSection"> */}
           <Search />
           <AccountCircleOutlinedIcon
             id="profileIcon"
