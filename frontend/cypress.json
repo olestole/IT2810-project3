@@ -5,5 +5,6 @@
     "audience": "https://dev-sti0dl03.eu.auth0.com/api/v2/",
     "client_id": "sZ1Abv7d35wSvOLJCd4Gg2Dpf47Wj6wV",
     "client_secret": "9FLWtb0Nr6w8NQ40jlqHaJe6So6bV43yLzOtZjIskTGHFRx5cYin0BdPRhe9BHZl"
-  }
+  },
+  "chromeWebSecurity": false
 }

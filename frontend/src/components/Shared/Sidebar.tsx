@@ -99,7 +99,10 @@ const useStyles = makeStyles((theme) =>
 const getPriceRange = (price: number) => {
   switch (price) {
     case 0: {
-      return [0, 100];
+      return [0, 500000];
+    }
+    case 1: {
+      return [1, 100];
     }
     case 100: {
       return [100, 150];
@@ -310,7 +313,8 @@ let Sidebar = () => {
                 onChange={(e) => handlePChange(e.target.value as number)}
                 //input={<BootstrapInput />}
               >
-                <MenuItem value={0}>Under 100 kr</MenuItem>
+                <MenuItem value={0}>Alle priser</MenuItem>
+                <MenuItem value={1}>Under 100 kr</MenuItem>
                 <MenuItem value={100}>100 til 150 kr</MenuItem>
                 <MenuItem value={150}>150 til 200 kr</MenuItem>
                 <MenuItem value={200}>200 til 300 kr</MenuItem>

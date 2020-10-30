@@ -95,7 +95,7 @@ const ProfileCard: React.FC = ({ children }) => {
         {
           <div className={classes.buttonGroup}>
             {isAuthenticated ? (
-              <Button variant="contained" onClick={handleLogout}>
+              <Button variant="contained" onClick={handleLogout} id="logOutButton">
                 Logg ut
               </Button>
             ) : (
