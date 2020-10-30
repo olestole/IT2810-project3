@@ -26,7 +26,7 @@ Object {
           class="title"
         >
           <h4
-            class="MuiTypography-root makeStyles-title-49 MuiTypography-h4 MuiTypography-noWrap MuiTypography-alignRight"
+            class="MuiTypography-root makeStyles-title-43 MuiTypography-h4 MuiTypography-noWrap MuiTypography-alignRight"
             role="title"
           >
             WineEncyclopedia
@@ -37,23 +37,23 @@ Object {
         class="layout"
       >
         <div
-          class="makeStyles-container-50"
+          class="overview"
         >
           <div
             class="sidebar"
           >
             <nav
-              class="MuiList-root makeStyles-appMenu-51"
+              class="MuiList-root makeStyles-appMenu-44"
             >
               <div
                 aria-disabled="false"
-                class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-53 MuiListItem-gutters MuiListItem-button"
+                class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-46 MuiListItem-gutters MuiListItem-button"
                 id="kategoriId"
                 role="button"
                 tabindex="0"
               >
                 <div
-                  class="MuiListItemIcon-root makeStyles-menuItemIcon-54"
+                  class="MuiListItemIcon-root makeStyles-menuItemIcon-47"
                 >
                   <svg
                     aria-hidden="true"
@@ -91,12 +91,12 @@ Object {
               </div>
               <div
                 aria-disabled="false"
-                class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-53 MuiListItem-gutters MuiListItem-button"
+                class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-46 MuiListItem-gutters MuiListItem-button"
                 role="button"
                 tabindex="0"
               >
                 <div
-                  class="MuiListItemIcon-root makeStyles-menuItemIcon-54"
+                  class="MuiListItemIcon-root makeStyles-menuItemIcon-47"
                 >
                   <svg
                     aria-hidden="true"
@@ -134,12 +134,12 @@ Object {
               </div>
               <div
                 aria-disabled="false"
-                class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-53 MuiListItem-gutters MuiListItem-button"
+                class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-46 MuiListItem-gutters MuiListItem-button"
                 role="button"
                 tabindex="0"
               >
                 <div
-                  class="MuiListItemIcon-root makeStyles-menuItemIcon-54"
+                  class="MuiListItemIcon-root makeStyles-menuItemIcon-47"
                 >
                   <svg
                     aria-hidden="true"
@@ -182,7 +182,7 @@ Object {
             role="loading"
           >
             <div
-              class="makeStyles-root-64"
+              class="makeStyles-root-56"
             >
               <div
                 class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
@@ -229,7 +229,7 @@ Object {
         class="title"
       >
         <h4
-          class="MuiTypography-root makeStyles-title-49 MuiTypography-h4 MuiTypography-noWrap MuiTypography-alignRight"
+          class="MuiTypography-root makeStyles-title-43 MuiTypography-h4 MuiTypography-noWrap MuiTypography-alignRight"
           role="title"
         >
           WineEncyclopedia
@@ -240,23 +240,23 @@ Object {
       class="layout"
     >
       <div
-        class="makeStyles-container-50"
+        class="overview"
       >
         <div
           class="sidebar"
         >
           <nav
-            class="MuiList-root makeStyles-appMenu-51"
+            class="MuiList-root makeStyles-appMenu-44"
           >
             <div
               aria-disabled="false"
-              class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-53 MuiListItem-gutters MuiListItem-button"
+              class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-46 MuiListItem-gutters MuiListItem-button"
               id="kategoriId"
               role="button"
               tabindex="0"
             >
               <div
-                class="MuiListItemIcon-root makeStyles-menuItemIcon-54"
+                class="MuiListItemIcon-root makeStyles-menuItemIcon-47"
               >
                 <svg
                   aria-hidden="true"
@@ -294,12 +294,12 @@ Object {
             </div>
             <div
               aria-disabled="false"
-              class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-53 MuiListItem-gutters MuiListItem-button"
+              class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-46 MuiListItem-gutters MuiListItem-button"
               role="button"
               tabindex="0"
             >
               <div
-                class="MuiListItemIcon-root makeStyles-menuItemIcon-54"
+                class="MuiListItemIcon-root makeStyles-menuItemIcon-47"
               >
                 <svg
                   aria-hidden="true"
@@ -337,12 +337,12 @@ Object {
             </div>
             <div
               aria-disabled="false"
-              class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-53 MuiListItem-gutters MuiListItem-button"
+              class="MuiButtonBase-root MuiListItem-root makeStyles-menuItem-46 MuiListItem-gutters MuiListItem-button"
               role="button"
               tabindex="0"
             >
               <div
-                class="MuiListItemIcon-root makeStyles-menuItemIcon-54"
+                class="MuiListItemIcon-root makeStyles-menuItemIcon-47"
               >
                 <svg
                   aria-hidden="true"
@@ -385,7 +385,7 @@ Object {
           role="loading"
         >
           <div
-            class="makeStyles-root-64"
+            class="makeStyles-root-56"
           >
             <div
               class="MuiCircularProgress-root MuiCircularProgress-colorPrimary MuiCircularProgress-indeterminate"
