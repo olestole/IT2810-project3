@@ -45,6 +45,12 @@ const useStyles = makeStyles((theme) =>
         fontSize: '0.8rem',
       },
     },
+    loginPage: {
+      display: 'flex',
+      height: '80vh',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   }),
 );
 
@@ -58,7 +64,7 @@ const Profile = () => {
   if (loading) return <LoadingIndicator />;
 
   return (
-    <div className="loginPage">
+    <div className={classes.loginPage}>
       <ProfileCard>
         {!user ? (
           <div className={classes.notLoggedIn}>

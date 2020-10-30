@@ -5,7 +5,6 @@ import { useHistory } from 'react-router-dom';
 import { AppState, FilterOptions, ViewMode } from 'store/types';
 import { useDispatch, useSelector } from 'react-redux';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
-import './productList.css';
 import { getProductType } from './ProductList/productTypes';
 import {
   EnhancedTableHead,
@@ -143,7 +142,7 @@ const ProductListView = () => {
   }
 
   return (
-    <div className="list">
+    <div className={classes.list}>
       <Paper className={classes.paper}>
         <TableContainer>
           <Table className={classes.table} aria-labelledby="tableTitle" aria-label="enhanced table">

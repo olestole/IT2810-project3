@@ -25,7 +25,6 @@ import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { filter, filterVolumAndPrice } from 'store/action';
 import { AppState, FilterOptions } from 'store/types';
-import './sidebar.css';
 
 const drawerWidth = 200;
 

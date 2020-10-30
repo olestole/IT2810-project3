@@ -12,24 +12,6 @@ html {
   font-family: 'Work Sans', sans-serif;
 }
 
-.container {
-  margin: 1em;
-}
-
-.loadingIndicator {
-  display: flex;
-  height: 80vh;
-  align-items: center;
-  justify-content: center;
-}
-
-.loginPage {
-  display: flex;
-  height: 80vh;
-  align-items: center;
-  justify-content: center;
-}
-
 .layout {
   margin-top: 120px;
 }

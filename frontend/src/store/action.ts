@@ -1,17 +1,5 @@
 import { IReview, Product } from 'types/globalTypes';
-import { FilterDisplay } from './types';
-
-export const increment = () => {
-  return {
-    type: 'INCREMENT',
-  } as const;
-};
-
-export const decrement = () => {
-  return {
-    type: 'DECREMENT',
-  } as const;
-};
+import { fieldAndBool, FilterDisplay, fieldAndNumber } from './types';
 
 export const setFilterMode = (boolValue: boolean) => {
   return {
@@ -48,22 +36,12 @@ export const setAddedReview = (review: IReview | null) => {
   } as const;
 };
 
-interface fieldAndBool {
-  field: string;
-  value: boolean;
-}
-
 export const filter = (filterAndBool: fieldAndBool) => {
   return {
     type: 'FILTER',
     payload: filterAndBool,
   } as const;
 };
-
-interface fieldAndNumber {
-  field: string;
-  value: number;
-}
 
 export const filterVolumAndPrice = (fieldAndNumber: fieldAndNumber) => {
   return {

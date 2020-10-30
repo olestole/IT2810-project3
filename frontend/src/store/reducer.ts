@@ -1,7 +1,6 @@
 import { createStore, Store } from 'redux';
+import { AppState } from './types';
 import {
-  decrement,
-  increment,
   setSearchText,
   filter,
   filterVolumAndPrice,
@@ -13,11 +12,8 @@ import {
   resetFilter,
   setAddedReview,
 } from './action';
-import { AppState } from './types';
 
 type Actions =
-  | ReturnType<typeof increment>
-  | ReturnType<typeof decrement>
   | ReturnType<typeof setSearchText>
   | ReturnType<typeof setCurrentProduct>
   | ReturnType<typeof setModalOpen>
@@ -57,16 +53,6 @@ const initialAppState: AppState = {
 
 const rootReducer = (state: AppState = initialAppState, action: Actions) => {
   switch (action.type) {
-    case 'INCREMENT':
-      return {
-        ...state,
-        count: state.count + 1,
-      };
-    case 'DECREMENT':
-      return {
-        ...state,
-        count: state.count - 1,
-      };
     case 'FILTER_MODE':
       return {
         ...state,

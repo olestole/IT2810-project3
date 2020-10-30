@@ -35,4 +35,14 @@ export type ViewMode = {
   initialLoad: boolean;
 };
 
+export interface fieldAndBool {
+  field: string;
+  value: boolean;
+}
+
+export interface fieldAndNumber {
+  field: string;
+  value: number;
+}
+
 export type FilterDisplay = 'startMode' | 'searchMode' | 'filterMode';

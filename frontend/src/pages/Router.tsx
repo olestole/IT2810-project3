@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Callback } from './Callback';
 import Detail from './Detail';
 import Profile from './Profile';
 import Overview from './Overview';
+import Callback from './Callback';
 
 const Router = () => (
   <div className="layout">

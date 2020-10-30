@@ -4,7 +4,6 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { resetFilter, setAddedReview, setCurrentProduct, setSearchText, updateViewMode } from 'store/action';
-import './logo.css';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -15,6 +14,22 @@ const useStyles = makeStyles((theme: Theme) =>
       fontFamily: 'sans-serif',
       [theme.breakpoints.down(650)]: {
         display: 'block',
+      },
+    },
+    logoContainer: {
+      display: 'flex',
+      alignItems: 'center',
+      cursor: 'pointer',
+    },
+    logo: {
+      width: 60,
+      '& img': {
+        width: '100%',
+      },
+    },
+    titleContainer: {
+      [theme.breakpoints.down(650)]: {
+        display: 'none',
       },
     },
   }),
@@ -40,11 +55,11 @@ const Logo = () => {
   };
 
   return (
-    <div className="logoContainer" onClick={handleBackClick} role="homeButton">
-      <div className="logo" role="image">
-        <img src="appLogo.svg"></img>
+    <div className={classes.logoContainer} onClick={handleBackClick} role="homeButton">
+      <div className={classes.logo} role="image">
+        <img src="appLogo.svg" />
       </div>
-      <div className="title">
+      <div className={classes.titleContainer}>
         <Typography role="title" className={classes.title} align="right" variant="h4" noWrap>
           WineEncyclopedia
         </Typography>
