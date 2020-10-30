@@ -8,7 +8,6 @@ import { setAddedReview, setCurrentProduct, setModalOpen } from 'store/action';
 import { useAuth0 } from '@auth0/auth0-react';
 import { IReview, Product } from 'types/globalTypes';
 import { AppState } from 'store/types';
-
 import './detail.css';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { ReviewList } from 'components/Shared';

@@ -76,7 +76,7 @@ const Search = () => {
     <div id={'searchField'} className={classes.searchAndChip}>
       <div className={classes.search}>
         <div className={classes.searchIcon}>
-          <SearchIcon />
+          <SearchIcon aria-label="searchIcon" />
         </div>
         <InputBase
           id={'searchInputField'}
@@ -90,7 +90,7 @@ const Search = () => {
           inputRef={textInput}
         />
       </div>
-      {searchText === '' ? null : <Chip label={searchText} onDelete={handleDelete} color="primary" />}
+      {searchText === '' ? null : <Chip label={searchText} onDelete={handleDelete} color="primary" role="chip"/>}
     </div>
   );
 };
