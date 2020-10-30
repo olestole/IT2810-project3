@@ -37,6 +37,7 @@ const useStyles = makeStyles((theme) =>
     notLoggedInImage: {
       minWidth: '250px',
       marginRight: '10%',
+      maxHeight: '80%',
       flex: '1 1 50%',
     },
     logInText: {
