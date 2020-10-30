@@ -61,21 +61,23 @@ describe('End to end test', () => {
     cy.contains('Liverpool Gin').should('be.visible');
   });
 
-  it('Comment item', () => {
-    //create function for login
+  it('Commenting item working', () => {
     cy.request(options);
     cy.get('#searchField').type('bad santa{enter}');
     cy.contains('Bad Santa Juleakevitt').should('be.visible').click();
     cy.get('#loginForReviewButton').click();
     cy.url().should('eq', 'http://localhost:3000/profile');
-    cy.request(options);
     cy.get('#loginButton').click();
-    cy.request(options);
+    cy.get('#1-email').type(Cypress.env('username'));
+    cy.get('[type=password]').type(Cypress.env('password'));
+    cy.get('[type=submit]').click();
     cy.get('#reviewProductButton').click();
     cy.get('#reviewHeaderText').type('Test Tittel');
     cy.get('#reviewRating').click();
     cy.get('#reviewProductText').type('Wow test is running, cool');
     cy.get('#saveReviewButton').click();
     cy.contains('Anmeldelsen er registrert').should('be.visible');
+    cy.get('#profileIcon').click();
+    cy.get('#logOutButton').click();
   });
 });
