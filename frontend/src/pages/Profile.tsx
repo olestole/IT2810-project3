@@ -70,7 +70,7 @@ const Profile = () => {
             <img className={classes.notLoggedInImage} src="authentication_picture.svg" />
             <div className={classes.logInText}>
               <h1>Ikke logget inn</h1>
-              <p>Logg inn for å få tilgang til informasjon</p>
+              <p>Logg inn for tilgang til ekstra funksjonalitet</p>
             </div>
           </div>
         ) : (
