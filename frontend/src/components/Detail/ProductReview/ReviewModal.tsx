@@ -43,7 +43,7 @@ const ReviewModal: React.FC = ({ children }) => {
     <Modal
       isOpen={modalOpen}
       onRequestClose={() => dispatch(setModalOpen(false))}
-      // @ts-ignore
+      // @ts-ignore This wouldn't compile without a ignore even though @types/react-modal is installed
       style={customStyles}
       contentLabel="Review Modal"
     >

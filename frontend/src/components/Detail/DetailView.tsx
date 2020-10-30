@@ -8,7 +8,6 @@ import { setAddedReview, setCurrentProduct, setModalOpen } from 'store/action';
 import { useAuth0 } from '@auth0/auth0-react';
 import { IReview, Product } from 'types/globalTypes';
 import { AppState } from 'store/types';
-import './detail.css';
 import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { ReviewList } from 'components/Shared';
 import { useQuery } from '@apollo/client';
@@ -35,6 +34,54 @@ const useStyles = makeStyles((theme: Theme) =>
       maxHeight: '35vh',
       overflow: 'auto',
     },
+    detailContainer: {
+      margin: '0 10% 0 10%',
+      display: 'grid',
+      gridTemplateColumns: 'repeat(2, 1fr)',
+      gridGap: 10,
+      alignItems: 'center',
+      justifyContent: 'center',
+      height: '80vh',
+      [theme.breakpoints.down(700)]: {
+        display: 'flex',
+        flexWrap: 'wrap',
+        margin: '1em',
+        justifyContent: 'center',
+      },
+    },
+    image: {
+      gridColumn: '1 / 2',
+      justifySelf: 'center',
+    },
+    info: {
+      gridColumn: '2 / 3',
+    },
+    headline: {
+      justifySelf: 'start',
+    },
+    text: {
+      '& p': {
+        justifySelf: 'start',
+        color: '#344d51',
+        fontWeight: 'bold',
+      },
+      '& span': {
+        fontWeight: 'normal',
+      },
+    },
+    back: {
+      display: 'flex',
+      justifyContent: 'flex-start',
+    },
+    img: {
+      [theme.breakpoints.down(700)]: {
+        maxWidth: 300,
+      },
+      [theme.breakpoints.down(375)]: {
+        maxWidth: 300,
+        maxHeigth: 300,
+      },
+    },
   }),
 );
 
@@ -48,7 +95,7 @@ const DetailView = () => {
   const classes = useStyles();
   const { isAuthenticated } = useAuth0();
 
-  const { data, loading, error } = useQuery<GetReviewsQuery>(GET_REVIEWS, {
+  const { data, loading } = useQuery<GetReviewsQuery>(GET_REVIEWS, {
     variables: { reviewsVarenummer: currentProduct?.Varenummer },
     fetchPolicy: 'network-only',
   });
@@ -65,13 +112,13 @@ const DetailView = () => {
   return loading ? (
     <LoadingIndicator />
   ) : (
-    <div className="detailcontainer">
-      <div className="image">
-        <img src={url} onLoad={() => setLoadingImage(false)} />
+    <div className={classes.detailContainer}>
+      <div className={classes.image}>
+        <img className={classes.img} src={url} onLoad={() => setLoadingImage(false)} />
       </div>
 
-      <div className="info">
-        <div className="headline">
+      <div className={classes.info}>
+        <div className={classes.headline}>
           <Typography className={classes.titleVaretype} color="textSecondary" gutterBottom>
             {currentProduct.Varetype}
           </Typography>
@@ -83,7 +130,7 @@ const DetailView = () => {
 
         <ProductInfo currentProduct={currentProduct} />
 
-        <div className="back">
+        <div className={classes.back}>
           <Button
             variant="contained"
             onClick={handleBackClick}
@@ -126,8 +173,10 @@ interface IProductInfo {
 }
 
 const ProductInfo = ({ currentProduct }: IProductInfo) => {
+  const classes = useStyles();
+
   return (
-    <div className="text">
+    <div className={classes.text}>
       <p>
         Volum: <span>{currentProduct.Volum} L</span>
       </p>

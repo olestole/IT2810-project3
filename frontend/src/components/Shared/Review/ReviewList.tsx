@@ -8,60 +8,6 @@ import { IReview } from 'types/globalTypes';
 import DefaultItem from './DefaultItem';
 import ReviewItem from './ReviewItem';
 
-// const data = {
-//   reviews: [
-//     {
-//       description: 'Superfin',
-//       rating: 1,
-//       title: 'Elsker denne!',
-//       userEmail: 'oleastole@gmail.com',
-//       varenummer: '407',
-//       __typename: 'OutputReview',
-//     },
-//     {
-//       description: 'Superfin',
-//       rating: 5,
-//       title: 'Elsker denne!',
-//       userEmail: 'oleastole@gmail.com',
-//       varenummer: '407',
-//       __typename: 'OutputReview',
-//     },
-//     {
-//       description: 'Superfin',
-//       rating: 5,
-//       title: 'Elsker denne!',
-//       userEmail: 'oleastole@gmail.com',
-//       varenummer: '407',
-//       __typename: 'OutputReview',
-//     },
-//     {
-//       description: 'Superfin',
-//       rating: 5,
-//       title: 'Elsker denne!',
-//       userEmail: 'oleastole@gmail.com',
-//       varenummer: '407',
-//       __typename: 'OutputReview',
-//     },
-//     {
-//       description: 'Superfin',
-//       rating: 5,
-//       title: 'Elsker denne!',
-//       userEmail: 'oleastole@gmail.com',
-//       varenummer: '407',
-//       __typename: 'OutputReview',
-//     },
-//     {
-//       description:
-//         'Sed laoreet libero purus, vitae maximus ligula fermentum consequat. Aenean eget ultrices diam. In hac habitasse platea dictumst. Proin accumsan mollis magna ac mattis. Fusce eu mi consectetur, cursus est vitae, aliquam urna. Donec ac turpis consequat, cursus velit ac, vestibulum nunc. Ut dui turpis, volutpat eget congue vel, vulputate eget neque. In vulputate lectus id pellentesque posuere. Duis quis fermentum odio. Vivamus ultrices magna eu justo mollis feugiat.',
-//       rating: 3,
-//       title: 'Elsker denne!',
-//       userEmail: 'oleastole@gmail.com',
-//       varenummer: '407',
-//       __typename: 'OutputReview',
-//     },
-//   ],
-// };
-
 const useStyles = makeStyles(() =>
   createStyles({
     root: {
@@ -70,7 +16,7 @@ const useStyles = makeStyles(() =>
       // backgroundColor: theme.palette.background.paper,
       // position: 'relative',
       // overflow: 'auto',
-      // maxHeight: 'stretch',
+      // maxHeight: '200px',
     },
   }),
 );
@@ -105,20 +51,6 @@ const ReviewList: React.FC<IReviewList> = ({ reviews, error, user }) => {
           }
         });
       }
-      // return addedReview
-      //   ? [
-      //       ...reviews.map((review: IReview | null, index: number) => {
-      //         if (review !== null) {
-      //           return <ReviewItem key={index} review={review} />;
-      //         }
-      //       }),
-      //       <ReviewItem key={addedReview?.description} review={addedReview} />,
-      //     ]
-      //   : reviews.map((review: IReview | null, index: number) => {
-      //       if (review !== null) {
-      //         return <ReviewItem key={index} review={review} />;
-      //       }
-      //     });
     } else if (reviews.length === 0) {
       return location.pathname.substring(1) === 'profile' ? (
         <DefaultItem title={'Ingen produktanmeldelser'} description={'Du har ikke anmeldt noen produkter enda'} />
