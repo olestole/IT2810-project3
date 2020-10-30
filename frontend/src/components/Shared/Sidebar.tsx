@@ -38,24 +38,63 @@ const useStyles = makeStyles((theme) =>
     },
     navList: {
       width: drawerWidth,
+      [theme.breakpoints.down(650)]: {
+        width: '100vw',
+      },
     },
     menuItem: {
       width: drawerWidth,
+      height: '100%',
+      [theme.breakpoints.down(650)]: {
+        width: '100vw',
+      },
     },
     menuItemIcon: {
       color: 'var(--secondary)',
     },
     divider: {
       width: drawerWidth,
+      [theme.breakpoints.down(650)]: {
+        width: '100vw',
+      },
     },
     formGroup: {
       width: drawerWidth,
       display: 'flex',
       alignItems: 'right',
       position: 'relative',
+      [theme.breakpoints.down(650)]: {
+        width: '100vw',
+      },
+    },
+    sidebarContainer: {
+      position: 'fixed',
+      padding: 5,
+      overflow: 'auto',
+      maxHeight: 'calc(100vh - 120px)',
+      height: '100%',
+      [theme.breakpoints.down(650)]: {
+        position: 'relative',
+        width: '100vw',
+      },
     },
   }),
 );
+
+// .sidebar {
+//   position: fixed;
+//   padding: 5px;
+//   /* overflow-y: scroll; */
+//   /* overflow: auto; */
+//   height: 100%;
+//   /* width: 100%; */
+// }
+
+// @media (max-width: 650px) {
+//   .sidebar {
+//     position: relative;
+//   }
+// }
 
 const getPriceRange = (price: number) => {
   switch (price) {
@@ -120,7 +159,7 @@ let Sidebar = () => {
   };
 
   return (
-    <div className="sidebar">
+    <div className={classes.sidebarContainer}>
       <List component="nav" className={classes.appMenu} disablePadding>
         <ListItem
           id={'kategoriId'}

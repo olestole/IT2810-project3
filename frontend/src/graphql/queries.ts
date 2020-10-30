@@ -42,7 +42,7 @@ const GET_SINGLE_PRODUCT = gql`
 `;
 
 const PRODUCTS = gql`
-  query Query(
+  query ProductsQuery(
     $matchedString: String!
     $typer: [String]!
     $prisgt: Float!

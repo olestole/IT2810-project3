@@ -16,16 +16,16 @@ const useStyles = makeStyles((theme: Theme) =>
         backgroundColor: theme.palette.common.white,
       },
       margin: theme.spacing(2),
-      [theme.breakpoints.up('sm')]: {
-        marginLeft: theme.spacing(3),
-        width: 'auto',
-      },
     },
     searchAndChip: {
       position: 'relative',
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
+      [theme.breakpoints.down(650)]: {
+        marginLeft: theme.spacing(2),
+        width: 'auto',
+      },
     },
     searchIcon: {
       padding: theme.spacing(0, 2),
@@ -44,9 +44,10 @@ const useStyles = makeStyles((theme: Theme) =>
       paddingLeft: `calc(1em + ${theme.spacing(4)}px)`,
       transition: theme.transitions.create('width'),
       width: '100%',
-      [theme.breakpoints.up('md')]: {
-        width: '20ch',
-      },
+    },
+    chip: {
+      backgroundColor: 'var(--secondary)',
+      color: '#fff',
     },
   }),
 );
@@ -90,7 +91,9 @@ const Search = () => {
           inputRef={textInput}
         />
       </div>
-      {searchText === '' ? null : <Chip label={searchText} onDelete={handleDelete} color="primary" role="chip"/>}
+      {searchText === '' ? null : (
+        <Chip label={searchText} onDelete={handleDelete} className={classes.chip} role="chip" />
+      )}
     </div>
   );
 };

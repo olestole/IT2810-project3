@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme: Theme) =>
       color: '#DCF2EB',
       marginLeft: theme.spacing(2),
       fontFamily: 'sans-serif',
-      [theme.breakpoints.up('sm')]: {
+      [theme.breakpoints.down(650)]: {
         display: 'block',
       },
     },
