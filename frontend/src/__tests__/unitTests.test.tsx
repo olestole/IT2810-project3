@@ -17,6 +17,7 @@ let documentBody: RenderResult;
 
 afterEach(cleanup)
 
+//testing logo component with user event (homeclick)
 describe('logo', () => {
   beforeEach(() => {
     documentBody = render(<ApolloWrapper>
@@ -54,6 +55,8 @@ describe('logo', () => {
 
 });
 
+
+//Testing search component with user event (search input and function)
 describe('search', () => {
   beforeEach(() => {
     documentBody = render(<ApolloWrapper>
@@ -80,6 +83,8 @@ describe('search', () => {
   })
 });
 
+
+//Testing actions from store
 describe('actions', () => {
   it('should set search string', () => {
     const text = 'whiskey'
@@ -100,7 +105,7 @@ describe('actions', () => {
   })
 })
 
-
+//Mocks for mocking the two graphql queries GET_SINGLE_PRODUCT and GET_REVIEWS
 const mocks= [{
   request: {
     query: GET_SINGLE_PRODUCT,
@@ -149,6 +154,7 @@ const mocks= [{
   }
 }]
 
+//Test for testing graphql queries with the mocks from above
 describe('graphql queries', () => {
   it('get single product with user reviews', async () => {
     const { findByText, getByRole } = render(
@@ -171,6 +177,7 @@ describe('graphql queries', () => {
 
 
 
+//Snapshot test for the app
 describe('app', () => {
   it('matches snapshot', () => {
     const { asFragment } = render(<ApolloWrapper>
