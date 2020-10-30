@@ -39,6 +39,13 @@ $ npm run cy:open
 Click on e2e.ts
 ```
 
+## Log in
+The web app uses Auth0 to authorize users (Read more under [authentication](#authentication))<br>
+You can log in by creating a user with either Google-sign-in or with a proprietary username and password. <br>
+If you don't want to create a user, you can log in with our test user:<br>
+**Username**: testUser123@gmail.com<br>
+**Password**: ValidPassword123
+
 ## Structure
 
 **/root**: The root of the project. It contains the frontend and backend as separate parts including a *package.json* to simplify the installation/usage of the webapp <br> 
@@ -85,7 +92,7 @@ As we were encouraged to use libraries for frontend, we chose to use Material-UI
 contains a large set of customizable components, icons and themes.
 
 ### Redux (State Management)
-With Redux we are storing a global AppState. The global state helps us share state to components that have a larger area of concern than its local state. The AppState contains:
+We use Redux for frontend-specific state management. The global state helps us share state to components that have a larger area of concern than its local state. The AppState contains:
 * “modalOpen”: used for keeping track of the product-review modal 
 * “searchtext”: used to update the search. When the text is “” (empty) it will search for all items 
 * “filterOptions”: used for filtering the data
@@ -137,15 +144,15 @@ In our unit tests we test:
 
 
 ### End-2-End Testing
-For end to end testing we are using cypress. Cypress is a front end testing tool built for the modern web. The test can be found under /frontend/cypress/integration/e2e.ts. Cypress tests are fast and easy to write with just a few lines of code needed. 
+For end to end testing we are using cypress. Cypress is a front end testing tool built for the modern web. The test can be found under `/frontend/cypress/integration/e2e.ts`. Cypress tests are fast and easy to write with just a few lines of code needed. 
 Currently we are testing the different functionality of the application. This includes filtering, searching, looking at products and signing in to comment products.
 
-As described at the beginning the test can be run either with cy:run or cy:open. cy:run will run the tests to see if everything is working, but not showing what is done. With cy:open you get to see what is happening and it helps to see what the tests are doing. 
+As described at the beginning the test can be run either with `cy:run` or `cy:open`. `cy:run` will run the tests to see if everything is working, but not showing what is done. With `cy:open` you get to see what is happening and it helps to see what the tests are doing. 
 
 ## Styling
-For styling we have used Material-UI’s hook API. This was a natural choice because of our use of Material-UI’s components. 
-We have been consistent with our use of styling by only implementing styles from this API, with the exception of App.css for setting colors and font. 
-This consistency makes our code easier to read and more structured in contrast to using different styling implementations.For responsive design we used breakpoints with the hook API’s theme. This is similar to CSS media queries. 
+For styling we have used Material-UI’s hook API. This provides the developers with the ability to extend how styling is usually done. Every styled component is styled locally with the `useStyles`-hook, implemented in Typescript.
+We have been consistent with the use of styling by only implementing styles from this API, with the exception of `App.css` for setting colors and font. 
+This consistency makes our code easier to read and more structured in contrast to using different styling implementations. Most of the components in Material-UI is already responsive, but we've extended this by using breakpoints with the hook API’s theme. This is similar to CSS media queries. 
 
 
 ## Use of git
