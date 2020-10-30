@@ -7,7 +7,7 @@ import { Product } from 'types/globalTypes';
 /**
  * Handles conditional logic after a redirect to another page, e.g after Auth0s login-page
  */
-export const Callback = () => {
+const Callback = () => {
   const history = useHistory();
 
   const redirectApp = async () => {
@@ -37,3 +37,4 @@ export const Callback = () => {
 
   return <LoadingIndicator />;
 };
+export default Callback;

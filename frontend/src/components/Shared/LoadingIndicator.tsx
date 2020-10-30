@@ -10,6 +10,12 @@ const useStyles = makeStyles((theme: Theme) =>
         marginLeft: theme.spacing(2),
       },
     },
+    loadingIndicator: {
+      display: 'flex',
+      height: '80vh',
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
   }),
 );
 
@@ -17,7 +23,7 @@ export default function LoadingIndicator() {
   const classes = useStyles();
 
   return (
-    <div className="loadingIndicator" role="loading">
+    <div className={classes.loadingIndicator} role="loading">
       <div className={classes.root}>
         <CircularProgress size="6rem" />
       </div>

@@ -75,6 +75,15 @@ export const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
+    list: {
+      width: 'calc(100% - 224px)',
+      marginLeft: 220,
+      position: 'relative',
+      [theme.breakpoints.down(650)]: {
+        width: '100%',
+        marginLeft: 0,
+      },
+    },
   }),
 );
 
