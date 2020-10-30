@@ -1,7 +1,6 @@
 import { IReview, Product } from 'types/globalTypes';
 
 export type AppState = {
-  count: number;
   searchText: string;
   filterOptions: FilterOptions;
   modalOpen: boolean;

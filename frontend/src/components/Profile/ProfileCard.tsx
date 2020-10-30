@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { useAuth0 } from '@auth0/auth0-react';
@@ -9,50 +9,58 @@ import LoadingIndicator from 'components/Shared/LoadingIndicator';
 import { useSelector } from 'react-redux';
 import { AppState } from 'store/types';
 
-const useStyles = makeStyles({
-  root: {
-    width: '80%',
-    height: '100%',
-    overflow: 'auto',
-  },
-  content: {
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    margin: 30,
-    height: '80%',
-  },
-  registerText: {
-    borderBottom: '1px solid black',
-  },
-  registerContainer: {
-    justifySelf: 'flex-end',
-  },
-  buttonGroup: {
-    display: 'flex',
-    justifyContent: 'center',
-    '& > *': {
-      background: 'var(--primary)',
-      color: '#fff',
-      width: '100%',
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      width: '80%',
+      height: '100%',
+      overflow: 'auto',
     },
-  },
-  grid: {
-    display: 'flex',
-    flexWrap: 'wrap',
-  },
-  reviews: {
-    alignSelf: 'center',
-    marginBottom: 20,
-    maxWidth: '100%',
-    flex: '1 1 500px',
-  },
-  userInfo: {
-    margin: 'auto',
-    textAlign: 'center',
-    flex: '1 1 200px',
-  },
-});
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'space-between',
+      margin: 30,
+      height: '80%',
+    },
+    registerText: {
+      borderBottom: '1px solid black',
+    },
+    registerContainer: {
+      justifySelf: 'flex-end',
+    },
+    buttonGroup: {
+      display: 'flex',
+      justifyContent: 'center',
+      '& > *': {
+        background: 'var(--primary)',
+        color: '#fff',
+        width: '100%',
+      },
+    },
+    grid: {
+      display: 'flex',
+      flexWrap: 'wrap',
+    },
+    reviews: {
+      alignSelf: 'center',
+      marginBottom: 20,
+      maxWidth: '100%',
+      flex: '1 1 500px',
+      '& > *': {
+        overflow: 'hidden',
+        [theme.breakpoints.down(990)]: {
+          height: '40vh',
+        },
+      },
+    },
+    userInfo: {
+      margin: 'auto',
+      textAlign: 'center',
+      flex: '1 1 200px',
+    },
+  }),
+);
 
 const ProfileCard: React.FC = ({ children }) => {
   const classes = useStyles();

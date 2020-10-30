@@ -73,7 +73,6 @@ const ProductReview = () => {
     } else {
       await submitReview();
       toast.success('Anmeldelsen er registrert🦄');
-      // TODO: Send the request to the backend here
       dispatch(setModalOpen(false));
 
       setRating(0);

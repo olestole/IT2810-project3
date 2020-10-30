@@ -26,7 +26,6 @@ type Actions =
   | ReturnType<typeof setAddedReview>;
 
 const initialAppState: AppState = {
-  count: 0,
   searchText: '',
   modalOpen: false,
   filterOptions: {

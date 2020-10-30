@@ -1,6 +1,4 @@
-import { AuthenticationError } from "apollo-server-express";
 import { Product } from "./models/Product";
-import withAuth from "graphql-auth";
 import { IReview, IReviewResponse, Review } from "./models/Review";
 
 export const resolvers = {
@@ -27,9 +25,6 @@ export const resolvers = {
         .skip(index)
         .limit(40),
     singleProduct: async (_: any, { productNumber }: any) => {
-      // if (!isAuthenticated) {
-      //   throw new AuthenticationError("Not logged in!");
-      // }
       return (await Product.find({ Varenummer: productNumber })).length > 0
         ? (await Product.find({ Varenummer: productNumber }))[0]
         : null;
@@ -72,13 +67,6 @@ export const resolvers = {
           description: review.description,
           rating: review.rating,
         } as IReviewResponse;
-        // return {
-        //   code: "200",
-        //   success: true,
-        //   message: "Successfully added a review",
-        //   title: review.title,
-        //   user: review.userEmail,
-        // } as IReviewResponse;
       } catch (error) {
         return {
           code: "400",
