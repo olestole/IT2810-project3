@@ -6,6 +6,8 @@ $ npm install
 $ npm run prod
 ```
 
+![](WineEncyclopeida_video.gif)
+
 
 ## Run tests
 
