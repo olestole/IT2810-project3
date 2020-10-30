@@ -3,14 +3,9 @@
 ```
 $ git clone git@gitlab.stud.idi.ntnu.no:it2810-h20/team-49/prosjekt3.git
 $ npm install
-$ cd backend 
-$ npm start
+$ npm run prod
 ```
-Open another terminal
-```
-$ cd frontend
-$ npm start
-```
+
 
 ## Run tests
 
