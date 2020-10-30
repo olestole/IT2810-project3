@@ -17,6 +17,7 @@ import {
 } from './ProductList/EnhancedTableHead';
 import { updateViewMode } from 'store/action';
 import { PRODUCTS } from 'graphql/queries';
+import { ProductsQuery } from 'graphql/__generated__/ProductsQuery';
 // import { StartProductsQuery, StartProductsQuery_startProducts } from 'graphql/__generated__/StartProductsQuery';
 
 const ProductListView = () => {
@@ -39,7 +40,7 @@ const ProductListView = () => {
     return filteredArray;
   };
 
-  const { data, loading, error, fetchMore } = useQuery(PRODUCTS, {
+  const { data, loading, error, fetchMore } = useQuery<ProductsQuery>(PRODUCTS, {
     variables: {
       matchedString: searchText,
       filterIndex: 0,
@@ -93,7 +94,7 @@ const ProductListView = () => {
       fetchMore({
         variables: {
           matchedString: searchText,
-          filterIndex: data.products.length,
+          filterIndex: data ? data.products.length : 0,
           typer: filterGlobalToArray(),
           prisgt: filterOptions.minPrice,
           prisls: filterOptions.maxPrice,
@@ -151,29 +152,35 @@ const ProductListView = () => {
               order={order}
               orderBy={orderBy}
               onRequestSort={handleRequestSort}
-              rowCount={data.products.length}
+              rowCount={data ? data.products.length : 0}
             />
             <TableBody>
-              {stableSort(data.products as any, getComparator(order, orderBy)).map((row, index) => {
-                const labelId = `enhanced-table-checkbox-${index}`;
-                return (
-                  <TableRow hover tabIndex={-1} key={row.Varenummer} onClick={() => handleProductClick(row.Varenummer)}>
-                    <TableCell component="th" id={labelId} padding="default" align="left">
-                      {row.Varenavn}
-                    </TableCell>
-                    <TableCell align="right">{row.Varetype}</TableCell>
-                    <TableCell align="right" className={classes.volum}>
-                      {row.Volum}
-                    </TableCell>
-                    <TableCell align="right" className={classes.pris}>
-                      {row.Pris}
-                    </TableCell>
-                    <TableCell align="right" className={classes.produsent}>
-                      {row.Produsent}{' '}
-                    </TableCell>
-                  </TableRow>
-                );
-              })}
+              {data &&
+                stableSort(data.products as any, getComparator(order, orderBy)).map((row, index) => {
+                  const labelId = `enhanced-table-checkbox-${index}`;
+                  return (
+                    <TableRow
+                      hover
+                      tabIndex={-1}
+                      key={row.Varenummer}
+                      onClick={() => handleProductClick(row.Varenummer)}
+                    >
+                      <TableCell component="th" id={labelId} padding="default" align="left">
+                        {row.Varenavn}
+                      </TableCell>
+                      <TableCell align="right">{row.Varetype}</TableCell>
+                      <TableCell align="right" className={classes.volum}>
+                        {row.Volum}
+                      </TableCell>
+                      <TableCell align="right" className={classes.pris}>
+                        {row.Pris}
+                      </TableCell>
+                      <TableCell align="right" className={classes.produsent}>
+                        {row.Produsent}{' '}
+                      </TableCell>
+                    </TableRow>
+                  );
+                })}
             </TableBody>
           </Table>
         </TableContainer>
