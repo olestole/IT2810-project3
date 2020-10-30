@@ -115,7 +115,7 @@ Instead of fetching all fields from the product we exclude fields like *Farge*, 
 
 **Lazyloading:**
 Lazy loading is implemented to make sure the client fetch feasible amounts of data - GraphQL and Apollo Client makes this easy. 
-The implementation of lazy loading (fetching additional data and adding it to the current dataset) is implemented in *ProductListView* using `fetchMore`. The `fetchmore` function runs each time you scroll to the bottom of the current dataset.
+The implementation of lazy loading (fetching additional data and adding it to the current dataset) is implemented in */frontend/src/components/Overview/ProductListView* using `fetchMore`. The `fetchmore` function runs each time you scroll to the bottom of the current dataset and will fetch 30 (or less/none based on the current search/filter settings) products.
 This is done by passing in a new filterIndex, a variable the same as the length of the current list of data. To make this work we made our function for fetching data skip the provided index (in the database ignoring the items before the index), so we are actually using the same function for fetching data each time just with different variables. 
 This function is called `products` and is defined under: `/backend/src/resolvers`. 
 
