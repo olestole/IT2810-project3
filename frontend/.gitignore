@@ -25,3 +25,6 @@ yarn-error.log*
 # Generated
 /src/graphql/__generated__
 /__generated__
+
+.env
+cypress.json
